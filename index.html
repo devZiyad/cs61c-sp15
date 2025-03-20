@@ -1,0 +1,832 @@
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Pragma" content="no-cache">
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <title>CS61C Spring 2015: Great Ideas in Computer Architecture (Machine Structures)</title>
+</head>
+
+<body bgcolor="#FFFFEF">
+
+<a NAME="Doctop" />
+<!-- 61C Logo and Navigation Stuff -->
+
+<table BORDER=0 CELLSPACING=2 CELLPADDING=5 WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td VALIGN=BOTTOM align=center><b><font color="#FFFFFF"><font size=+2>CS 61C</font></font></b></td>
+<td VALIGN=BOTTOM><font color="#FFFFFF"><font size=+0>
+      Great Ideas in Computer Architecture (Machine Structures).
+<!-- SEMESTER UPDATE -->
+Spring 2015, UC Berkeley</font></font></td>
+</tr>
+<tr BGCOLOR="#EEEDD0">
+  <td VALIGN=TOP width=378><img src="images/P%26H.jpg" height=162 width=130 alt="P&H"><img SRC="images/K&R.jpg" height=162 width=124 alt="K&R"><img SRC="images/WSC.jpg" height=162 width=124 alt="WSC"></td>
+<td VALIGN=BOTTOM>
+<font size=+3>&nbsp;</font><center>
+<!-- SEMESTER UPDATE -->
+  <font size="+3">CS61C Spring 2015<br>Tu/Th 3:30-5pm 1 Pimentel</font>
+</center><br><br>
+</td>
+</tr>
+</table>
+<!-- End 61C Logo and navigation Stuff -->
+
+<br>
+<hr>
+<br>
+
+<!-- Begin Lecture Reading and Quiz Schedule -->
+<a NAME="Calendar"></a>
+
+<!-- TODO: php/cgi to show lecture links automatically -->
+
+<!-- Begin Lecture Reading and Quiz Schedule -->
+<table align="center" border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr><td bgcolor="#000000">
+<div align="center">
+  <center>
+
+<table style="border-collapse: collapse;" border="0" bordercolor="#111111" cellpadding="10" cellspacing="0" width="100%">
+<tbody><tr><td bgcolor="#eeedd0">
+<h2>Lecture, Reading, and Assignment Calendar</h2>
+
+<p>
+  <b>Policy on Assignments and Independent Work.</b>
+  Unless explicitly stated otherwise, all homeworks and projects are to be <b><i>YOUR</i></b> work and your work <b><i>ALONE</i></b>.
+  Collaboration in CS61C is limited to debugging. You should not discuss ideas/approaches or pseudocode with other students. What you hand in must be entirely your own work.
+  It is <b><i>NOT</i></b> acceptable to copy solutions from other students or to copy (or start your) solutions from the Web.
+  We have tools and methods, developed over many years, for detecting this.
+  You <b><i>WILL</i></b> be caught, and the penalties <b><i>WILL</i></b> be severe.
+  These include, at minimum:
+  <ul>
+    <li>A letter to your university record documenting the incidence of cheating.
+    <li>An automatic <b>F</b> in the course for both you and the enabler/giver of the assignment.
+  </ul>
+  Both the giver and receiver are equally culpable and suffer equal penalties.
+  <!--  The full policy on collaboration is available <a href="cheating_policy.pdf">here</a>.-->
+</p>
+
+<table style="border-collapse: collapse; width: 100%;" border="2" bordercolor="#111111" cellpadding="4" cellspacing="0">
+ <!-- Column Headers -->
+ <tbody>
+     <tr bgcolor="#b0b0b0">
+
+       <th width=50><b>Wk</b></th>
+       <th><b>Date</b></th>
+       <th><b>Lecture Topic</b></th>
+
+       <th><b>Reading</b></th>
+       <th><b>Section</b></th>
+
+       <th><b>Lab</b></th>
+       <th><b>Assignment Due<br>
+</b></th>
+</tr>
+
+<!-- Week 1 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">1<br></td>
+
+  <td bgcolor="#e0e0e0">01/20 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L01-kavs-intro.pdf">Intro, Number Representation</a></td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 2.4 <br>
+(5th) P&H: 2.4 <br>
+<a href="resources/binaryslides.pdf">Binary slides</a>
+  </td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/00">Section 0: Number Representation</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/00/index.html">Lab 0: Intro, git, Number Rep</br></a>
+  </td>
+  <td rowspan="4" bgcolor="#e0e0e0">
+    <a href="hw/00/hw0.html">HW0: Intro and Number Representation</a>
+    <br>Due 02/01 @ 23:59:59
+  </td>
+
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">01/22 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L02-kavs-C1.pdf">C Intro, Pointers</a> </td>
+  <td bgcolor="#e0e0e0">
+<a href="resources/HarveyNotesC1-3.pdf">B. Harvey's Intro to C</a><br>
+K&R Ch. 1-5
+</td>
+</tr>
+
+
+<!-- Week 2 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">2<br></td>
+
+  <td bgcolor="#e0e0e0">01/27 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L03-kavs-C2.pdf">C Arrays, Strings, Pointers</a></td>
+  <td bgcolor="#e0e0e0">K&R Ch. 5-6<br>
+<a href="resources/C_reference_slides.pdf">C Reference Slides</a></td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/01">Section 1: C Basics</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/01/index.html">Lab 1: C and GDB</br></a>
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">01/29 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L04-kavs-C3.pdf">C Memory Mangement, Usage</a> </td>
+  <td bgcolor="#e0e0e0">K&R: 7.8.5, 8.7</td>
+</tr>
+
+
+
+<!-- Week 3 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">3<br></td>
+
+  <td bgcolor="#e0e0e0">02/03 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L05-kavs-M1.pdf">Intro to Assembly Language, MIPS Intro</a></td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 2.1-2.3<br>
+(5th) P&H: 2.1-2.3
+</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/02">Section 2: C Memory Management and MIPS Intro</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/02/index.html">Lab 2: Advanced C, Memory Management</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="hw/01/hw1.html">HW1: C (Build git Part I)</a>
+    <br>Due 02/08 @ 23:59:59
+  </td>
+
+
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">02/05 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L06-kavs-M2.pdf">MIPS, MIPS Functions</a> </td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 2.6 - 2.9, 2.10 (only p.128-129), B.6 <br>
+(5th) P&H: 2.6 - 2.9, 2.10 (only p.111-113), A.6
+</td>
+</tr>
+
+
+<!-- Week 4 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">4<br></td>
+
+  <td bgcolor="#e0e0e0">02/10 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L07-kavs-M3.pdf">MIPS Instruction Formats</a></td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 2.5, 2.10 <br>
+(5th) P&H: 2.5, 2.10
+</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/03">Section 3: MIPS II / Instruction Formats</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/03/index.html">Lab 3: MIPS Assembly</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="hw/02/hw2.html">HW2: Advanced C (Build git Part II)</a>
+    <br>Due 02/15 @ 23:59:59
+  </td>
+
+
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">02/12 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L08-kavs-CALL.pdf">Compiler, Assembler, Linker, Loader (CALL)</a> </td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 2.12, B.1-B.4 <br>
+(5th) P&H: 2.12, A.1-A.4
+</td>
+</tr>
+
+<!-- Week 5 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">5<br></td>
+
+  <td bgcolor="#e0e0e0">02/17 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L09-kavs-SDS.pdf">Intro to Synchronous Digital Systems (SDS), Logic</a></td>
+  <td bgcolor="#e0e0e0">
+<a href="resources/sds.pdf">SDS Handout</a><br>
+<a href="resources/boolean.pdf">Logic Handout</a><br>
+(4th) P&H: C.2-C.3 (on CD) <br>
+(5th) P&H: B.2-B.3
+</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/04">Section 4: MIPS Procedures / CALL</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/04/index.html">Lab 4: MIPS Functions, Pointers</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="projs/01/index.html">Project 1, Part 1: C and MIPS</a>
+    <br>Due 03/01 @ 23:59:59
+    <br>&nbsp;
+    <br><a href="hw/03/CS61C_Homework3.pdf">HW3: C to MIPS Practice Problems </a>
+    <br>Ungraded (<a href="hw/03/CS61C_Homework3Soln.pdf">Solution</a>)
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">02/19 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L10-kavs-FSM.pdf">Functional Units, FSMs</a> </td>
+  <td bgcolor="#e0e0e0">
+<a href="resources/blocks.pdf">Blocks Handout</a><br>
+(4th) P&H: 4.2, C.3-C.6 (on CD)  <br>
+(5th) P&H: 4.2, B.3-B.6 <br>
+<a href="resources/state.pdf">State Handout</a><br>
+</td>
+</tr>
+
+<!-- Week 6 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">6<br></td>
+
+  <td bgcolor="#e0e0e0">02/24 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L11-kavs-Datapath.pdf">MIPS Datapath, Single-Cycle Control Intro</a></td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 4.1, 4.3, 4.4<br>
+(5th) P&H: 4.1, 4.3, 4.4
+</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/05">Section 5: Logic and SDS</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/05/index.html">Lab 5: Logisim</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="projs/01/part2.html">Project 1, Part 2: MIPS</a>
+    <br>Due 03/07 @ 23:59:59 (a Saturday!)
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">02/26 Th</td>
+  <td bgcolor="#ffd080" colspan="2"><strong>Midterm I (Covers up to and including week 4 lectures, in-class)</strong></td>
+<!--  <td bgcolor="#e0e0e0"></td>-->
+</tr>
+
+<!-- Week 7 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">7<br></td>
+
+  <td bgcolor="#e0e0e0">03/03 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L12-kavs-Control.pdf">MIPS Single-Cycle Control, Pipelining Intro</a></td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 4.5-4.8<br>
+(5th) P&H: 4.5-4.8
+</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/06">Section 6: Single-Cycle Datapath</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/06/index.html">Lab 6: More Logisim, ALU Design</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="hw/04/index.html">HW4: Logic, FSMs</a>
+      <br>Due 03/10 @ 23:59:59 (a Tuesday!)
+    <br><a href="hw/04/hw4sol.txt">Solutions</a>
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">03/05 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L13-kavs-Pipelining.pdf">MIPS Pipelining Hazards</a> </td>
+  <td bgcolor="#e0e0e0">
+(4th) P&H: 4.10, 4.11<br>
+(5th) P&H: 4.10, 4.11
+</td>
+</tr>
+
+
+<!-- Week 8 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="3" style="text-align: center;" bgcolor="#e0e0e0">8<br></td>
+
+  <td bgcolor="#e0e0e0">03/10 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L14-kavs-CachesI.pdf">Memory Hierarchy, Fully Associative Caches</a></td>
+  <td bgcolor="#e0e0e0">
+    (4th) P&H: 5.1, 5.2 (p. 457-470), 5.3, 5.5, 1.4</br>
+    (5th) P&H: 5.1, 5.2, 5.3, 5.4, 5.8, 1.6</br>
+    <a href="resources/caches.pdf">Cache Flowchart</a>
+  </td>
+
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="disc/07">Section 7: Pipelining</a>
+  </td>
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="labs/07/index.html">Lab 7: CPU Project Prep</br></a>
+  </td>
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="projs/02/index.html">Project 2, Part 1: ALU and Regfile</a>
+      <br>Due 03/15 @ 23:59:59
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">03/12 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L15-kavs-Caches2.pdf">Caches: Direct-mapped, Set-associative, Performance</a> </td>
+  <td bgcolor="#e0e0e0">See 3/10 lec</td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">03/14 Sat</td>
+  <td colspan="2" bgcolor="#ffd080"><strong>Guerrilla Section #1 (<a href="guerrilla/Guerrilla1.pdf">Worksheet</a>, <a href="guerrilla/Guerrilla1_Soln.pdf">Solutions</a>)</strong></td>
+</tr>
+
+
+<!-- Week 9 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">9<br></td>
+
+  <td bgcolor="#e0e0e0">03/17 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L16-kavs-Caches3.pdf">Multilevel Caches, Cache Questions</a></td>
+  <td bgcolor="#e0e0e0">See 3/10 lec</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/08">Section 8: Caches</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/08/index.html">Lab 8: Caches</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="projs/02/index.html">Project 2, Part 2: CPU</a>
+    <br>Due 03/24 @ 23:59:59<br>
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">03/19 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L17-kavs-PerfFP.pdf">Performance, Floating Point, Tech Trends</a> </td>
+  <td bgcolor="#e0e0e0">
+    (4th) P&H: 3.5, 3.8<br>
+    (5th) P&H: 3.5. 3.9<br>
+    <a href="http://www.h-schmidt.net/FloatApplet/IEEE754.html">IEEE 754 Simulator</a>
+  </td>
+</tr>
+
+
+
+<!-- Week 10 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">10<br></td>
+
+  <td bgcolor="#e0e0e0">03/24 Tu</td>
+  <td colspan="5" bgcolor="#ffffd0"><strong>Administrative Holiday (Spring Break)</strong></td>
+</tr>
+
+<tr>
+  <td bgcolor="#e0e0e0">03/26 Th</td>
+  <td colspan="5" bgcolor="#ffffd0"><strong>Administrative Holiday (Spring Break)</strong></td>
+</tr>
+
+
+
+<!-- Week 11 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="3" style="text-align: center;" bgcolor="#e0e0e0">11<br></td>
+
+  <td bgcolor="#e0e0e0">03/31 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/18">Flynn Taxonomy, Data-Level Parallelism</a></td>
+  <td bgcolor="#e0e0e0">
+    (4th) P&H: 1.5, 1.6, 7.1, 7.2, 7.4, 7.6 <br>
+    (5th) P&H: 1.7, 1.8, 6.1, 6.2, 6.3, 6.7
+  </td>
+
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="disc/09">Section 9: Floating Point, AMAT, Flynn Taxonomy</a>
+  </td>
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="labs/09/index.html">Lab 9: SIMD Instructions</br></a>
+  </td>
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="hw/05/index.html">HW5: Caches/Floating-Point</a>
+    <br>Due 04/05 @ 23:59:59
+    <br><a href="hw/05/hw5sol.txt">Solutions</a>
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/02 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L19-kavs-TLP1.pdf">Amdahl's Law, Thread-Level Parallelism, OpenMP Intro</a> </td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 7.3, 5.8, 2.11</br>
+    (5th) P&H: 6.5, 5.10, 2.11</br>
+    <a href="resources/OpenMP3.0-SummarySpec.pdf">OpenMP Summary Card</a></td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/04 Sat</td>
+  <td colspan="2" bgcolor="ffd080"><strong>Midterm II Review Session (<a href="review/mt2_review.pdf">Problems</a>, <a href="review/mt2_review_sol.pdf">Solutions</a>)</strong></td>
+</tr>
+
+<!-- Week 12 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="3" style="text-align: center;" bgcolor="#e0e0e0">12<br></td>
+  <td bgcolor="e0e0e0">04/05 Sun</td>
+  <td bgcolor="#ffd080" colspan="2"><strong>Guerrilla Section #2 (<a href="guerrilla/Guerrilla2.pdf">Worksheet</a>, <a href="guerrilla/Guerrilla2_Soln.pdf">Solutions</a>)</strong></td>
+
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="disc/10">Section 10: Cache Coherence, Synchronization</a>
+  </td>
+  <td rowspan="3" bgcolor="#e0e0e0">
+    <a href="labs/10/index.html">Lab 10: Thread-Level Parallelism, OpenMP</br></a>
+  </td>
+  
+  <td rowspan="3" bgcolor="#e0e0e0">
+    None
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/07 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L20-kavs-TLP2.pdf">Cache Coherence, OpenMP Sharing Issues, Performance</a></td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 5.8</br>
+(5th) P&H: 5.10  </td>
+
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/09 Th</td>
+  <td bgcolor="#ffd080" colspan="2"><strong>Midterm II (Covers up to and including 3/31 lecture, in-class)</strong></td>
+
+</tr>
+
+
+<!-- Week 13 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">13<br></td>
+
+  <td bgcolor="#e0e0e0">04/14 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L21-jw-WSC.pdf">Warehouse Scale Computing, MapReduce (Spark)</a></td>
+  <td bgcolor="#e0e0e0">
+    <a href="resources/WSCBarrosoHolzle.pdf">The Datacenter as a Computer</a>: Ch 1, Ch 2.4, Ch 3, 5.1-5.3
+  </td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/11">Section 11: Spark and Warehouse Scale Computing</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/11/index.html">Lab 11: MapReduce and Spark</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="projs/03/index.html">Project 3: Performance Programming</a>
+    <br>Due 04/19 @ 23:59:59
+  </td>
+
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/16 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L22-kavs-os.pdf">OS Support, Base and Bounds, Interrupts, Virtual Memory Intro</a></td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 5.10-5.12</br>
+  (5th) P&H: 5.13, 5.15, 5.16</td>
+</tr>
+
+<!-- Week 14 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">14<br></td>
+
+  <td bgcolor="#e0e0e0">04/21 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L23-kavs-VM.pdf">More Virtual Memory, Intro to I/O</a></td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 6.6, 4.9 </br>
+  (5th) P&H: 6.9 (only p.4-10), 4.9</td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/12">Section 12: Virtual Memory and I/O</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="labs/12/index.html">Lab 12: Virtual Memory</br></a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="projs/04/neural_nets.html">Project 4: Intro</a>
+    <br><a href="projs/04/index.html">Project 4, Part 1: Spark</a>
+    <br>Due 04/29 @ 23:59:59
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/23 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L24-kavs-IO.pdf">I/O: DMA, Disks, Networking</a></td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 6.2-6.4, 6.9 </br>
+  (5th) 5.2, 5.5, 5.11 </td>
+</tr>
+
+<!-- Week 15 -->
+
+<tr bgcolor="#f0f0f0">
+  <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">15<br></td>
+
+  <td bgcolor="#e0e0e0">04/28 Tu</td>
+  <td colspan="1" bgcolor="#e0e0e0"><a href="lec/2015Sp-CS61C-L25-kavs-Dependability.pdf">Dependability: Parity, ECC, RAID</a></td>
+  <td bgcolor="#e0e0e0">(4th) P&H: 6.2, C-65 to C-67 </br>
+    (5th) P&H: 5.5, B-65 to B-67</br>
+    <a href="resources/Patterson88.pdf">Berkeley RAID Paper</a></td>
+
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="disc/13">Section 13: Parity, ECC, RAID</a>
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <!--<a href="labs/01/index.html">-->None<!--</a>-->
+  </td>
+  <td rowspan="2" bgcolor="#e0e0e0">
+    <a href="projs/04/index2.html">Project 4, Part 2: Spark on EC2</a>
+    <br>Due 05/03 @ 23:59:59<br>
+    <br><a href="hw/06/index.html">HW6: Virtual Memory</a>
+    <br>Due 05/03 @ 23:59:59
+    <br><a href="hw/06/hw6sol.txt">Solutions</a>
+
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">04/30 Th</td>
+  <td bgcolor="#e0e0e0"><a href="lec/26">Summary, What's Next?</a></td>
+  <td bgcolor="#e0e0e0">None</td>
+</tr>
+
+
+<!-- RRR Week, Final Exam -->
+
+<tr bgcolor="#f0f0f0">
+
+    <td rowspan="2" style="text-align: center;" bgcolor="#e0e0e0">RRR<br></td>
+  <td bgcolor="#e0e0e0">05/06 W</td>
+  <td colspan=5 bgcolor="#ffd080"><strong>Final Exam Review: 2-5pm, 105 Stanley</strong></td>
+
+</tr>
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="#e0e0e0">05/07 Th</td>
+  <td colspan=5 bgcolor="#ffd080"><strong>Guerrilla Section #3 (<a href="guerrilla/Guerrilla3.pdf">Worksheet</a>,
+      <a href="guerrilla/Guerrilla3_Soln.pdf">Solutions</a>)</td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+
+    <td rowspan="1" style="text-align: center;" bgcolor="#e0e0e0">Finals<br></td>
+  <td bgcolor="#e0e0e0">05/15 F</td>
+  <td colspan=5 bgcolor="#ffd080"><strong>Final Exam: 7:00pm-10:00pm, Location TBD</strong>
+        <!-- <br>(<a href="cs61c_sp13_final.pdf">Final</a>) (<a href="cs61c_sp13_final_answers.pdf">Answers</a>) (<a href="cs61c_sp13_final_rubric.pdf">Rubric</a>) --></td>
+
+</tr>
+
+
+<!-- Week N
+<tr bgcolor="#f0f0f0">
+  <td align="center" rowspan="3" bgcolor="e0e0e0">N</td>
+	<td bgcolor="e0e0e0">Date1 M</td>
+	  <td bgcolor="e0e0e0">
+	    Lecture M
+	  </td>
+	 <td bgcolor="e0e0e0">
+			ReadingM
+		</td>
+
+
+		<td rowspan="3" bgcolor="e0e0e0">
+	    Quiz N
+	  </td>
+	  <td rowspan="3" bgcolor="e0e0e0">
+	    Lab N: Title
+	  </td>
+	  <td rowspan="3" bgcolor="e0e0e0">
+	    <p>HWN-1</p>
+	    <p>Due Wednesday</p>
+	  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+<td bgcolor="e0e0e0">Date2 W</td>
+  <td bgcolor="e0e0e0">
+    Lecture W
+  </td>
+  <td bgcolor="e0e0e0">
+    ReadingW
+  </td>
+</tr>
+
+<tr bgcolor="#f0f0f0">
+  <td bgcolor="e0e0e0">Date3 F</td>
+
+  <td bgcolor="e0e0e0">
+    Lecture F
+  </td>
+
+  <td bgcolor="e0e0e0">
+    ReadingF
+  </td>
+</tr>
+-->
+
+<!-- End -->
+
+</tbody></table></td></tr></tbody></table></center></div></td></tr></tbody></table>
+<!-- End -->
+
+<!-- End -->
+
+</table>
+</table>
+  </center>
+</div>
+</table>
+
+<br>
+<hr>
+<br>
+
+<!-- Begin General Info Section -->
+
+<a NAME="Resources"></a>
+<table align="center" width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr><td bgcolor="#000000">
+<table align="center" width="100%" border="0" cellspacing="0" cellpadding="10">
+<tr><td bgcolor="#EEEDD0">
+<h2>Resources and Handouts</h2>
+
+<table cellSpacing="2" cellPadding="2">
+	
+  <tr>
+    <td>Reference card for GDB version 5:
+    &nbsp;(<a href="resources/gdb5-refcard.pdf">pdf</a> |
+    <a href="resources/gdb5-refcard.ps">ps</a> | <a 
+href="resources/gdb5-refcard.dvi">dvi</a>)</td>
+  </tr>
+
+  <tr>
+    <td>Harvey notes on C:
+    &nbsp;(<a href="resources/HarveyNotesC1-3.pdf">pdf</a>)</td>
+  </tr>
+
+  <tr>
+    <td>Hilfinger notes on Memory Management:
+    &nbsp;(<a href="resources/pnh.stg.mgmt.pdf">pdf</a>)</td>
+  </tr>
+
+  <tr>
+    <td>MIPS Green Sheet:
+    &nbsp;(<a href="resources/MIPS_Green_Sheet.pdf">pdf</a>)</td>
+  </tr> 
+
+  <tr>
+    <td>MIPS Helper Sheet:
+    &nbsp;(<a href="resources/MIPS_help.html">html</a>)</td>
+  </tr> 
+
+  <tr>
+    <td>Floating Point Java Demos:
+    &nbsp;(<a href="resources/Flottan.htm">html</a>)</td>
+  </tr>
+
+</table>
+
+
+<hr align=left>
+
+<table>
+  <tr>
+  <td><a href="images/P&H.jpg"><img SRC="images/P&H.jpg" height=60 align=LEFT alt="P&H"></a>
+  <td>We will be using the <b>fifth edition</b> of Patterson and Hennessy's <i>Computer Organization and Design</i> book ("P&amp;H"), ISBN <b>0124077269</b>.
+
+  <tr>
+  <td><a href="images/K&R.jpg"><img SRC="images/K&R.jpg" height=60 align=LEFT alt="K&R"></a>
+  <td>We are also requiring <i>The C Programming Language, Second Edition</i> by Kernighan and Ritchie ("K&amp;R"), and will reference its sections in the reading assignments.
+Other books are also suitable if you are already comfortable with them, but our lectures will be based on K&amp;R.
+
+  <tr>
+  <td><a href="images/WSC.jpg"><img SRC="images/WSC.jpg" height=60 align=LEFT alt="WSC"></a>
+  <td>Finally, we will be using <i>The Datacenter as a Computer: An Introduction to the Design of Warehouse-Scale Machines</i> ("WSC"), which is freely available online <a href="../resources/WSCBarrosoHolzle.pdf">here</a>.
+</table>
+
+<p>
+The subjects covered in this course include:
+C and assembly language programming,
+how higher level programs are translated into machine language,
+computer organization,
+caches,
+performance measurement,
+parallelism,
+CPU design,
+warehouse-scale computing,
+and related topics.
+The only prerequisite is that you have taken CS61B, or at least have solid experience with a C-based programming language.
+</table>
+</table>
+
+<br>
+<hr>
+<br>
+
+<!-- Begin CS Illustrated -->
+<!-- Begin CS Illustrated -->
+<a NAME="CS Illustrated"></a>
+<table align="center" width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr><td bgcolor="#000000">
+<table align="center" width="100%" border="0" cellspacing="0" cellpadding="10">
+<tr><td bgcolor="#EEEDD0">
+    <h2>CS Illustrated</h2>
+    Illustrations by Ketrina Yim (<a href="http://csillustrated.berkeley.edu/">csillustrated.berkeley.edu</a>)
+    
+<table align="center" border="0" cellspacing="12" cellpadding="0">
+  <tr>
+    <td align=center><b>Number<br>Representations:</b>
+		<td align="middle"><a href="handouts/integer-representations-1-handout.pdf">
+		<img alt="Integer Representations"
+			src="images/integer-representations-1-handout.jpeg"></a></td> 
+		
+		<td align="middle"><a href="handouts/integer-representations-2-comparing-handout.pdf"> 
+		<img alt="Comparing Integer Representations"
+			src="images/integer-representations-2-comparing-handout.jpeg"></a></td> 
+		
+		<td align="middle"><a href="handouts/integer-representations-3-comparing-handout.pdf"> 
+		<img alt="Comparing Integer Representations 2" 
+			src="images/integer-representations-3-comparing-handout.jpeg"></a></td> 
+		
+		<td align="middle"><a href="handouts/integer-representations-4-comparing-handout.pdf"> 
+		<img alt="Comparing Integer Representations 3"
+			src="images/integer-representations-4-comparing-handout.jpeg"></a></td> 
+	</tr> 
+	
+  <tr> 
+    <td align=center><b>Floating Point<br>Numbers:</b>
+    <td align="middle"><a href="handouts/floating-point-numbers-1-handout.pdf"> 
+		<img alt="Floating Point"
+			src="images/floating-point-numbers-1-handout.jpeg"></a></td> 
+		
+		<td align="middle"><a href="handouts/floating-point-numbers-2-handout.pdf"> 
+		<img alt="Floating Point Interpretations"
+			src="images/floating-point-numbers-2-handout.jpeg"></a></td> 
+		
+		<td align="middle"><a href="handouts/floating-point-numbers-3-line-handout.pdf"> 
+		<img alt="Floating Point Number Line"
+			src="images/floating-point-numbers-3-line-handout.jpeg"></a></td> 
+  </tr>
+
+  <tr> 
+    <td align=center><b>Caches:</b> 
+		<td align="middle"><a href="handouts/cache-1-basics-handout.pdf"> 
+		<img alt="Caching Overview"
+			src="images/cache-1-basics-handout.jpeg"></a></td> 
+  
+    <td align="middle"><a href="handouts/cache-2-misses-handout.pdf"> 
+		<img alt="Cache Misses"
+			src="images/cache-2-misses-handout.jpeg"></a></td> 
+		
+		<td align="middle"><a href="handouts/cache-3-associativity-handout.pdf"> 
+		<img alt="Cache Associativity"
+			src="images/cache-3-associativity-handout.jpeg"></a></td> 
+</tr>
+  <tr>
+    <td align=center><b>Pointers and<br>Arrays:</b> 
+    <td align="middle"><a href="handouts/pointers-and-arrays-handout.pdf"> 
+		<img alt="Pointers and Arrays"
+			src="images/pointers-and-arrays-handout.jpeg" height=250></a></td>
+		
+	</tr> 
+	</tbody>
+	
+</table>	
+</table>
+
+</td></tr>
+</table>
+<!-- end illustrated -->
+
+<!-- end illustrated -->
+
+
+<hr align=left>
+CS61C, <a href="javascript:void(0);">http://inst.eecs.berkeley.edu/~cs61c/</a>
+ 
+(Last Updated: 2025-03-16 @ 16:48
+
+by <a href="https://github.com/devZiyad/cs61c">devZiyad</a>)
+</body>
+</html>
