@@ -1,0 +1,91 @@
+======= Problem 1 =======
+(a.1)
+tag =
+set index =
+block offset =
+
+(a.2)
+Address | Cache Hit / Miss | Miss Type (Compulsory, Capacity, or Conflict)
+0x0000  |                  |
+0x0004  |                  |
+0x0008  |                  |
+0x000c  |                  |
+0x1000  |                  |
+0x1004  |                  |
+0x1008  |                  |
+0x100c  |                  |
+0x0000  |                  |
+0x0004  |                  |
+0x0008  |                  |
+0x000c  |                  |
+
+(a.3)
+Miss rate =
+AMAT =
+(no cache time) - AMAT =
+
+(b.1)
+tag =
+set index =
+block offset =
+
+(b.2)
+Address | Cache Hit / Miss | Miss Type (Compulsory, Capacity, or Conflict)
+0x0000  |                  |
+0x0004  |                  |
+0x0008  |                  |
+0x000c  |                  |
+0x1000  |                  |
+0x1004  |                  |
+0x1008  |                  |
+0x100c  |                  |
+0x0000  |                  |
+0x0004  |                  |
+0x0008  |                  |
+0x000c  |                  |
+
+(b.3)
+miss rate =
+hit time =
+miss time =
+AMAT =
+(no cache time) - AMAT =
+
+(c.1)
+tag =
+set index =
+block offset =
+
+(c.2)
+Address | Cache Hit / Miss | Miss Type (Compulsory, Capacity, or Conflict)
+0x0000  |                  |
+0x0004  |                  |
+0x0008  |                  |
+0x000c  |                  |
+0x1000  |                  |
+0x1004  |                  |
+0x1008  |                  |
+0x100c  |                  |
+0x0000  |                  |
+0x0004  |                  |
+0x0008  |                  |
+0x000c  |                  |
+
+(c.3)
+miss rate =
+hit time =
+miss time =
+AMAT =
+(no cache time) - AMAT =
+
+======= Problem 2 =======
+a.
+b.
+c.
+
+======= Problem 3 =======
+a.
+b.
+c.
+d.
+e.

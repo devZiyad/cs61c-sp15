@@ -1,0 +1,484 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html style="--wm-toolbar-height: 67px;"><head><script src="Additi_files/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app225.us.archive.org';v.server_ms=1606;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Additi_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Additi_files/wombat.js" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden"};</script>
+<script type="text/javascript" src="Additi_files/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://users-tima.imag.fr:80/cis/guyot/Cours/Oparithm/english/Additi.htm","20150430030535","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1430363135");
+</script>
+<link rel="stylesheet" type="text/css" href="Additi_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Additi_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Keywords" content="Adder,Carry Look Ahead Sklansky, Kogge and stone, Brent and Kung">
+<meta name="description" content="Page of the adders">
+
+	<meta name="GENERATOR" content="Visual Page 2.0 for Windows">
+	<title>Adders</title>
+</head>
+
+<body bgcolor="#EFEFEF"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr; height: 67px;">
+</div><div id="wm-ipp-print">The Wayback Machine - 
+https://web.archive.org/web/20150430030535/http://users-tima.imag.fr:80/
+cis/guyot/Cours/Oparithm/english/Additi.htm</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/Additi.htm","20150430030535",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=p7PEIJWi","https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+<p>
+<table border="1" width="700">
+	<tbody><tr>
+		<td>
+			<p align="CENTER"><b><font size="7" color="red">Adders</font></b>
+		</p></td>
+	</tr>
+</tbody></table>
+<br>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="87" valign="TOP">
+			<p align="RIGHT"><a name="FAcell"></a><b><font size="4">"FA" cell</font></b></p>
+
+			<p align="RIGHT"><img src="Additi_files/fa.gif" width="140" height="100" align="BOTTOM" alt="FA cell" border="0">
+		</p></td>
+		<td width="560" height="87" valign="TOP">In the "FA" cell, the weighted sum of the output bits equals the weighted sum of the output bits, i.e.
+			" x + y + z = 2 × c + s ". The three input bits share the same weight. Let it be "1".
+			The output bit "s" has the same weight, while the output bit "c" weight is double (×2).<br>
+			The "FA" cell conserves the sum just like the node conserves the electric current in the "Kirchoff's
+			current law".<br>
+			The "FA" cell is also called "3 <font face="Symbol">Þ</font>2 compressor" since it reduces
+			the bits number from 3 to 2 while preserving the <i>numerical value</i>.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="FullAdder.class" width="680" height="384" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="fa">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="Addpro"></a><b><font size="4">Carry propagate adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The addition is by far the most common arithmetic operation in digital processors. Addition is itself very frequent
+			and is also the basis of most other arithmetic operations like multiplication, division, square root extraction
+			and elementary functions.<br>
+			All "consistent" "<a href="#FAcell" target="_blank">FA</a>" cells network preserves the property:
+			<i>the weighed sum of the output bits equals the weighted sum of the input bits</i>.<br>
+			To construct the adder S = A + B, the input bits come from the two numbers A and B and the output bits form the
+			number S. <br>
+			The number of "FA" cells is the number of bits of A and B.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryPropagate.class" width="800" height="280" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Signed adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>The vertical arrow <img src="Additi_files/alter.gif" width="10" height="16" align="BOTTOM" border="0"> "view"
+			next to the blue push-down button displays a double interpretation of the bit vectors A, B and S: unsigned integers
+			(top) or signed integers in two's complement notation (bottom). The same adder supports both interpretations. One
+			faces the following dilemma:
+			</p><ul>
+				<li>The bit s<sub>n</sub> is simply ignored. Then S has the same number of bits as the addends A and B but an <a href="Adspec.htm#Over" target="_blank">overflow</a> is possible. The overflow detection circuit is different for
+				signed or unsigned addition.
+				</li><li>The bit s<sub>n </sub>is part of the sum S. Then overflow is impossible but S has one more bit than A and B
+			</li></ul>
+			<p>The first solution is usually preferred. The vertical arrow <img src="Additi_files/alter.gif" width="10" height="20" align="BOTTOM" border="0"> that appears close to S toggles between the two possible S : either S truncated to n
+			bits or S complete with n<font size="2">+1</font> bits.
+		</p></td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Performance of the carry ripple adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>Let us assume that all the possible values for A and B are equiprobable and independent:
+			</p><center>
+
+			<table border="1" width="70%">
+				<tbody><tr>
+					<td width="25%">&nbsp;</td>
+					<td width="25%">
+						<p align="CENTER">minimum
+					</p></td>
+					<td width="25%">
+						<p align="CENTER">average
+					</p></td>
+					<td width="25%">
+						<p align="CENTER">maximum
+					</p></td>
+				</tr>
+				<tr>
+					<td width="25%">delay</td>
+					<td width="25%">
+						<p align="CENTER">0
+					</p></td>
+					<td width="25%">
+						<p align="CENTER">log<sub>2</sub>(n)
+					</p></td>
+					<td width="25%">
+						<p align="CENTER">n
+					</p></td>
+				</tr>
+				<tr>
+					<td width="25%">activity</td>
+					<td width="25%">
+						<p align="CENTER">0
+					</p></td>
+					<td width="25%">
+						<p align="CENTER">3n / 2
+					</p></td>
+					<td width="25%">
+						<p align="CENTER">n<sup>2 </sup>/ 2
+					</p></td>
+				</tr>
+			</tbody></table>
+</center>
+The maximum delay (worst case) is usually not acceptable. Let us examine the carry propagation path that causes
+			this delay.
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Carry propagation path</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>For each "<a href="#FAcell" target="_blank">FA</a>" cell, one of the three following cases happens
+			:
+			</p><ul>
+				<li>the carry c<sub>i+1</sub> is set to <font color="#0033CC">'0'</font>, noted <font color="#3366FF">'K'</font>,
+				if a<sub>i</sub> = 0 and b<sub>i</sub> = 0
+				</li><li>the carry c<sub>i+1</sub> is set to <font color="red">'1'</font>, noted <font color="red">'G'</font>, if a<sub>i</sub>
+				= 1 and b<sub>i</sub> = 1
+				</li><li>the carry c<sub>i+1</sub> is propagated, noted <font color="#009900">'P'</font>, if (a<sub>i</sub> = 0 and
+				b<sub>i</sub> = 1) or (a<sub>i</sub> = 1 and b<sub>i</sub> = 0). In this last case c<sub>i+1</sub> = c<sub>i</sub>.
+				This is the unfavorable case, materialized by an horizontal arrow in the next applet.
+			</li></ul>
+		</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Carry.class" width="800" height="295" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">The three case <font color="#0033CC">'K'</font>, <font color="red">'G'</font> and <font color="#009900">'P'</font>
+			are encoded onto two 2 bits. Check the box above to show the 2 bits. A "HA" cell selects the case according
+			to a<sub>i</sub> and b<sub>i</sub>.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="BKCell.class" width="680" height="310" align="BOTTOM">
+<param name="mode" value="ha">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4"> </font></b><font size="4"><a name="BKcell"></a></font><b><font size="4">"BK"
+			cell<br>
+			(Brent &amp; Kung)</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The "BK" cell computes the carry for two binary positions ( two "FA" cells) or more generally
+			two blocks of "FA" cells.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="BKCell.class" width="680" height="304" align="BOTTOM">
+<param name="mode" value="bk">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="Sklansky"></a><b><font size="4">Sklansky's adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">To design fast adders, binary trees of "<a href="#BKcell" target="_blank">BK</a>" cells will first generate
+			simultaneously all the carries c<sub>i</sub>. The "Sklansky's adder" builds recursively 2-bit adders then
+			4-bit adders, 8-bit adders, 16-bit adder and so on by abutting each time two smaller adders. The architecture is
+			simple and regular, but suffers from fan-out problems. Besides in some cases it is possible to use less "BK"
+			cells with the same addition delay.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="347" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="addv">
+<param name="lang" value="a">
+</applet>
+ <br>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">The output bits s<sub>i</sub> = a<sub>i</sub> <font size="2" face="Symbol">Å</font> b<sub>i</sub> <font size="2" face="Symbol">Å</font> c<sub>i</sub>. Now a<sub>i</sub> <font size="2" face="Symbol">Å</font> b<sub>i</sub>
+			= <font color="red">'1'</font> if the "HA" cell output equals <font color="#009900">'P'</font> . Thus
+			the "HA" cell computes a<sub>i</sub> <font size="2" face="Symbol">Å</font> b<sub>i</sub> and subsequently
+			s<sub>i </sub>is given by one "XOR" gate. <br>
+			The "BK" cells that output the carries c<sub>i </sub>never output the value <font color="#009900">'P'</font>,
+			consequently they can be simplified. Those "BK" cells are in yellow.</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="100" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Associativity and non commutativity</font></b>
+		</p></td>
+		<td width="360" height="100" valign="TOP">The "<a href="#BKcell" target="_blank">BK</a>" cell is associative as can be check on the applet at right,
+			but its truth table shows clearly that is is not commutative (<font color="red">'G'</font> and <font color="#0033CC">'K'</font>
+			do not permute).</td>
+		<td width="190" height="100" valign="TOP"><applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="AsoBK.class" width="190" height="100" align="TOP">
+			<param name="background" value="efefef">
+			<param name="lang" value="a">
+			</applet>
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Fast adders<br>
+			(Brent &amp; Kung)</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">In a fast adder, <u>all the carries</u> c<sub>i</sub> are computed <u>simultaneously</u> through a binary tree
+			of "BK" cells. To save on complexity, sharable intermediate results are computed once. There is only
+			<u>one rule</u> to construct the trees: every tree output at position i must be connected to <u>all inputs</u>
+			of position less than or equal to i by a planar binary tree of "BK" cells. <br>
+			The rule simplicity usually allows many correct constructions.</td>
+	</tr>
+</tbody></table>
+</p>
+<p><applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="DessBK.class" width="830" height="342" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+</p>
+
+<p>
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">
+			<p>In the "BK" cell tree, one may trade cells for delay, usually for the same addition the shorter the
+			delay, the more "BK" cells are needed.</p>
+			<ul>
+				<li>change the number of bits and/or the delay
+				</li><li>check that the trees comply with <u>the</u> construction rule by clicking on a signal (a line), notice that
+				each signal is named by a pair of integers .
+				</li><li>simulate the carries computation by clicking on the keys <img src="Additi_files/bit_k_s.gif" width="11" height="18" align="BOTTOM" border="0"> .
+				</li><li>display the tree construction process by clicking the key "Details"
+				</li><li>display the adder VHDL description by clicking the key "VHDL". To save the VHDL description, select
+				it, then copy and past it into a text editor.
+				</li><li>display the table describing the trees by hitting the arrow <img src="Additi_files/alter.gif" width="10" height="16" align="BOTTOM" border="0"> "view".
+			</li></ul>
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4"> </font></b><font size="4"><a name="KSadder"></a></font><b><font size="4">Kogge
+			&amp; Stone adders</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The binary trees of "BK" cells in the Kogge and Stone adders are not sharing. Consequently the signal
+			fan-out is reduced to the minimum at the expense of more "BK" cells. Since the delay increases with the
+			fan-out, it is now a bit shorter.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="DessKS.class" width="830" height="333" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Ling adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">In the Ling's adder, the "BK" trees give a primitive called "pseudo carry". It avoids the computation
+			of p<sub>i</sub> and g<sub>i</sub>, but on the other hand the carry has to be deducted from the "pseudo carry".
+			The trick is that this late computation is overlapped by the "BK" cells delays. Consequently this adder
+			is faster (a little bit) than the corresponding Kogge and Stone's adder. The VHDL synthesis from the applet takes
+			advantage of Ling's approach if the box is checked.</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">"BK" cell trees editor</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">Check your understanding of "Brent-Kung" adders by creating new ones. Click on a position in the table
+			to select it and then enter a number with the keyboard. Inconsistent values are replaced by 0 (no cell). The arrow
+			<img src="Additi_files/alter.gif" width="10" height="16" align="BOTTOM" border="0"> "view" displays either
+			the trees or the table.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="EditBK.class" width="830" height="342" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4"> </font></b><font size="4"><a name="CScell"></a></font><b><font size="4">"CS"
+			Cell</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">In the "CS" cell, the weighted sum of the 3 outputs equals the weighted sum of the 5 inputs. In other
+			words "a + b + c + d + e = 2 × h + 2 × g + f ". The "CS" cell is not only a "5<font face="Symbol">Þ</font>3 counter", but moreover the output "h" never depends on the input "e".</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="FullAdder.class" width="680" height="384" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="cs">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="AddCS"></a><b><font size="4">Carry propagation free adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The "<a href="#CScell" target="_blank">CS</a>" cell does not propagate the input carry "e"
+			to the output "h". It makes "carry propagation free" adders possible. The number of necessary
+			"CS" cells is precisely given by the number of digits to be added.<br>
+			Nevertheless, each digit is coded onto 2 bits and the digit value is the sum of those 2 bits. <a name="CSnotation"></a>Therefore
+			the possible digit values are <font color="#0033CC">'0'</font>, <font color="red">'1'</font> and <font color="#009900">'2'</font>
+			.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryFree.class" width="800" height="280" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">This notation system for integer numbers allows addition with a delay both <u>short</u> and <u>independent</u>
+			of the digits number. Yet this system demands about twice as many bits as the standard binary notation for a comparable
+			range. Consequently the same value may have several representations. Among the representations, the one with only
+			<font color="#0033CC">'0'</font> or <font color="red">'1' </font>is unique. The vertical arrow <img src="Additi_files/alter.gif" width="10" height="16" align="BOTTOM" border="0"> next to the numbers value changes the <u>representation</u> without
+			changing the <u>value</u>. The arrow <img src="Additi_files/alter.gif" width="10" height="16" align="BOTTOM" border="0">
+			"view" next to the button toggles the digits or bits display round.</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="AddHyb"></a><b><font size="4">Hybrid adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">We call "hybrid" the operators supporting different notations. The adder below, in some respects very
+			simple, A is in binary, while B and S are both in "<a href="#AddCS" target="_blank">CS</a>" notation.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryFree.class" width="800" height="250" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="hybrid">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="CvtAdd"></a><b><font size="4">Converter</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">Among the representations of A in "<a href="#AddCS" target="_blank">CS</a>", the one with only <font color="#0033CC">'0'</font> or <font color="red">'1' </font>is unique. It is the binary represention of A. It is
+			obtained by an adder S = A' + A".</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryFree.class" width="800" height="250" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="convert">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">A fast adder like <a href="#Sklansky" target="_blank">Sklansky's</a> or <a href="#KSadder" target="_blank">Kogge
+			et Stone's</a> permits a fast conversion ; <font color="#0033CC">'0'</font> gives <font color="#0033CC">'K'</font>,
+			<font color="red">'1'</font> gives <font color="#009900">'P'</font> and <font color="#009900">'2'</font> gives
+			<font color="red">'G'</font> .</td>
+	</tr>
+</tbody></table>
+
+</p><hr align="CENTER">
+<spacer type="HORIZONTAL" size="140"> <applet archive="/web/20150430030535oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Navig.class" width="250" height="48" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="page" value="1">
+<param name="lang" value="a">
+</applet>
+ <a href="https://web.archive.org/web/20150430030535/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"><script type="text/javascript">
+<!--
+Xt_param = 's=190561&p=en-addition';
+Xt_r = document.referrer;
+Xt_h = new Date();
+Xt_i = '<img width="39" height="25" border="0" ';
+Xt_i += 'src="https://web.archive.org/web/20150430030535/http://logv27.xiti.com/hit.xiti?'+Xt_param;
+Xt_i += '&hl='+Xt_h.getHours()+'x'+Xt_h.getMinutes()+'x'+Xt_h.getSeconds();
+if(parseFloat(navigator.appVersion)>=4)
+{Xt_s=screen;Xt_i+='&r='+Xt_s.width+'x'+Xt_s.height+'x'+Xt_s.pixelDepth+'x'+Xt_s.colorDepth;}
+document.write(Xt_i+'&ref='+Xt_r.replace(/[<>"]/g, '').replace(/&/g, '$')+'" title="Analyse d\'audience">');
+//-->
+</A></script></a><a href="https://web.archive.org/web/20150430030535/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"><noscript> Mesure d'audience ROI frequentation
+par <img src="https://web.archive.org/web/20150430030535im_/http://logv27.xiti.com/hit.xiti?s=190561&amp;p=en-addition" width="39" height="25" align="BOTTOM" alt="Audience rating" border="2"/> </a></a><a href="https://web.archive.org/web/20150430030535/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"></noscript></a>
+
+
+
+
+</spacer></body></html>
+<!--
+     FILE ARCHIVED ON 03:05:35 Apr 30, 2015 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 18:54:15 Mar 16, 2025.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.485
+  exclusion.robots: 0.026
+  exclusion.robots.policy: 0.016
+  esindex: 0.01
+  cdx.remote: 48.651
+  LoadShardBlock: 1280.252 (3)
+  PetaboxLoader3.datanode: 528.339 (4)
+  PetaboxLoader3.resolve: 773.587 (3)
+  load_resource: 222.852
+-->

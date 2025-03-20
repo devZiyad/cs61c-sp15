@@ -1,0 +1,308 @@
+<html><head>
+  <title>CS61C Spring 2015 Project 4 Part 1</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <style type="text/css">
+	pre { background: none; padding: 0;}
+	div.expand-div { padding-top: 1em;}
+  </style>
+
+  <link rel="stylesheet" href="highlight.default.css">
+  <script src="highlight.pack.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+
+  <script type="text/javascript">
+  	hljs.initHighlightingOnLoad();
+  	$(document).ready(function() {
+  		$(".expand-hdr").bind('click', function(event) {
+  			var div = $("#" + this.getAttribute('id') + "-div");
+  			div.is(":hidden") ? $(this).attr("value", "Hide Code") : $(this).attr("value", "Show Code")
+  			div.toggle(200)
+  		});
+  		$(".expand-div").hide()
+  		$(".expand-hdr").attr("value", "Show Code")
+  	});
+  </script>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-text">
+	<h1>CS61C Spring 2015 Project 4: A Brief Intro to Neural Networks</h1>
+  </div>
+</div>
+
+<div class="content"> 
+	<h2>Introduction</h2>
+
+	<p>This document contains a simplified explanation of how neural networks work. Each section contains a high-level explanation
+	followed by relevant pieces of code from the matrix version of Project 4. The code is hidden by default for those who just want
+	the big ideas, but I recommend that you press "Show Code" and read through the code snippets so that the explanations make more
+	sense. Since this a simplified explanation, this document may contain slight inaccuracies. However, it should provide a starting
+	point for further exploration should you find the topic interesting. If you have any questions or comments, please post them in
+	the corresponding <a href="https://piazza.com/class/i4tbymaaxkb4jr?cid=2598">Piazza thread</a>.</p>
+
+	<h2>Making Decisions with Machines</h2>
+
+	<p>Suppose you are trying out a new restaurant in town. You may evaluate the restaurant on a few factors, such as the quality of
+	food, the price, and the service. Not all factors are equally important--if the food tastes disgusting, no matter how good
+	the service was you would never go there again. In the end, you might label the restaurant as "great", "mediocre", or "avoid like
+	the plague". This is an example of a classification problem, where given a list of factors, you assign a class to that input.</p>
+
+	<p>In machine learning, each factor is known as a <b>feature</b>. Given a list of features, we can make a decision
+	by scaling each feature by a <b>weight</b> reflecting the feature's importance, and then somehow combining the weighted features to form
+	a smaller set of values which we then interpret. For classification problems, each value in the set often reflects the likelihood
+	of the input being of a certain class, so we can assign the class associated with the maximum value as our output. We have thus sketched 
+	a classifier for our problem.</p>
+
+	<p>A classifier cannot classify well without an appropriate choice of weights, but it is often infeasible to manually determine 
+	what the weights should be. In machine learning, we expose the classifier to reference input/output pairs (called the
+	<b>training set</b>). For each example in the training set, the classifier first makes a classification based on the current weights,
+	and then updates the weights based on how "different" the predicted result is from the expected result. The function used to calculate
+	the differentness is known as the <b>loss function</b>. This process repeats until some stopping criteria is reached.</p>
+
+	<input type="button" class="expand-hdr" id="intro-expand" value="" />
+	<div class="expand-div" id="intro-expand-div">
+
+	<p>The code for our classifier, called <tt>Classifier</tt>, is located in <tt>matrix/classifier.py</tt>. The two important
+	functions are <tt>train()</tt> and <tt>validate()</tt>. In the code snippets below, unimportant lines have been removed 
+	for clarity.</p>
+
+	<p><tt>train()</tt> performs training using the two-step process outlined above. Here, <tt>X</tt> is a matrix containing the 
+	input features, which are red, green, and blue pixel values. <tt>Y</tt> is a matrix containing expected results, and 
+	<tt>classes</tt> contains names for each of the classes.</p>
+
+<pre><code>def train(self, X, Y, classes):
+	X = self.preprocess(X)                  # Do some preprocessing to make data look "nice"
+	for i in xrange(self.iternum):
+		f = self.forward(X)             # Make prediction using current weights
+		L = self.backward(X, f, Y)      # Update weights based on loss function</code></pre>
+
+	<p>Meanwhile, <tt>validate()</tt> makes predictions without weight updates and then checks the accuracy against a <b>test set</b>.
+	It acts as a "quiz" to see how well-trained the classifier is. <tt>X</tt>, <tt>Y</tt>, and <tt>classes</tt> retain the same meaning
+	as above.</p>
+ 
+<pre><code>def validate(self, X, Y, classes):
+	X_ = self.preprocess(X)
+	f = self.forward(X_)[-1]                # Make predictions using current weights
+	p = np.argmax(f, axis = 1)              # Pick the most likely class</code></pre>
+
+	</div>
+
+	<h2>The Linear Classifier</h2>
+
+	<p>We mentioned that features are scaled by weights and then combined, but we did not specify how they are combined.
+	One of the simplest methods is to add them up. If <i>x<sub>0</sub>, x<sub>1</sub>, ..., x<sub>k</sub></i> are the features, 
+	and <i>w<sub>0</sub>, w<sub>1</sub>, ..., w<sub>k</sub></i> are the corresponding weights and <i>b</i> is a constant, we 
+	are computing the linear function: <i>y = x<sub>0</sub> * w<sub>0</sub> + x<sub>1</sub> * w<sub>1</sub> + ... + 
+	x<sub>k</sub> * w<sub>k</sub> + b</i>.</p>
+
+	<p>Linear classifiers often contain more than one such function. For example, our linear classifier has one per output class, 
+	and more complicated classifiers can have many more. However, each function uses the same set of inputs, and therefore they
+	exist on the same "level". You can imagine each function as being part of a node, which together forms a <b>layer</b>. This
+	particular layer is a <b>linear layer</b> since it performs linear operations.</p>
+
+	<figure>
+		<img src='linear.png' height="300px" style="margin-bottom: 10px"/>
+		<figcaption><i>A linear layer with two nodes (red and blue).</i></figcaption>
+	</figure>
+
+	<p>During training, the output of the linear layer is compared with the expected output using our loss function. The loss
+	function can be used to find the loss function's <b>gradient</b>, or how much we should change our predicted output to match
+	the expected output. But what we really want to know is how much we should change our weights. It turns out we can treat a 
+	layer as a mathematical function, which means that we can write the output of the linear layer a function of the input and 
+	its weights. Since we know how much the output should change, we can calculate how much the each weight should change by 
+	<i>taking the derivative</i> with respect to each weight. This is done in the backwards pass and forms the backbone of 
+	classifier training. (Side note: typically weights aren't changed by the derivative itself, but by an amount that depends 
+	on the derivative.)</p>
+
+	<input type="button" class="expand-hdr" id="lc-expand" value="" />
+	<div class="expand-div" id="lc-expand-div">
+
+	<p>The code for our linear classifier is located in <tt>matrix/linear.py</tt>. This classifier subclasses <tt>Classifier</tt>,
+	and there is a lot of setup code, but the only areas of interest are the <tt>forward()</tt> and <tt>backward()</tt> functions.
+	Forward simply performs the linear classification and returns the result.</p>
+
+<pre><code>def forward(self, X):
+	layer1 = linear_forward(X, A, b)			# Linear layer which calculates AX + b
+	return [layer1]                             # layer1 contains the output of the the linear layer</code></pre>
+
+	<p>The output from <tt>forward()</tt> is fed into <tt>backward()</tt>. <tt>backward()</tt> can be divided into three sections. 
+	In the first section, the output of the last (and in this case, only) layer is used to compute the loss and the gradient.</p>
+	
+<pre><code>def backward(self, X, layers, Y, dump_chunks = -1):
+	layer1 = layers[-1]
+	L, dLdl1 = softmax_loss(layer1, Y)				# Computes the loss and gradient
+	L += 0.5 * self.lam * np.sum(A * A) 			# Regularization step, not important to understand</code></pre>
+
+	<p>In the second section, the derivative for each weight is computed:</p>
+
+<pre><code>	dLdX, dLdA, dLdb = linear_backward(dLdl1, X, A)	# computes partial derivatives, used to update</code></pre>
+
+	<p>Finally, the weights are updated by an amount related to the derivatives. The math in this section are based on
+	advanced neural net theory and therefore is not important to understand.</p>
+
+<pre><code>	""" regularization gradient """
+	dLdA = dLdA.reshape(A.shape)
+	dLdA += self.lam * A
+
+	""" tune the parameter """
+	self.v = self.mu * self.v - self.rho * dLdA
+	self.A += self.v
+	self.b += -self.rho * dLdb
+
+	return L</code></pre>
+
+	</div>
+
+	<h2>Neural Networks</h2>
+
+	<p>Unfortunately, the linear layer is restrictive. For example, suppose we used a classifier to pick our next
+	vacation spot, and one of the features was distance from home. A location that was 300 miles away and a spot that was 3000 miles 
+	away would both be considered far, and qualitatively the two wouldn't be too different. However, a linear classifier would
+	consider the latter feature to be 10x more different, which could skew the results.</p>
+
+	<p>The solution is to introduce nonlinearity into our classifier. To do so, we use <b>activation functions</b>, which transforms
+	its input a non-linear fashion. Our neural net contains three layers (remember that each layer contains multiple nodes):</p>
+
+	<ol>
+	<li>A linear layer</li>
+	<li>A layer using the rectifier activation function (called rectified linear unit, or ReLU)</li>
+	<li>A second linear layer</li>
+	</ol>
+
+	<figure>
+		<img src='nn.png' height="75px" style="margin-bottom: 10px"/>
+		<figcaption><i>Forward step (black) and backpropagation (blue) in the neural network.</i></figcaption>
+	</figure>
+
+	<p>The layers are chained, meaning the ouput of layer 1 is fed into layer 2, and the output of layer 2 is fed into layer 3.
+	This makes the weight update step, which involves taking derivatives, a bit more complicated. While the change in layer 3
+	depends on the gradient of the loss function, <i>the change in layer 2 depends on the gradient of layer 3, and the change in
+	layer 1 depends on the gradient of layer 2.</i> Mathematically speaking, this is simply the chain rule of calculus. Since the 
+	gradients propagate from the end of the classifier to the beginning, this process is called <b>backpropagation</b>.</p>
+
+	<p>(Side note: In neural network literature, each unit is referred to as a "neuron", and each neuron contains both a linear
+	component and an activation function, so this network would be referred to as a two-layer neural network.)</p>
+
+	<input type="button" class="expand-hdr" id="nn-expand" value="" />
+	<div class="expand-div" id="nn-expand-div">
+
+	<p>The code for neural network is in <tt>matrix/nn.py</tt>. The code in <tt>forward()</tt> looks very similar to that of the
+	linear classifier, with the only difference being the addition of two more layers. Notice how the layers are chained:</p>
+
+<pre><code>def forward(self, X, dump_chunks = -1):
+	layer1 = linear_forward(X, A1, b1)         # Linear layer (layer 1). Its input are the images
+	layer2 = ReLU_forward(layer1)              # ReLU layer (layer 2). Its input is the output of layer 1
+	layer3 = linear_forward(layer2, A3, b3)    # Linear layer (layer 3). Its input is the output of layer 2
+	return [layer1, layer2, layer3]</code></pre>
+
+	<p>The code in <tt>backward()</tt> also looks similar. The code involving regularizion and updating each layer's weights (once
+	the derivative has been calculated) have been removed for clarity. Note the arguments to each <tt>*_backward()</tt> function is
+	the gradient calculated by the previous function.
+
+<pre><code>def backward(self, X, layers, Y, dump_chunks = -1):
+	layer1, layer2, layer3 = layers
+
+	L, dLdl3 = softmax_loss(layer3, Y)
+	...
+
+	# Backpropagation step below:
+	dLdl2, dLdA3, dLdb3 = linear_backward(dLdl3, layer2, A3)  # Calculate layer 3's derivatives using the loss gradient
+	dLdl1 = ReLU_backward(dLdl2, layer1)                      # Calculate layer 2's derivatives using layer 3's gradient
+	dLdX, dLdA1, dLdb1 = linear_backward(dLdl1, X, A1)        # Calculate layer 1's derivatives using layer 2's gradient
+
+	...
+	return L</code></pre>
+
+	</div>
+
+	<h2>Convolutional Neural Networks</h2>
+
+	<p>In theory, neural network of sufficient size as described above can model any function. However, the amount of time and data
+	needed to train such a network makes them utterly impractical. The reason is that each node in a layer uses <i>all</i> nodes from
+	the previous layer as inputs, so the number of weights grow very quickly as the neural net increases in size.</p>
+
+	<p>One approach that combats this issue is convolutional neural networks. In a convolutional neural network, each node is not
+	connected to the entire previous layer. Rather, the node uses only a few nodes from the previous layer as input, 
+	greatly reducing the number of parameters. During the forward pass, the node performs a convolution with the input, which basically
+	"sweeps" the node across the input.</p>
+
+	<p>You don't need to know the details about convolution. What is important to know is that convolution acts as a filter (think 
+	Photoshop) on an input. Depending on the weights of the node, also called the <b>kernel</b> in this context, a convolution can 
+	perform operations like shape detection, edge detection, blurring, sharpening, etc. A convolutional neural net uses the training set
+	to learn the set of filters needed for the classification task.</p>
+
+	<p>A collection of nodes, or kernels, acting on the input forms a <b>convolution layer</b>. The output of the convolution layer is then
+	passed to an activation layer (in this case, a ReLU layer). However, convolution produces a large output, which is undesirable. We thus 
+	introduce a <b>pool layer</b> after the activation layer to downsize our output.</p>
+
+	<p>The sequence of convolution, activation, and pool layers can be chained together. Backpropagation happens in the same way as before,
+	with the gradient of the <i>k<sup>th</sup></i> layer used to caculate the gradient of the <i>k-1<sup>th</sup></i> layer.</p>
+
+	<input type="button" class="expand-hdr" id="cnn-expand" value="" />
+	<div class="expand-div" id="cnn-expand-div">
+
+	<p>You can find the code in <tt>matrix/cnn.py</tt>. The <tt>forward()</tt> function performs three sets of conv, ReLU, pool 
+	operations, followed by a linear layer.</p>
+
+<pre><code>def forward(self, X, dump_chunks = -1):
+	layer1, X_col1 = conv_forward(X, A1, b1, S1, P1)             # Set 1
+	layer2 = ReLU_forward(layer1)
+	layer3, X_idx3 = max_pool_forward(layer2, F3, S3)
+
+	layer4, X_col4 = conv_forward(layer3, A4, b4, S4, P4)        # Set 2
+	layer5  = ReLU_forward(layer4)
+	layer6, X_idx6 = max_pool_forward(layer5, F6, S6)
+
+	layer7, X_col7 = conv_forward(layer6, A7, b7, S7, P7)        # Set 3
+	layer8 = ReLU_forward(layer7)
+	layer9, X_idx9 = max_pool_forward(layer8, F9, S9)
+
+	layer10 = linear_forward(layer9, A10, b10)
+	return [(layer1, X_col1), layer2, (layer3, X_idx3),
+	        (layer4, X_col4), layer5, (layer6, X_idx6),
+	        (layer7, X_col7), layer8, (layer9, X_idx9), layer10]</code></pre>
+
+	<p><tt>backward()</tt> also looks similar, just with the addition of more steps during backpropagation.</p>
+
+<pre><code>def backward(self, X, layers, Y, dump_chunks = -1):
+	(layer1, X_col1), layer2, (layer3, X_idx3), \
+	(layer4, X_col4), layer5, (layer6, X_idx6), \
+	(layer7, X_col7), layer8, (layer9, X_idx9), layer10 = layers
+
+	L, dLdl10 = softmax_loss(layer10, Y)
+	...
+
+	# Backpropagation below:
+	dLdl9, dLdA10, dLdb10 = linear_backward(dLdl10, layer9 , A10)
+
+	dLdl8 = max_pool_backward(dLdl9, layer8, X_idx9, F9, S9)
+	dLdl7 = ReLU_backward(dLdl8, layer7)
+	dLdl6, dLdA7, dLdb7 = conv_backward(dLdl7, layer6, X_col7, A7, S7, P7)
+
+	dLdl5 = max_pool_backward(dLdl6, layer5, X_idx6, F6, S6)
+	dLdl4 = ReLU_backward(dLdl5, layer4)
+	dLdl3, dLdA4, dLdb4 = conv_backward(dLdl4, layer3, X_col4, A4, S4, P4)
+
+	dLdl2 = max_pool_backward(dLdl3, layer2, X_idx3, F3, S3)
+	dLdl1 = ReLU_backward(dLdl2, layer1)
+	dLdX, dLdA1, dLdb1 = conv_backward(dLdl1, X, X_col1, A1, S1, P1)
+
+	...
+	return L</code></pre>
+	
+	</div>
+
+	<h2>Further Reading</h2>
+
+	<ul>
+	<li><a href="http://neuralnetworksanddeeplearning.com/">Neural Networks and Deep Learning</a></li>
+	<li>A Course in Machine Learning, chapters on <a href="http://ciml.info/dl/v0_9/ciml-v0_9-ch03.pdf">perceptrons (linear classifiers)</a> 
+	and <a href="http://ciml.info/dl/v0_9/ciml-v0_9-ch08.pdf">neural networks</a>.</li>
+	</ul>
+	<p>If you are interested in this topic, take CS 188 and CS 189!</p>
+
+</div>
+</body>
+</html>

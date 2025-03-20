@@ -1,0 +1,197 @@
+===============================================================================
+ HOMEWORK 1/2 GRADING SUMMARY
+===============================================================================
+
+ * HOMEWORK 1 SCORE: 77.57
+ * HOMEWORK 1' SCORE: 77.57
+ * FINAL HOMEWORK 1 SCORE: 77.57
+
+ * HOMEWORK 2 SCORE (WITHOUT TESTS): 48.25
+
+===============================================================================
+
+ *** TESTING REPORT: HOMEWORK 1 ***
+
+ Student: Anh_Ngoc_Thai 
+ Login: cs61c-ip
+
+ OPEN TESTS (50.0%)
+   [  OK  ] beargit_test_add_0 
+   [  OK  ] beargit_test_add_1 
+   [  OK  ] beargit_test_rm_0 
+   [  OK  ] beargit_test_rm_1 
+   [  OK  ] beargit_test_status_0 
+   [  OK  ] beargit_test_status_1 
+   [  OK  ] beargit_test_commit_0 
+   [  OK  ] beargit_test_commit_1 
+   [  OK  ] beargit_test_log_0 
+   [  OK  ] beargit_test_log_1 
+ SUBSCORE: 10 / 10 (100.0%)
+
+ ID GENERATION (10.0%)
+   [ FAIL ] beargit_test_next_commit_id_0 commit's id contains letters other than 6, 1 or c (6c6c16cc6cc6cc6cc6cc6cc6cc6cc6cc6cc6cc166¶€T) 
+   [ FAIL ] beargit_test_next_commit_id_1 commit's id contains letters other than 6, 1 or c (6c6c16cc6cc6cc6cc6cc6cc6cc6cc6cc6cc6cc166¶€T) 
+ SUBSCORE: 0 / 2 (0.0%)
+
+ COMMIT MESSAGE CHECK (10.0%)
+   [  OK  ] beargit_test_is_commit_msg_ok_0 
+   [  OK  ] beargit_test_is_commit_msg_ok_1 
+   [  OK  ] beargit_test_is_commit_msg_ok_2 
+   [  OK  ] beargit_test_is_commit_msg_ok_3 
+ SUBSCORE: 4 / 4 (100.0%)
+
+ RANDOM TESTS (20.0%)
+   [ FAIL ] beargit_test_random_short_0 successful rm should not display any output
+   [  OK  ] beargit_test_random_short_1 
+   [  OK  ] beargit_test_random_short_2 
+   [  OK  ] beargit_test_random_short_3 
+   [  OK  ] beargit_test_random_short_4 
+   [  OK  ] beargit_test_random_short_5 
+   [  OK  ] beargit_test_random_short_6 
+   [ FAIL ] beargit_test_random_medium_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_1 successful rm should not display any output
+   [ FAIL ] beargit_test_random_medium_2 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_1 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_big_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_big_1 program took longer than 5s to run, probably stuck
+ SUBSCORE: 6 / 14 (42.9%)
+
+ FILE SYSTEM CORRECTNESS (10.0%)
+ * ERROR in beargit_test_log_0: could not open some file: [Errno 2] No such file or directory: '.beargit/1111111111111111111111111111111111111111/test'
+ * ERROR in beargit_test_random_short_1: could not open some file: [Errno 2] No such file or directory: '.beargit/1111111111111111111111111111111111111111/M05SNS0K3XZVCX5Y4FQZ8CHIJXO7YZ64BPX06HR6GBPGBOWX4K'
+ * ERROR in beargit_test_random_medium_1: could not open some file: [Errno 2] No such file or directory: '.beargit/1111111111111111111111111111111111111111/74HG3WPKSIS7SBT0V69109MLA8IET3MM2FFNKL5GW8B8BR3NRJ'
+ SUBSCORE: 27 / 30 (90.0%)
+
+
+ *** TOTAL SCORE: 77.57 / 100.00 ***
+
+===============================================================================
+
+ *** TESTING REPORT: HOMEWORK 2 ON HOMEWORK 1 TESTS FOR CLOBBERING ***
+
+ Student: Anh_Ngoc_Thai 
+ Login: cs61c-ip
+
+ OPEN TESTS (50.0%)
+   [  OK  ] beargit_test_add_0 
+   [  OK  ] beargit_test_add_1 
+   [  OK  ] beargit_test_rm_0 
+   [  OK  ] beargit_test_rm_1 
+   [  OK  ] beargit_test_status_0 
+   [  OK  ] beargit_test_status_1 
+   [  OK  ] beargit_test_commit_0 
+   [  OK  ] beargit_test_commit_1 
+   [  OK  ] beargit_test_log_0 
+   [  OK  ] beargit_test_log_1 
+ SUBSCORE: 10 / 10 (100.0%)
+
+ ID GENERATION (10.0%)
+   [ FAIL ] beargit_test_next_commit_id_0 successful commit should not display any output
+   [ FAIL ] beargit_test_next_commit_id_1 successful commit should not display any output
+ SUBSCORE: 0 / 2 (0.0%)
+
+ COMMIT MESSAGE CHECK (10.0%)
+   [  OK  ] beargit_test_is_commit_msg_ok_0 
+   [  OK  ] beargit_test_is_commit_msg_ok_1 
+   [  OK  ] beargit_test_is_commit_msg_ok_2 
+   [  OK  ] beargit_test_is_commit_msg_ok_3 
+ SUBSCORE: 4 / 4 (100.0%)
+
+ RANDOM TESTS (20.0%)
+   [ FAIL ] beargit_test_random_short_0 successful rm should not display any output
+   [  OK  ] beargit_test_random_short_1 
+   [  OK  ] beargit_test_random_short_2 
+   [  OK  ] beargit_test_random_short_3 
+   [  OK  ] beargit_test_random_short_4 
+   [  OK  ] beargit_test_random_short_5 
+   [  OK  ] beargit_test_random_short_6 
+   [ FAIL ] beargit_test_random_medium_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_1 successful rm should not display any output
+   [ FAIL ] beargit_test_random_medium_2 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_1 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_big_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_big_1 program took longer than 5s to run, probably stuck
+ SUBSCORE: 6 / 14 (42.9%)
+
+ FILE SYSTEM CORRECTNESS (10.0%)
+ * ERROR in beargit_test_log_0: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/test'
+ * ERROR in beargit_test_random_short_1: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/M05SNS0K3XZVCX5Y4FQZ8CHIJXO7YZ64BPX06HR6GBPGBOWX4K'
+ * ERROR in beargit_test_random_medium_1: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/74HG3WPKSIS7SBT0V69109MLA8IET3MM2FFNKL5GW8B8BR3NRJ'
+ SUBSCORE: 27 / 30 (90.0%)
+
+
+ *** TOTAL SCORE: 77.57 / 100.00 ***
+
+===============================================================================
+
+ *** TESTING REPORT: HOMEWORK 2 ***
+
+ Student: Anh_Ngoc_Thai 
+ Login: cs61c-ip
+
+ OPEN TESTS (40.0%)
+   [  OK  ] beargit_test_branch_0 
+   [  OK  ] beargit_test_branch_1 
+   [  OK  ] beargit_test_commit_2 
+   [  OK  ] beargit_test_checkout_0 
+   [  OK  ] beargit_test_checkout_1 
+   [ FAIL ] beargit_test_checkout_2 successful checkout should not display any output
+   [ FAIL ] beargit_test_checkout_3 successful checkout should not display any output
+   [  OK  ] beargit_test_checkout_4 
+   [  OK  ] beargit_test_checkout_5 
+   [ FAIL ] beargit_test_checkout_6 successful checkout should not display any output
+ SUBSCORE: 7 / 10 (70.0%)
+
+ RANDOM TESTS (30.0%)
+   [ FAIL ] beargit_test_random_short_0 program took longer than 5s to run, probably stuck
+   [  OK  ] beargit_test_random_short_1 
+   [  OK  ] beargit_test_random_short_2 
+   [  OK  ] beargit_test_random_short_3 
+   [ FAIL ] beargit_test_random_short_4 program took longer than 5s to run, probably stuck
+   [  OK  ] beargit_test_random_short_5 
+   [  OK  ] beargit_test_random_short_6 
+   [  OK  ] beargit_test_random_short_7 
+   [  OK  ] beargit_test_random_short_8 
+   [  OK  ] beargit_test_random_short_9 
+   [  OK  ] beargit_test_random_short_10 
+   [  OK  ] beargit_test_random_short_11 
+   [  OK  ] beargit_test_random_short_12 
+   [ FAIL ] beargit_test_random_short_13 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_1 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_2 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_3 successful rm should not display any output
+   [ FAIL ] beargit_test_random_medium_4 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_medium_5 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_0 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_1 successful checkout should not display any output
+   [ FAIL ] beargit_test_random_long_2 .prev file contains wrong commit id
+   [ FAIL ] beargit_test_random_long_3 successful rm should not display any output
+   [ FAIL ] beargit_test_random_long_4 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_long_5 program took longer than 5s to run, probably stuck
+   [  OK  ] beargit_test_random_big_0 
+   [ FAIL ] beargit_test_random_big_1 program took longer than 5s to run, probably stuck
+   [ FAIL ] beargit_test_random_big_2 successful checkout should not display any output
+   [  OK  ] beargit_test_random_big_3 
+ SUBSCORE: 13 / 30 (43.3%)
+
+ FILE SYSTEM CORRECTNESS (10.0%)
+ * ERROR in beargit_test_checkout_2: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/test'
+ * ERROR in beargit_test_checkout_3: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/test'
+ * ERROR in beargit_test_checkout_4: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/test'
+ * ERROR in beargit_test_checkout_6: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/test'
+ * ERROR in beargit_test_random_short_8: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666666666666666666666666666666661/CSMLKUR4BSAF33AJU9GIM2Y2ZD58SLK9XAOYEW6DKOV5I1I85J'
+ * ERROR in beargit_test_random_medium_3: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/QUM3SSWLGKJVF6VL4MK5V2V7QCXI5KKYJBFDC989C7AZ5Z0ACK'
+ * ERROR in beargit_test_random_long_0: could not open some file: [Errno 2] No such file or directory: '.beargit/166666666616c16c16c16c16c16c16c16c16c166/7N8MQZLN89M73B0GXQYX5XMWZNAO06GLM6G1QFGIL4YK1IQQC8'
+ * ERROR in beargit_test_random_long_1: could not open some file: [Errno 2] No such file or directory: '.beargit/6666666666111111111111111111111111111111/ZFWJBYJK0CA8OE2QQ5SGUSMQ8J5MDLCNWSF0YBDIHPRLWI582V'
+ * ERROR in beargit_test_random_long_2: .prev file contains wrong commit id
+ * ERROR in beargit_test_random_long_4: could not open some file: [Errno 2] No such file or directory: '.beargit/c66666666616c16c16c16c16c16c16c16c16c166/NAY4GFXLA0NBWJRT9UO18BEBWCKRNTL3N2N2EDRGK8SVB4MX3G'
+ * ERROR in beargit_test_random_big_2: could not open some file: [Errno 2] No such file or directory: '.beargit/c666666666111111111111111111111111111111/QSGDN60YO8JJ59YQ6MCDF3PMYV29JFIH4ZBZT6UMLWFWA2QR54'
+ SUBSCORE: 29 / 40 (72.5%)
+
+
+ *** TOTAL SCORE: 48.25 / 80.00 ***
+
+===============================================================================

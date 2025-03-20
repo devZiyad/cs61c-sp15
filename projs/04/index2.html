@@ -1,0 +1,284 @@
+
+<!doctype html public "-//w3c//dtd html 4.01 transitional//en">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CS61C Project 4 - Deep Learning Algorithm and Spark</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style type="text/css">
+		table{background:#cdc;border-collapse:collapse;font-family:monospace}td{border:0.125em solid #aba;padding:0.25em}thead{background:#676;color:#fff;text-transform:uppercase}
+    td{font-size: 1.2em;}
+		span.inst{color:#d00}span.rgtr{color:#00a}span.immd{color:#a0a}span.label{color:#666}
+		div.highlight{background:#cdc;padding:1em}
+		span.warn{color:#f00;font-weight:bold;}
+		table.colonly{display:inline-block;vertical-align:top;}table.colonly td{border-top:0em;border-bottom:0em;padding-top:0.1em;padding-bottom:0.1em;}td.center{text-align:center}
+	</style>
+</head>
+
+<body>
+<div class="header">
+	<div class="header-text">
+		<h1>CS61C Spring 2015 Project 4 Part 2: Running Deep Learning Algorithms on Amazon EC2</h1>
+		TA: Donggyu Kim, Shreyas Chand  
+	</div>
+</div>
+
+
+<div class="content">
+	<div class="highlight">
+		<h3>IMPORTANT INFO</h3>
+		<ul>
+		<li>Proj4-2 can be only done on the hive machines.</li>
+		<li>PLEASE START EARLY. A limited number of clusters can be 
+			initialized at once under the cs61c master account. That means that <b>if you procrastinate 
+			on the project right now, there's a good chance that you won't be able to start 
+			a cluster easily as we get closer to the deadline, when traffic is heaviest.</b></li>
+    <li>With missing <a href="#small-destroy"> Step 4.5</a> and <a href="#big-destory">Step 5.5</a>, you will lose your points on part 2.</li>
+		<li><b>Don't forget to fill in part2.txt.</b></li>
+		</ul>
+	</div>
+	
+	<div class="section" id="updates">
+		<h2><a name="updates">Updates</a></h2>
+        <ul> 
+            <li>April 27 @ 7:35PM: Updates on the spec, and <a href="https://github.com/cs61c-spring2015/proj4_ec2.git">proj4_ec2</a>. We will use <tt>c3.x8large</tt> instances for this project. Discard the previous recording and destroy all instances. There will be updates on <a href="https://github.com/cs61c-spring2015/proj4_starter.git">proj4_sterter</a> soon.</li>
+            <li>April 27 @ 8:35PM: Updates on the starter repo including a batch script and new configs. Run <tt>git pull proj4_starter part2</tt>. Also read <a href="#login">Step 2</a> for more information on batch execution.</li>
+            <li>April 27 @ 8:45PM: New template of part2.txt avaiable. Run <tt>git pull proj4_starter part2.</tt></li>
+            <li>April 28 @ 2:50PM: New patch on part 2. Now you can run all benchmarks. It also includes a new benchmark, <tt>ec2-cnn-full</tt>(50,000 images). Run git pull proj4_stater part2. Also updates on <a href="#login">Step 2</a>.</li>
+            <li>April 28 @ 4:20PM: Small fixes on part2. Run git pull proj4_stater part2.</li>
+            <li>April 29 @ 1:30PM: <span class='warn'>Do not run any instances right now!</span> We will penalize them. A new instruction will be available very soon.</li>
+            <li>April 29 @ 7:30PM: Now we are ready again! Before a new start, please read <a href="https://piazza.com/class/i4tbymaaxkb4jr?cid=2636">this piazza post</a> carefully. This spec is updated with new directions.</li>
+            <li>April 30 @ 7:45PM: You can submit your proj4-2 (part2.txt) now.</li>
+            <li>April 30 @ 9:30PM: Updates on proj4_stater. You are supposed to calculate $ / 50,000 images, not $ / 10,000 images. This is because we are interested in a full dataset(50,000 images).</li>
+        </ul>
+    </div>
+	
+    <div class="section" id="intro">
+        <h2><a name="intro">Introduction</a></h2>
+        <p>In the second part of Project 4, we'll use the power of EC2 to run image classifiers. We'll be using 5, or 10 c3.x8large machines at a time, each with the following specifications:</p>
+
+        <pre class="literal-block">
+Model: c3.8xlarge
+Cores: 32
+Mem: 60 GiB
+Storage(SSD): 2 x 320 GB
+Features:
+* High Frequency Intel Xeon E5-2680 v2 (Ivy Bridge) Processors
+* Support for Enhanced Networking
+* Support for clustering
+* SSD-backed instance storage
+<b>Price: $1.680 per Hour</b>(very expensive!)</pre>
+
+        <p>Thus, when we're working with 10 instances (machines), we're working
+        under the following "constraints":</p>
+
+        <pre class="literal-block">
+Cores: 320 Total
+Memory: 577.5 GB Total
+Storage(SSD): 10 x 2 x 320 GB = 6.4TB </pre>
+<p>That's quite a huge amount of power!</p>
+
+    </div>
+
+    <div class="section" id="">
+		<h2>Step 0: Update Your Repo for EC2</h2>
+		<p><span class="warn">Before you do anything, make sure you commit and push your changes! Otherwise you risk losing your work!</span></p>
+
+		<p><b>Only one person needs to add the part 2 files to the repository. Communicate with your partner before doing this step.</b> Make sure you have committed and pushed your changes to project 4-1 to GitHub first. Then, create a new branch called <tt>part2</tt>:</p>
+
+		<pre>git checkout -b part2</pre>	 
+
+		<p>Next, pull the part2 files from the part2 branch in the proj4_starter repository:</p>
+
+		<pre>git pull proj4_starter part2</pre>
+
+	  	<p>Finally, push the proj2 branch to GitHub:</p>
+
+	  	<pre>git push origin part2</pre>
+
+	  	<p>Now, files are ready for EC2, but to optimize, we highly recommend you use <tt>cache()</tt> for the RDDs before reduces.</p> 
+	</div>
+	<div class="section" id="account">
+		<h2><a name="account">Step 0.5: Create Your Account</a></h2>
+		<p>For your convenience, we provide another repository. To obtain files, run:</p>
+		<pre>
+git clone git@github.com:cs61c-spring2015/proj4_ec2.git
+cd proj4_ec2 # Go inside the directory that was created </pre>
+	  	<p>Now, you can see a couple of files including Makefile. To obtain your account and certificate, run:</p>
+		<pre>make account</pre>
+		<p>You should be able to see a 32 digit key at the end when successful. If you see '<tt>403 InvalidClientTokenId The security token included in the request is invalid</tt>' <b>at the end</b> (You may see this before <tt>Done</tt>, but it's ok), repeat:</p>
+		<pre>make clean ; make account</pre>
+		<p>It can fail a lot, so be patient. Sometime, logout and login can work. If you finish this step successfully, you don't have to repeat this step.</p>
+	</div>
+	<div class="section" id="account">
+		<h2><a name="account">Step 1: Launch Test Instances</a></h2>
+		<p>First, let's describe how your code will run on EC2. Through AWS, we'll be renting a <em>cluster</em> -- which is just a set of computers connected together on a fast local network. Spark runs on top of these machines and designates one as a <em>master</em> and the rest as <em>slaves</em> The master runs the <em>driver program</em> which oversees all operations and allocates work to slaves (aka worker nodes). Slaves are used to perform all parallelized operations, such as map and reduce.</p>
+		<img src="http://spark.apache.org/docs/latest/img/cluster-overview.png" height="25%"/>
+		<p>If you finish the previous steps successfully, you first want to test your code. Let's launch your own EC2 instance for testing by running:</p>
+		<pre>make launch-test</pre>
+    <p>It will launch three affordable instances(c3.large). It will take a few minutes, so also be patient here even if you see some <tt>'Connection refused'</tt> messages. </p>
+    <p>You can see the following capture when you succeed:</p>
+    <img src="launch.jpg" height="55%"/>
+    <p><span class='warn'>Even if you failed this command, you have already launched your instances, so you must not go to bed without destroying them.</span> Also, if you fail this step, run:</p>			
+		<pre>make resume</pre></b>
+		<p>to copy necessary files to the instances.</p>
+		<p>Note that Spark also provides you a nice Web UI. To access this, you need the master's URI. Run:</p>
+		<pre>make master</pre>
+		<p>This will show you the master's URI such as <tt>ec2-xxx.compute-1.amazonaws.com</tt>. Jump into <tt>ec2-xxx.compute-1.amazonaws.com:8080</tt> on your brower, and it will show you like:</p>
+		<img src="webui.jpg" height="55%"/>
+    <p>Using this, you'll be able to view job status and all kinds of cool stats in your browser, as long as the cluster is still running by reloading the page. You'll need some of this information to answer the required questions later.</p>
+    <h3>Also, watch the progress on <b>ec2-xxx.compute-1.amazonaws.com:4040</b>. It will give you the execution status in detail.</h3>
+	</div>
+	<div class="section" id="login">
+		<h2><a name="login">Step 2: Log in EC2 Instances and Run Tests</a></h2>
+		<p>You're ready to ssh into your EC2 instances after Step 1. To do this, run:</p>
+		<pre>make login</pre>
+		<p>Now, you're on EC2! This another linux machine. To deploy your code here, first clone your repo here:</p>
+    <pre>
+# note that we use HTTPS instead of SHH to clone your repo.
+# it will ask your acount information
+git clone git clone https://github.com/cs61c-spring2015/proj4-XX-YY.git 
+cd proj4-XX-YY
+git checkout part2 # make sure your are on the part2 branch.</pre>
+		<p>To initialize, run:</p>
+		<pre>./setup_ec2.sh</pre>
+    <p>Finally, you're ready to deploy your code on EC2! First, to test your code on EC2, run:</p>
+    <pre>make ec2-cnn-test</pre>
+	<p>It will give you the test results. You should meet the performance guidelines as follows:</p>
+	<ul><b>
+		<li>Training performance: 12.88 imgs / sec</li>
+		<li>Total runtime: 7.76 min</li>
+	</b></ul>
+	</div>
+	<div class="section" id="destroy">
+		<h2><a name="destroy">Step 3: Destroy Test Instances</a></h2>
+		<p>Finally, once we're all done grabbing all the information/data we need, and have run all the jobs that are needed, we go ahead and shutdown the cluster. This destroys all data that we placed on the machines in the cluster. In addition, the URLs you used earlier to see the web GUI will cease to function. Thus, be sure that you grab all the data you need to finish your project before terminating. In order to terminate, run the following from <b>the hive machine</b>:</p>
+		<pre>make destroy</pre>
+	</div>
+	<div class="section" id="small">
+		<h2>Step 4: Run Your Code on Five Instances</h2>
+		<p><b>We highly recommend you test your code first, and run your code on more powerful instances (c3.x8large)</b></p>
+		<p>After testing your code, you would love to run your code with very large datasets on five instances of c3.x8large, which is powerful but expensive. This step is a repetition of Step 1 ~ 3. For this, launch your five instances of c3.x8large with:</p>
+ 		<pre>make launch-small</pre>
+		<p><span class='warn'>Even if you failed this command, you have already launched your instances, so you must not go to bed without destroying them.</span> Also, if you fail this step, run:</p>			
+		<pre>make resume</pre></b>
+		<p>to copy necessary files to the instances.</p>
+		<p>Next, you can ssh in these instances with:</p>
+		<pre>make login</pre>
+		<p>On your instances, you also have to run the followings to copy your files:</p>
+		<pre>git clone git clone https://github.com/cs61c-spring2015/proj4-XX-YY.git 
+cd proj4-XX-YY
+git checkout part2</pre>
+		<p>Our final goal is to see the speedup for convolutional neural networks on EC2.(<span class='warn'>Don't run these benchmarks with launch-test.</span>) For this, you have the following benchmarks:</p>
+		<ul>
+			<li>ec2-cnn-large</li>
+			<li>ec2-cnn-huge</li>
+			<li>ec2-cnn-full</li>
+		</ul>
+    </ul>
+    <p>To run all of them while you are doing something else, run:</p>
+    <pre>
+./setup_ec2.sh
+screen
+./batch.sh</pre>
+	    <p>The output will be available from <b><tt>ec2-'benchmark'.log</tt></b> to fill in <b><tt>part2.txt</tt></b>. Note that you don't have to worry about losing connections because you ran a terminal multiplexor. You can return to the previous execution by running:
+	    <pre>screen -r</pre>
+	</div>
+	<div class="section" id="small-destroy">
+		<h2>Step 4.5: Destroy Your Five Instances</h2>
+		<p><span class="warn">Please note that this is the most important step of part 2. if you leave an instance running for an unreasonable amount of time (for example, overnight), you will lose points(these are not EPA points, points on part 2!)</span></p>
+		<p>Once we're all done grabbing all the information/data we need, and have run all the jobs that are needed, we go ahead and shutdown the cluster. This destroys all data that we placed on the machines in the cluster. In addition, the URLs you used earlier to see the web GUI will cease to function. Thus, be sure that you grab all the data you need to finish your project before terminating. In order to terminate, run the following from <b>the hive machine</b>:</p>
+		<pre>make destroy</pre>
+		<p><b>Note that your are only allowed to run five instances for longer than 7 hours! (7 x 5 x 1.6 = $56)</b></p>
+	</div>
+	<div class="section" id="big">
+		<h2>Step 5: Run Your Code on Ten Instances</h2>
+		<p>This step is almost the same as <a href="#small">Step 4</a>, but start with <tt>make launch-big</tt> instead of <tt>make launch-small</tt> to launch ten instances of c3.x8large.</p>
+	</div>
+	<div class="section" id="big-destory">
+		<h2>Step 5.5: Destroy Your Ten Instances</h2>
+		<p><span class="warn">Please note that this is the most important step of part 2. if you leave an instance running for an unreasonable amount of time (for example, overnight), you will lose points(these are not EPA points, points on part 2!)</span></p>
+		<p>Once we're all done grabbing all the information/data we need, and have run all the jobs that are needed, we go ahead and shutdown the cluster. This destroys all data that we placed on the machines in the cluster. In addition, the URLs you used earlier to see the web GUI will cease to function. Thus, be sure that you grab all the data you need to finish your project before terminating. In order to terminate, run the following from <b>the hive machine</b>:</p>
+		<pre>make destroy</pre>
+		<p><b>Note that your are only allowed to run ten instances for longer than 5 hours! (5 x 10 x 1.6 = $80)</b></p>
+	</div>		
+    <div class="section" id="screen">
+        <h2>Screen - terminal multiplexer</h2>
+        <p>Programs such as <code>screen</code> and <code>tmux</code> are terminal multiplexors. They enable two main features: (1) to have multiple terminal windows within one, (2) to be able to reconnect to an <code>ssh</code> connection if your network connection drops. Here we'll focus on (2).</p>
+
+<p>You will likely find <code>screen</code> to be a very valuable tool even beyond proj2-2!</p>
+        
+        <p><code>screen</code> works by creating <em>sessions</em>. So let's first begin by logging into a lab server, and creating a new session called <code>foo</code></p>
+
+        <pre class="output">
+$ <span class="input">screen -S foo</span>
+</pre>
+
+        <p>You'll notice you are now in a new blank shell prompt. From here you can run any commands you'd like.</p>
+        
+        <p> You can explicitly detach from your session with the keyboard shortcut: <code>(Ctrl+A) D</code>. Or you might find yourself accidentally detached if your network connection dies. When you are detached, any processes in the session still continue to run (which isn't true with a normal <code>ssh</code> connection).
+        </p>
+        
+        <p>
+            In either case, to reconnect to the session, you can <code>ssh</code> onto the same server and reconnect with:
+
+             <pre class="output">
+$ <span class="input">screen -rd foo</span>
+</pre>
+        </p>
+
+<p>If you forget the name of your session or want to see all of your open sessions, use <code>screen -ls</code>.</p>
+
+To see all of screens available features, run <code>screen -h</code>.</a>
+
+<p>Sanity check exercise: can you and your partner create a new session called <code>calendar</code> that runs the command <code>cal</code>? Simulate your network dropping, by <code>X</code>-ing out of the ssh connection. Can you reconnect to the <code>calendar</code> session? How do you delete a session you are done with? (check <code>screen -h</code>)</p>
+        
+        
+    </div>
+	<h2>Submission</h2>
+
+	<p><span class="warn">Make sure that your implementation is correct and passes all the provided tests! If not, you risk losing all points for the entire project.</span></p>
+				
+	<p>There are <strong>two</strong> steps required to submit proj4. Failure to perform both steps will result in loss of credit:</p>
+
+	<ol>
+		<li><p>First, you must submit using the standard unix submit program on the instructional servers. This assumes that you followed the earlier instructions and did all of your work inside of your <tt>git</tt> repository. To submit, follow these instructions after logging into your cs61c-XX class account:</p>
+
+			<pre>
+cd ~/proj4-XX-YY                             # Or where your shared git repo is
+submit proj4-2</pre>
+				
+			<p> Once you type <tt>submit proj4-2</tt>, follow the prompts generated by the submission system. It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+			<br />
+		</li>
+
+		<li><p>Additionally, you must submit proj4-2 to your <b>shared</b> GitHub repository:</p>
+
+			<pre>
+cd ~/proj4-XX-YY                             # Or where your shared git repo is
+git checkout part2                           # IMPORTANT! Make sure you are on the correct branch!
+git add -u                           
+git commit -m "project 4-2 submission"  
+git tag "proj4-2-sub"                        # The tag MUST be "proj4-2-sub". Failure to do so will result in loss of credit.
+git push origin proj4-2-sub                  # This tells git to push the commit tagged proj4-2-sub</pre>
+		</li>
+	</ol>
+
+	<h4>Resubmitting</h4>
+
+	<p>If you need to re-submit, you can follow the same set of steps that you would if you were submitting for the first time, but you will need to use the <tt>-f</tt> flag to tag and push to GitHub:</p>
+
+	<pre>
+# Do everything as above until you get to tagging
+git tag -f "proj4-2-sub"
+git push -f origin proj4-2-sub</pre>
+
+	<p>Note that in general, force pushes should be used with caution. They will overwrite your remote repository with information from your local copy. As long as you have not damaged your local copy in any way, this will be fine.</p>
+  <h2>Reference</h2>
+  <ul>
+    <li><a href="http://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf">Learning Multiple Layers of Features from Tiny Images</a>, Alex Krizhevsky, 2009.
+  </ul>
+</div>
+</body>
+</html>
+

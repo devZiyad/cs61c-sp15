@@ -1,0 +1,134 @@
+RUBRIC
+Q1 - 15pts
+a.1 - 1pts (1/3 pts/blank)
+a.2 - 3pts (1/4 pts/row)
+a.3 - 1pts (1/3 pts/blank)
+b.1 - 1pts (1/3 pts/blank)
+b.2 - 3pts (1/4 pts/row)
+b.3 - 1pts (1/5 pts/blank)
+c.1 - 1pts (1/3 pts/blank)
+c.2 - 3pts (1/4 pts/row)
+c.3 - 1pts (1/5 pts/blank)
+
+Q2 - 5pts
+a - 1pt
+b - 3pts
+c - 1pt
+
+Q3 - 10pts
+2pts per part
+
+SOLUTIONS
+
+======= Problem 1 =======
+(a.1)
+tag = 4 bits 
+set index = 10 bits 
+block offset = 2 bits 
+(a.2)
+Address | Cache Hit / Miss | Miss Type
+0x0000  | miss             | compulsory 
+0x0004  | miss             | compulsory 
+0x0008  | miss             | compulsory 
+0x000c  | miss             | compulsory 
+0x1000  | miss             | compulsory 
+0x1004  | miss             | compulsory 
+0x1008  | miss             | compulsory 
+0x100c  | miss             | compulsory 
+0x0000  | miss             | conflict
+0x0004  | miss             | conflict   
+0x0008  | miss             | conflict   
+0x000c  | miss             | conflict   
+(a.3)
+Miss rate = 100%
+AMAT = hit time + miss rate * miss time = (2 + 1 * 100) * 0.5 = 51 ns
+(no cache time) - AMAT = 50 - 51 = -1 ns
+
+(b.1)
+tag = 4 bits 
+set index = 9 bits 
+block offset = 3 bits 
+(b.2)
+Address | Cache Hit / Miss | Miss Type
+0x0000  | miss             | compulsory 
+0x0004  | hit              |            
+0x0008  | miss             | compulsory 
+0x000c  | hit              |            
+0x1000  | miss             | compulsory 
+0x1004  | hit              |            
+0x1008  | miss             | compulsory 
+0x100c  | hit              |            
+0x0000  | miss             | conflict   
+0x0004  | hit              |            
+0x0008  | miss             | conflict   
+0x000c  | hit              |            
+(b.3)
+miss rate = 50% 
+hit time = 2 cycles 
+miss time = 110 cycles 
+AMAT = hit time + miss rate * miss time = (2 + 0.5 * 110) * 0.5 = (2 + 55) * 0.5 = 28.5 ns
+(no cache time) - AMAT = 50 - 28.5 = 21.5 ns 
+
+(c.1)
+tag = 5 bits 
+set index = 8 bits 
+block offset = 3 bits 
+(c.2)
+Address | Cache Hit / Miss | Miss Type
+0x0000  | miss             | compulsory
+0x0004  | hit              | 
+0x0008  | miss             | compulsory
+0x000c  | hit              | 
+0x1000  | miss             | compulsory
+0x1004  | hit              | 
+0x1008  | miss             | compulsory
+0x100c  | hit              | 
+0x0000  | hit              |            
+0x0004  | hit              | 
+0x0008  | hit              |            
+0x000c  | hit              | 
+(c.3)
+miss rate = 1/3 = 33.3% 
+hit time = 3 cycles
+miss time = 110 cycles 
+AMAT = hit time + miss rate * miss time = (3 + 0.333 * 110) * 0.5 = 19.8 ns 
+(no cache time) - AMAT = 50 - 19.8 = 30.2 ns
+
+======= Problem 2 =======
+a. 1/3 * 3/255 + 2/3 * 252/255 = 507/765 = 169/255 = 66.3% 
+b. 
+for (i = 0 ; i < 256 ; i++) {
+  for (j = 0 ; j < 255 ; j++) {
+    array[256*i] += array[256*i + j + 1];
+  }
+}
+miss rate = (0+1+63)/(255+255+255) = 8.37% 
+c. Yes. array[256*i] is in the cache for the inner loop. We can reduce the write traffic to the memory with a write-back cache.
+
+======= Problem 3 =======
+a. 
+-42.375: 101010.11
+Exponent field: 5 + 31 = 36 = 100100
+Sign field: 1 because we have a negative number
+1 100100 01010010...0 = 0xC8A60000
+
+b.
+0xD3510000
+1 101001 1010100010…0
+Sign: negative
+Exponent: 41 - 31 = 10
+Value = -1 * 2^(-19)*(1.101010001) = -1698
+
+c.
+Limited by mantissa, has 25 bits
+=> can represent integers up to 0b10{26} = 2^26
+So the smallest positive integer we CANNOT represent is 2^26+1 = 67108865
+
+d. 
+Exponent field: 000001
+So exponent is 1 - 31 = -30
+2^-30 
+
+e. 
+2^-30 * 2^-25 (1 as least significant bit) 
+2^-55

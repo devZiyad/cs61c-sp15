@@ -1,0 +1,129 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>CS61C Fall 2014 Lab 3</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+<div class="header">
+	<h1>CS61C Spring 2015 Lab 3 - MIPS Assembly</h1>
+</div>
+
+<div class="content">
+
+<h2>Goals</h2>
+<p> This lab will give you practice running and debugging assembly programs using the MARS simulator.
+</p>
+
+<h2>Setup</h2>
+<p>Copy the lab files with</p>
+<pre class="output">$ <span class="input">cp -r ~cs61c/labs/03/ ~/labs/03 </span>
+</pre>
+
+<h2>Intro to Assembly and MARS</h2>
+
+<p>The following exercises use a MIPS simulator called MARS, which provides a rich debugging GUI.  You can run MARS on your home computer by downloading the jar file from the <a href="http://courses.missouristate.edu/kenvollmar/mars/download.htm">Internet</a> or by copying it from <tt>~cs61c/bin/Mars4_3.jar</tt> on the instructional machines.  You will need Java J2SE 1.5.0 (or later) SDK installed on your computer, which can be obtained from <a href="http://java.sun.com/">Sun</a>. If your home computer is a Mac, you can also follow the instructions <a href="https://github.com/sagark/MARS-app">here</a> to install MARS as an app in one step.</p>
+
+
+<p>You can run MARS in lab by typing '<tt>mars &amp;</tt>' at the command line.
+The ampersand is optional but will allow you to continue using that terminal window (on the Macs however, you'll need to run it in it's own terminal tab by pressing command-t first).
+To run the program remotely, you may either run via an instructional server (but NOT one of the Orchard machines), or through a local installation (recommended).
+When on an instructional server, you will need to be running an X-Server (like XMing), and enabling X11 tunneling. </p>
+
+<p>
+<b>Tip:</b> Although it is possible, you should avoid running MARS remotely at all costs - it will be painfully slow to use and will overwhelm the servers if many students attempt to do so.
+It is in your best interest to setup/run a local copy of MARS.</p>
+
+<p><b>Assembly Basics:</b></p>
+<ul>
+	<li>Assembly programs go in text files with a <tt>.s</tt> extention.</li>
+	<li>Programs must contain a label "<tt>main:</tt>" (similar to the <tt>main()</tt> function in C programs).</li>
+	<li>Programs must end with a "<tt>addi $v0,$0,10</tt>" followed by a "<tt>syscall</tt>". <tt>main()</tt> is special and must transfer control back to the operating system when it is done rather than just returning.</li>
+	<li>Labels end with a colon (<tt>:</tt>).</li>
+	<li>Comments start with a pound sign (<tt>#</tt>).</li>
+	<li>You CANNOT put more than one instruction per line.</li>
+</ul>
+
+<h2>Exercises</h2>
+
+<h3>Exercise 1: Familiarizing yourself with MARS</h3>
+<p>Getting started:</p>
+<ol>
+	<li>Run MARS.</li>
+	<li>Load <tt>lab3_ex1.s</tt> using File--&gt;Open.</li>
+	<li>View and edit your code in the "Edit" tab.  Notice the code highlighting and 'completion suggestion' features.</li>
+	<li>When ready, assemble your code using Run--&gt;Assemble (or press F3).</li>
+	<li>This will take you automatically to the "Execute" tab, which is where you can run and debug your program.</li>
+	<li>Step through the program using Run--&gt;Step (or press F7).</li>
+	<li>You should take the time to familiarize yourself with everything in the Run menu (and the keyboard shortcuts).</li>
+</ol>
+
+<p>For this exercise, we calculate the Fibonacci numbers using <tt>fib[0] = 0; fib[1] = 1; fib[n] = fib[n-1] + fib[n-2]</tt>.
+<br><b>Follow the steps below and record your answers to the questions.</b> The Help menu (F1) may come in handy.</p>
+<ol>
+	<li>What do the <tt>.data</tt>, <tt>.word</tt>, <tt>.text</tt> directives mean (i.e. what do you use them for)?</li>
+	<li>How do you set a breakpoint in MARS? Set a breakpoint on line 14 and run to it.  What is the instruction address? Has line 14 executed yet?</li>
+	<li>Once at a breakpoint, how do you continue to execute your code? How do you step through your code? Run the code to completion.</li>
+	<li>Find the "Run I/O" window. What number did the program output? Which fib number is this?</li>
+	<li>At what address is <tt>n</tt> stored in memory? Try finding this by (1) looking at the Data Segment and (2) looking at the machine code (Code column in the Text Segment).</li>
+	<li>Without using the "Edit" tab, have the program calculate the 13th fib number by <i>manually</i> modifying this memory location before execution. You may find it helpful to uncheck the "Hexadecimal Values" box at the bottom of the Data Segment.</li> 
+	<li>How do you view and modify the contents of a register? Reset the simulation (Run--&gt;Reset or F12) and now calculate the 13th fib number by (1) breaking at a well-chosen spot, (2) modifying a single register, and then (3) unsetting the breakpoint.</li>
+	<li>Lines 19 and 21 use the <tt>syscall</tt> instruction. What is it and how do you use it? (Hint: look in Help)</li>
+</ol>
+
+<h4>Check-off</h4>
+<ul>
+	<li>Show your TA that you are able to run through the above steps and provide answers to the questions.</li>
+</ul>
+
+
+<h3>Exercise 2: A short MIPS program</h3>
+<p>Write a piece of MIPS code from scratch that, given values in <tt>$s0</tt> and <tt>$s1</tt>, accomplishes the following:</p>
+<pre>$t0 = $s0
+$t1 = $s1
+$t2 = $t0 + $t1
+$t3 = $t1 + $t2
+...
+$t7 = $t5 + $t6
+</pre>
+
+<p>In other words, for each register from <tt>$t2</tt> to <tt>$t7</tt>, store the sum of the previous two <tt>$t#</tt> register values.
+The <tt>$s0</tt> and <tt>$s1</tt> registers contain the initial values.
+Set the values of <tt>$s0</tt> and <tt>$s1</tt> manually with MARS instead of in your code.
+Finally, have your code print out the final value of <tt>$t7</tt> as an integer (Hint: <tt>syscall</tt>).</p>
+
+<p><b>Save your code in a file called <tt>lab3_ex2.s</tt>.</b>  Don't forget the "<tt>main:</tt>" label and to end your program with a "<tt>syscall 10</tt>"!</p>
+
+<h4>Check-off</h4>
+<ul>
+	<li>Show <tt>lab3_ex2.s</tt> to your TA, who will give you numbers to enter into <tt>$s0</tt> and <tt>$s1</tt>. Your code should print <tt>$t7</tt> and exit normally.</li>
+</ul>
+
+<h3>Exercise 3: Compiling from C to MIPS</h3>
+
+<p>For this exercise we need to use a program called <tt>mips-gcc</tt> (a cross-compiler for MIPS) that allows us to compile programs for the MIPS architecture on our x86 machines. If you are doing this lab remotely, you should SSH into one of the hive machines.</p> 
+<p>Compile The file <tt>lab3_ex3.c</tt> into MIPS code using the command:</p>
+
+<pre class="output">$ <span class="input">mips-gcc -S -O2 -fno-delayed-branch -I/usr/include lab3_ex3.c -o lab3_ex3.s</span>
+</pre>
+
+<p>The <tt>-O2</tt> option (capital letter "O" and 2) turns on a level of optimization.
+The <tt>-S</tt> option generates assembly code.
+Don't worry about the delayed branch option for now; we will revisit this topic again when we talk about pipelining.
+The above command should generate assembly language output for the C code.
+Please note that you will NOT be able to run this code through MARS.</p>
+
+<p>Find the assembly code for the loop that copies sources values to destination values.
+Then find where the <tt>source</tt> and <tt>dest</tt> pointers you see in <tt>lab3_ex3.c</tt> are originally stored in the assembly file.
+Finally, explain how these pointers are manipulated through the loop.</p>
+
+<h4>Check-off</h4>
+<ul>
+	<li>Find the section of code in <tt>lab3_ex3.s</tt> that corresponds to the copying loop and explain how each line is used in manipulating the pointer.</li>
+</ul>
+
+
+</div>
+
+</body></html>
+

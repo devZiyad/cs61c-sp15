@@ -1,0 +1,256 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+		<title>CS61C Spring 2015 Lab 5</title>
+		<link rel="stylesheet" type="text/css" href="../style.css">
+		<style type="text/css">
+		  img.btn {vertical-align:middle;}
+		  img {outline:1px solid #333;}
+		  li+li {margin-top:0.67em;}
+		  td {text-align:center;}
+		  thead {font-weight:bold;}
+		</style>
+	</head>
+	<body>
+	
+		<div class="header">
+			<h1>CS61C Spring 2015 Lab 5 - Introduction to Logisim</h1>
+		</div>
+
+		<div class="content">
+		
+			<h2>Preparation</h2>
+			<p>Launch the Logisim application to begin. To do this, type 'logisim'</p>
+			<p>You can learn about Logisim beyond the scope of this lab (or download it to use 
+				at home) from the 
+				<a href="http://www.cburch.com/logisim/index.html">Logisim website</a>.</p>
+
+			<h2>Exercises</h2>
+			
+			<h3>Part 0: The Basics (Warm-Up)</h3>
+			<p>We'll begin by creating a very simple circuit just to get the feel for placing 
+				gates and wires.</p>
+			<ol>
+				<li><img class="btn" src="and.gif"> Start by clicking 
+					the &quot;AND gate&quot;  button. This will cause the shadow of an AND gate 
+					to follow your cursor around. Click once within the main schematic window to 
+					place an AND gate.</li>
+
+				<li><img class="btn" src="input.gif"> Click the &quot;Input Pin&quot; button. 
+					Now, place two input pins somewhere to the left of your AND gate.</li>
+
+				<li><img class="btn" src="output.gif"> Click the &quot;Output Pin&quot; button. 
+					Then place an output pin somewhere to the right of your AND gate. Your 
+					schematic should look something like this at this point:
+					<p><center>
+						<img style="position:relative; top: 6px;" src="schematic1.gif">
+					</center></p>
+				</li>
+
+				<li><img class="btn" src="selection.gif"> Click the &quot;Select tool&quot; 
+					button. Click and drag to connect the input pins to the left side of the AND 
+					gate. This will take several steps, as you can only draw vertical and 
+					horizontal wires. Just draw a wire horizontally, release the mouse button, 
+					then click and drag down starting from the end of the wire to continue 
+					vertically. You can attach the wire to any pin on the AND gate on the left 
+					side. Repeat the same procedure to connect the output (right side) of the 
+					And Gate to the LED. After completing these steps your schematic should look 
+					roughly like this:
+					<p><center>
+						<img style="position:relative; top: 6px;" src="schematic2.gif">
+					</center></p>
+				</li>
+
+				<li><img class="btn" src="poke.gif"> Finally, click the &quot;Poke&quot; tool 
+					and try clicking on the input pins in your schematic. Observe what happens. 
+					Does this match with what you think an AND Gate should do?</p>
+			</ol>
+			
+			<h3>Part 1: Sub-Circuits</h3>
+			<p>Just as C programs can contain helper functions, a schematic can contain 
+				subcircuits. In this part of the lab, we will create several subcircuits to 
+				demonstrate their use.</p>
+			<ol>
+				<li>Create a new schematic (File-&gt;New) for your work.</li>
+				<li>Create a new subcircuit (Project-&gt;Add Circuit ). You will be prompted for 
+					a name for the subcircuit; call it NAND.</li>
+				<li>In the new schematic window that you see create a simple NAND circuit with 2 
+					input pins on the left side and an output pin on the right side. Do this <b>without</b> using the built-in NAND gate from the Gates folder. </li>
+				<li>Go back to your &quot;main&quot; schematic by double-clicking &quot;main&quot; 
+					in the circuit selector at the left of the screen. Your original (blank) 
+					schematic will now be displayed, but your NAND circuit has been stored.</li>
+				<li>Now, single click the word &quot;NAND&quot; in the list. This will tell 
+					Logisim that you wish to add your &quot;NAND&quot; circuit into your 
+					&quot;main&quot; circuit. </li>
+				<li>Try placing your NAND circuit into the &quot;main&quot; schematic. If you did 
+					it correctly, you should see a gate with 2 input pins on the left and one 
+					output pin on the right. Try hooking input pins and output pins up to these and 
+					see if it works as you expect.</li>
+				<li>Repeat these steps to create several more subcircuits: NOR, XOR, 2 to 1 MUX, 
+					and 4 to 1 MUX. Do not use any built in gates other than AND, OR, and NOT. 
+					However, once you've built a subcircuit, you may use it to build others.</li>
+				<p>Hint: Try writing a truth table. You might also find the lecture slides useful for a refresher on how to build these.
+					<em>You may want to consider using some of your custom subcircuits when
+					designing the others.</em> </p>
+			</ol>
+
+			<h4><a name="checkoff">Checkoff</a></h4>
+			<ul><li>Show your five circuits (NAND, XOR, 2 to 1 MUX, and 4 to 1 MUX) to your TA.</li></ul>
+
+
+
+			<h3>Part 2: Storing State</h3>
+			<p>Let's implement the circuit we've been talking about in lecture, that increments a 
+				value ad infinitum. The difference between this circuit and the circuits you've built 
+				for lab so far is that you need some registers. The following will show you how to add 
+				registers to your circuit.
+
+			<ol>
+				<li>Create a new subcircuit (Project->Add Circuit). Name this new subcircuit, 
+					AddMachine.</li>
+				<li>Load in the Arithmetic Library if it is not already loaded (Go to Project->Load 
+					Library->Built in Library and select "Arithmetic"). This library contains elements 
+					that will perform basic mathematical operations. When you load the library, the circuit
+					browser at left will have a new "Arithmetic" folder.
+					<p><center><img src=arithmetic.gif></center></p></li>
+				<li>Select the adder subcircuit from the "Arithmetic" library and place the adder into 
+					your AddMachine subcircuit.</li>
+				<li>Load in the Memory Library (Go to Project->Load Library->Built in Library and select 
+					"Memory"). This library contains memory elements used to keep state in a circuit. A new 
+					"Memory" folder will appear in the circuit browser.</li>
+				<li>Select the register from the "Memory" folder and place one register into your 
+					subcircuit. Below is an image diagraming the parts of a register.
+					<p><center><img src=register.gif></center></p></li>
+				<li>Connect a clock to your register. You can find the clock circuit element in the 
+					"Wiring" folder in the circuit browser.</li>
+				<li>
+					<p>Connect the register and adder together based on the diagram from lecture.</p>
+					<p>You may notice that when you connect the adder to a register, you will get a 
+						"Incompatible widths" error. This means that your wire is trying to connect two pins 
+						together with different bit widths. If you click on one the adder with the 
+						"Selection" tool, you will notice that in the box below circuit browser will have a 
+						field called "Data Bit Width". This field controls the number of bits the the adder 
+						will add. Change this field to 8 and the "Incompatible widths" error should now go 
+						away.</p>
+					<p>In general, the box below the circuit browser will list the properties of a given 
+					circuit element. Other circuit elements will have other properties.</p>
+				</li>
+				<li>
+					<p>Wire a constant 8-bit 1 to the second input of the adder. You can find the 
+					&quot;constant&quot; circuit element in the &quot;Wiring&quot; library.</p>
+				</li>
+				<li>
+					<p>Add two output pins to your circuit so that you may monitor what comes out of the 
+					adder and the register. Thus, by the end, your circuit should look like as follows:</p>
+					<p><center><img src="AddMachine.png"></center></p>
+				</li>
+			</ol>
+
+			<p>Now let's see if you built your circuit correctly. 
+
+			<ol>
+				<li>Go back to the "main" subcircuit by double clicking on "main" in the circuit 
+					browser.</li>
+				<li>Single click on your &quot;AddMachine&quot; circuit to select it.</li>
+				<li>Change the "Facing" property to another direction. Any circuit with the "Facing" 
+					property can be rotated to accomodate wires as you need them. This will definately be 
+					useful when you do your project.</li>
+				<li>Place your AddMachine subcircuit into the main subcircuit. </li>
+				<li>Select the AddMachine subcircuit you just placed into main.</li>
+				<li>Connect output pins to the AddMachine subcircuit. Output pins are ordered top to 
+					bottom, left to right. Thus, if you followed the schematic above, then the top pin 
+					on the right side outputs the value of the adder, and the bottom pin is the output 
+					of the register.</li>
+				<li>
+					<p>Right click on your AddMachine subcircuit, and select &quot;View AddMachine. This 
+					is the <b><u>ONLY</u></b> method to preserve state. Double-clicking on the circuit at 
+					the circuit browser at left makes logisim think you want to edit the circuit instead 
+					of just checking what state the circuit has.</p>
+					<p><i>Note: You can use Simulate->Go In To State->*Circuit Name*, but that allows 
+					you go into the first circuit of that type. If you placed two Fib8 circuits down, 
+					it only takes you to the first Fib8 circuit to put down.</i></p>
+				</li>
+				<li>Initialize the register value to 1. You can do this by first, clicking on the 
+					register value with the poke tool. Then, type the hex value in.</li>
+				<li>To return to the main circuit while preserving state, go to Simulate->Go Out To 
+					State->main. Alternatively, you can hold the Command key (control on windows) and 
+					press Up-Arrow.</li>
+				<li>Now start running your circuit by going to Simulate->Ticks Enabled. Your circuit 
+					should now be outputting a counter in binary form.</li>
+				<li>If you want to run your circuit faster, you can change the tick frequency in 
+					Simulate->Tick Frequency.</li>
+			</ol>
+
+			<h4><a name="checkoff">Checkoff</a></h4>
+			<ul><li>Show your AddMachine circuit to your TA.</li></ul>
+
+			<h3>Part 3: FSMs to digital logic</h3>
+
+			<p>Now we're ready to do something really cool; translate a FSM into a digital logic 
+				circuit.</p>
+			<p>If you've been paying attention in lecture you've noticed that the circuit we built 
+				in part 2 looks eerily similar to the diagram of a general FSM circiut. We're going to 
+				modify our circuit to implement the following FSM:</p>
+
+			<p><i>If two ones in a row or two zeroes in a row have ever been seen, output zeros 
+				forever. Otherwise, output a one.</i></p>
+
+			<ol>
+				<li>
+					<p>Note that the FSM is implemented by the following diagram:</p>
+					<center><img src="FSM.png"></center>
+				</li>
+				<li>
+					<p>Observe that the following is a truth table for the FSM:</p>
+					<p>
+						<table width="40%"  border="0" align="center">
+						  <thead>
+								<tr>
+									<td>st1</td>
+									<td>st0</td>
+									<td>input</td>
+									<td>|</td>
+									<td>next st1</td>
+									<td>next st0</td>
+									<td>output</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td>0</td><td>0</td><td>0</td><td>|</td><td>0</td><td>1</td><td>1</td></tr>
+								<tr><td>0</td><td>0</td><td>1</td><td>|</td><td>1</td><td>0</td><td>1</td></tr>
+								<tr><td>0</td><td>1</td><td>0</td><td>|</td><td>1</td><td>1</td><td>0</td></tr>
+								<tr><td>0</td><td>1</td><td>1</td><td>|</td><td>1</td><td>0</td><td>1</td></tr>
+								<tr><td>1</td><td>0</td><td>0</td><td>|</td><td>0</td><td>1</td><td>1</td></tr>
+								<tr><td>1</td><td>0</td><td>1</td><td>|</td><td>1</td><td>1</td><td>0</td></tr>
+								<tr><td>1</td><td>1</td><td>0</td><td>|</td><td>1</td><td>1</td><td>0</td></tr>
+								<tr><td>1</td><td>1</td><td>1</td><td>|</td><td>1</td><td>1</td><td>0</td></tr>
+							</tbody>
+						</table>
+					</p>
+				</li>
+				<li>
+					<p>We've provided you with a starter Logisim circuit to start out.</p>
+					<pre class="output">$ <span class="input">cp -r ~cs61c/labs/05 ~/lab5</span></pre>
+				</li>
+				<li>
+				<p>Note that the top level of the circuit looks almost exactly the same as our 
+					previous adder circuit, but now there's a FSMLogic block instead of a adder block. 
+					FSMLogic is the combinational logic block for this FSM. We have handled the output
+					bit for you, as it's the most complicated to simplify and implement. You should 
+					complete the circuit by completing the StateBitOne and StateBitZero subcircuits.</p>
+				<p>You <strong>could</strong> go from the truth table to SOP to a circuit, or you 
+					could notice that for each state bit, there are only two situations in which it 
+					is zero. This could make your life easier if you think a bit outside the box...
+				</li>
+			</ol>
+
+			<h4><a name="checkoff">Checkoff</a></h4>
+			<ul>
+				<li>Show your StateBitZero circuit to your TA and demonstrate that it 
+					behaves correctly.</li>
+				<li>Show your StateBitOne circuit to your TA and demonstrate that it 
+					behaves correctly.</li>
+			</ul>
+		</div>
+	</body>
+</html>

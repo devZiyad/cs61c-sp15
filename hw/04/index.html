@@ -1,0 +1,173 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>CS61C Spring 2015 Homework 4</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div class='header'>
+<h1>CS61C Spring 2015 Homework 4</h1>
+TA: Shreyas Chand
+</div>
+
+<div class='content'>
+<p>Due Tuesday, March 10, 2015 @ 11:59pm</p>
+
+<h2>Updates</h2>
+<ul class='update'>
+</ul>
+
+<h2>Goals</h2>
+<p>This assignment will check your understanding of synchronous digital systems, state elements, and combinational logic. </p>
+
+
+<h2>Setup</h2>
+<p>There's no starter code or extra files for this homework. However, we have provided a skeleton solution file which you are required to use. File names are case-sensitive and the submission program will not accept your submission if your file names differ at all from those specified. Detailed <a href="#submit">submission instructions</a> are given at the bottom of this page. Failure to follow these will result in loss of credit.</p>
+
+<p>You can copy the skeleton file into your current directory using the following command:</p>
+<pre class='output'>
+$ <span class='input'> cp -r ~cs61c/hw/04/hw4.txt . </span>
+</pre>
+
+
+
+<h2>Exercises</h2>
+<h3>Problem 1: Waveform Diagrams</h3>
+<br>
+
+<div class="image"><img alt="waveform circuit.jpg" src="waveform circuit.jpg" /></div>
+
+<p>Consider the circuit of Flip-Flops (FF) shown here.
+Assume that input X alternates between 1 and 0, 10ns after every rising edge. Initially, X is 0 (so 10ns after the first rising edge it should be 1) while A, B, C, and D are unknown.
+Assume one clock cycle is 30 ns. Given the clock signal, draw the wave for input X, and the signals at points A, B, C, and D in the circuit for the first 6 clock cycles.
+Assume that the clk-to-q delay is 5 ns, the setup time is negligible (~0 ns), and the hold time is 5ns. Assume that Flip-Flops take their new value on the <i>rising</i> edge of the clock cycle.
+Assume time = 0 on the first rising edge.  Note the NOT gate that precedes B (you may ignore propagation delay for this problem).</p>
+
+<p>
+You should fill out the waveform diagram below to help you answer the following questions. However, you only have to submit the answers to the questions, not the whole diagram.
+Consider six clock cycles (so six rising edges) as shown in the diagram. Assume the diagram is cut off 5ns after the last rising edge.
+You only need to consider from t = 0 ns to t = 155 ns for this problem.
+
+</p>
+<table style="border:none;"><tr>
+<td>
+<div class="image"><img alt="waveform.gif" src="waveform.gif" /></div>
+</td>
+<td>
+	<ol>
+	<li>How many times does the value at B change (changing from undetermined to 1 or 0 counts as one)?</li>
+	<li>How many times does the value at D change (changing from undetermined to 1 or 0 counts as one)?</li>
+	<li>At which time(s) does the value at A becomes stable at 0?
+	<li>At which time(s) does the value at C becomes stable at 1?
+	</ol>
+</td>
+</tr></table>
+
+
+
+<h3>Problem 2: Clock Frequency - 3 pts</h3>
+<p>
+Consider this circuit.
+It accumulates two arguments at a time, arriving at each clock period. You are given the following: the adder propagation delay is 1 ns, the register setup time is 2 ns,
+the register hold time is 2 ns, the register clk-to-q delay is 3 ns, and the clock frequency is 100 MHz.
+</p>
+<table style="border:none;"><tr>
+<td>
+<div class="image"><img alt="clock frequency circuit.jpg" src="clock frequency circuit.jpg" /></div>
+</td>
+<td>
+<ol>
+	<li>Would this accumulator work properly? Explain why or why not. </li>
+	<li>Now assume that the arguments arrive 2 ns after each clock period.  Give the critical path delay and the maximum clock frequency at which the circuit will work.</li>
+	<li>Describe a way to rearrange the accumulator so that the maximum	clock frequency will be greater.  You may only use the components already present in the circuit.</li>
+</ol>
+</td> </tr>
+</table>
+
+
+
+<h3>Problem 3: Simple FSM and Truth Tables - 3 pts</h3>
+<p>Design an FSM that would take an infinite stream of bits and output 1 <b>twice</b> if it sees two consecutive 1's.  In other words, given some input X<sub>i</sub>, if X<sub>i-2</sub> =
+X<sub>i-1</sub> = 1 or X<sub>i-1</sub> = X<sub>i</sub> = 1, then it will output 1.  Then convert it into a truth table mapping each state and input to a next state and an output. Name the states
+meaningfully so that it is easily understandable (for example, Seen1 and Seen11). You should have at most four states only.  You only need to submit the truth table; you do not need to submit
+your drawing of the FSM.
+</p>
+
+
+
+<h3>Problem 4: Truth Tables, Boolean Algebra, FSMs, Logic Circuits - 5 pts</h3>
+Consider the following finite state machine.
+<br>
+<table style="border:none;">
+<tr><td>
+<img src="fsm.png" width="450" height="270"/>
+</td><td>
+<ol>
+	<li>Come up with the MOST simplified boolean expressions for determining bits for the next state and the output bit given the current state and the input bit. You should have 3 expressions,
+	one for each digit of the next state as well as one for output. (You might want to first construct a truth table.).<br><br>
+	Please label the left bits as <code>Curr_1</code> and <code>Next_1</code> for start state and next state left bits, respectively, and do the same for right bits <code>Curr_0</code> and <code>Next_0</code>.</li>
+	<br>
+	<li><tt>fsmCompute</tt> takes one bit at a time as input.  Fill in the blanks below so that it behaves as according to the FSM above.  Hint: your expressions from part a should come in handy, along with some bitwise operators.  Also, note how the state is a <a href="http://stackoverflow.com/questions/572547/what-does-static-mean-in-a-c-program">static variable</a>, so it is maintained across function calls.
+<pre>
+/*
+	Called once per "clock cycle."
+	Assume input x is 0 or 1.
+	Updates state and outputs FSM output (0 or 1).
+*/
+int fsmCompute(int x) {
+	int retval;
+	static unsigned int state = 0x1;
+	retval = ______________________;
+	state = _______________________;
+	return retval;
+}
+	</pre></li>
+</ol>
+</td>
+<tr>
+</table>
+<br>
+
+<a id="submit">
+   	<h2>Submission</h2>
+
+    <p>There are <strong>two</strong> steps required to submit hw4.txt. Failure to perform both steps will result in loss of credit:</p>
+
+    <ol>
+        <li><p>First, you must submit using the standard unix submit program on the instructional servers. To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+
+            <pre>$ mkdir ~/files_for_submit
+$ cd ~/files_for_submit
+$ mkdir hw4
+$ cd hw4
+$ cp [Your hw4 text file location] hw4.txt               # replace the braces with the location of your hw4.txt file
+$ submit hw4</pre>
+            <p> Once you type <tt>submit hw4</tt>, follow the prompts generated by the submission system. It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+            <br>
+        </li>
+
+        <li><p>Additionally, you must submit hw4.txt to your GitHub repository. To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+
+        <pre>$ cd ~/work                                              # this is the location of your git repo on your class account
+$ mkdir hw4
+$ cd hw4
+$ cp [Your hw4 text file location] hw4.txt               # replace the braces with the location of your hw4.txt file
+$ cd ..
+$ git add hw4/hw4.txt
+$ git commit -m "Homework 4 submission"
+$ git tag -f "hw4"                                       # The tag MUST be "hw4". Failure to do so will result in loss of credit.
+$ git push origin master --tags                          # Note the "--tags" at the end. This pushes tags to github</pre>
+            </li>
+
+            <p><strong>What's the point of using tags?</strong> Using tags allows the course staff to determine which commit represents your hw4 submission, even if you make later commits to your repository.</p>
+
+            <p>Your "releases" page on GitHub (accessible by clicking on "Releases" from your repo's homepage) should at this point contain the tag you created to submit this hw.</p>
+
+    </ol>
+            
+
+</a>
+
+</div>
+</body></html>

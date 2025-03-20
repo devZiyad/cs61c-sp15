@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Project 2: Processor Design - In Brief</title>
+</head>
+
+<body>
+
+<h1>Project 2: Processor Design - Abridged Notes</h1>
+<h2>CS61C Spring 2015</h2>
+
+
+<h3>Due Sunday, March 24th, 2015 at 11:59 PM</h3>
+<h3>TAs in charge: Fred Hong and William Huang</h3>
+
+<p>Full project specs can be found <a href="index.html">here</a>.</p>
+
+<h2>Project Requirements</h2>
+<ul>
+  <li>You <em>must</em> implement a two-cycle design, with the stages of Instruction Fetch and Execute.
+You <em>must</em> solve control hazards by killing the instruction after the branch, and you <em>must</em> kill the instruction after the taken branch or jump.
+If the branch is not taken you <em>must not</em> kill it (do not kill untaken branches).</li>
+  <li>We will test and grade your submitted <tt>regfile.circ</tt>, <tt>alu.circ</tt>, <tt>mem.circ</tt>, and <tt>cpu.circ</tt> using our own harness files, meaning that your input/output pin layouts must match that of the harnesses (you do not submit the harnesses).</li>
+  <li>We will be testing your processor's ability to handle ALL of the instructions outlined in the Instruction Set Architecture (remember, no shifting more than 31). For part 1, you can run the provided <tt>short-test.sh</tt> to start the sample autograder tests for <tt>alu.circ</tt> and <tt>regfile.circ</tt>. For part 2, you can test your processor by using an assembler to generate some instructions and more sample tests, all of which we will provide with the release of proj2-2.</li>
+  <li>Make sure to submit any other <tt>.circ</tt> files that you use in your project (they are not copied into your main <tt>cpu.circ</tt> file when you import them, only referenced). You might want to test your <tt>.circ</tt> file on the lab machines before you submit it, to make sure you got everything.</li>
+  <li>A portion of your grade will be based on tidyness and readability (i.e. labeling, neat wiring) of your Logisim files.  See the Project Tips section below for some suggestions.</li>
+  <li>Do <b>NOT</b> gate the clock!  This is very bad design practice when making real circuits, so we will discourage you from doing this by heavily penalizing your project if you gate your clock.</li>
+</ul>
+
+
+<h2>Key Differences From MIPS</h2>
+<ol>
+  <li>Memory is addressed every 32 bits, or a WORD in our 32-bit architecture. That means each location in memory holds a 32-bit value, unlike MIPS where each location holds 8 bits.</li>
+  <li>RAM and ROM modules in Logisim are addressed with 24-bits, which means that there will be some loss of information when converting from the 32-bit addresses used in MIPS instructions. That is okay, but make sure you know what is being byte- or word-addressed.
+  <li>Be <em>very</em> careful when dealing with absolute addresses, whether it's for jumping or for accessing data memory. The instructions you will be running will assume that their addresses begin at standard locations, such as the default memory configuration in MARS. That is, <tt>.text</tt> begins at <tt>0x00400000</tt> and <tt>.data</tt> begins at <tt>0x10010000</tt>, both of which are <em>byte-addressed</em>. In your processor, however, both instruction and data memory start at <tt>0x000000</tt>. 
+  <li>You will only implement 4 registers, instead of all 32. This means you have to route register requests to either <tt>run.circ</tt> or <tt>regfile.circ</tt>, depending on which registers are being accessed.</li>
+  <li>Data Memory and Instruction Memory are physically separate. Remember that in MIPS, we create the illusion of separate memory with two caches, but we really have only one memory.</li>
+  <li>Branch delay slots are not exposed to software. You have to deal with them in hardware.</li>
+  <li><tt>jr</tt> is not an R-type instruction. This is because if it was R-type, not all R-types would map directly to an ALU operation. This is purely for your benefit.</li>
+  <li>There are two new R-type instructions for you to implement, <tt>bitpal</tt> and <tt>lfsr</tt>.
+</ol>
+
+
+<h2>Project Tips</h2>
+<ul>
+  <li>You may use any built-in Logisim library circuit components in implementing your ALU and processor.</li>
+  <li>Use the label tool to organize your processor.  In particular label the control, datapath, and display sections, but it can also be useful to label specific busses and wires (the section labels should probably be bigger than the bus/wire labels). It could make debugging a lot easier!</li>
+  <li>Also for labeling, you can delineate sections of your circuit using unconnected wires (they show up as gray).  Logisim allows you to have these without throwing errors and they won't affect your circuit.</li>
+  <li>Tunnels are extremely handy not only for eliminating large portions of a wire, but also because you can make any arbitrary number of tunnel openings! This is handy for long wires that branch often and connect multiple blocks/sub-circuits.</li>
+</ul>
+
+<a name="plan"></a>
+<h2>Possible Plan of Attack</h2>
+<p>
+These steps are provided just to help you get started if the project spec seems daunting/overwhelming.
+This is simply a <em>suggested</em> approach, so do what makes the most sense to you.
+For example, some of you may want to design the control before the datapath.
+Also, throughout this process, test liberally with the sample autograder tests and ones that you make yourselves.
+</p>
+
+<ol>
+  <li>Take the time to look at some of the Logisim help files: <b>Help <tt>--></tt> Library Reference</b>.  Knowing how to read these references will help a lot when you start trying to use modules you didn't encounter in homework or lab.</li>
+  <li>Build the <b>Register File</b>.  Test it thoroughly by varying the inputs to make sure it properly reads and stores when enabled.</li>
+  <li>Design and build your <b>ALU</b>.  Again, test it thoroughly using a variety of inputs.</li>
+  <li>Review your understanding of addressing, ie byte- vs word-, how instructions encode addressing information, where the data is located in memory as a whole. Addressing can become a major hurdle in this project if you don't understand it well.</li>
+  <li>Build your <b>Data Memory</b> circuit following Section 5 of the Deliverables in the project spec.  Make sure you understand how to read and write from this memory.</li>
+  <li>Open up <tt>cpu.circ</tt> and look at the layout. Think about any other components you will need for a <b>single-cycle datapath</b>. Build these, and then lay out everything.  Wire these components together so that this datapath can execute every instruction our ISA supports.  Be sure to identify any control signals you will need to generate.</li>
+  <li>Design your <b>control</b> (the combinational logic for all of your control signals).  The recommended method is the AND logic/OR logic breakdown.  Connect the control to the datapath.</li>
+  <li>Test <b>I- and R-format instructions</b> individually (including loads and stores).</li>
+  <li>Convert your single-cycle implementation to a <b>two-cycle datapath</b>.</li>
+  <li>Test <b>branching and jumping instructions</b> individually and then try whole programs.</li>
+  <li>Finish writing the test programs in section 6 of deliverables. These will be released with proj2-2.</li>
+  <li>Submit your processor and programs.</li>
+  <li>Rejoice! ... and then sleep.</li>
+</ol>
+
+<p>Back to <a href="index.html">full project specs</a>.</p>
+
+</body>
+</html>

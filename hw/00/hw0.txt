@@ -1,0 +1,56 @@
+NAME: 
+LOGIN: 
+
+Problem 1
+
+UNSIGNED
+Decimal |   Binary        | Hexadecimal| 
+========================================
+  10    |   0b0000 1010   |   0x0A   |
+        |   0b1111 0000   |          |
+        |                 |   0x0F   |
+        |                 |   0xA1   |
+  250   |                 |          |
+        |   0b1111 1111   |          |
+        |                 |   0xCC   |
+  -35   |                 |          |
+  128   |                 |          |
+        |   0b0110 1001   |          |
+
+TWO'S COMPLEMENT
+Decimal |   Binary        | Hexadecimal| 
+========================================
+ -10    |   0b1111 0110   |   0xF6   |
+        |   0b1111 0000   |          |
+        |                 |   0x0F   |
+        |                 |   0xA1   |
+  250   |                 |          |
+        |   0b1111 1111   |          |
+        |                 |   0xCC   |
+  -35   |                 |          |
+  128   |                 |          |
+        |   0b0110 1001   |          |
+
+Problem 2
+
+a.
+1. CHOICE:  
+   EXPLANATION:
+2. CHOICE:
+   EXPLANATION:
+3. CHOICE: 
+   EXPLANATION:  
+
+
+Problem 3
+a. 
+b. 
+c. 
+d. 
+
+Problem 4
+Example: 3, CORRECT
+a. 
+b. 
+c. 
+d. 

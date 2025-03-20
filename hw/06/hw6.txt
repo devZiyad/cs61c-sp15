@@ -1,0 +1,16 @@
+======= Problem 1 =======
+a.
+b.
+c.
+
+======= Problem 2 =======
+a.
+b.
+
+======= Problem 3 =======
+Access times [increases | decreases | stays the same] (Choose one.)
+Explanation:
+
+======= Problem 4 =======
+a.
+b.

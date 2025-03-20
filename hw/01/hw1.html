@@ -1,0 +1,398 @@
+<html><head>
+    <title>CS61C Spring 2015 Homework 1</title>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+<div class="header">
+    <h1>CS61C Spring 2015 Homework 1: <tt>beargit</tt></h1>
+    TAs: Martin Maas, Sagar Karandikar
+</div>
+
+<div class="content">
+    <p>Due Sunday, February 8, 2015 @ 11:59pm</p>
+
+    <p>
+        <ul class="error">
+            <li>Update 2/2 7:00 PM: Fixed spaces for "beargit status" sample output, added clarifications for "beargit rm", fixed minor typos</li>
+        </ul>
+    </p>
+
+    <h2>Goals</h2>
+        <ul>
+            <li>Learn more about <tt>git</tt> by building a simpler version, called <tt>beargit</tt> (Go Bears!)</li>
+            <li>Write a substantial C program</li>
+        </ul>
+
+    <h2>What is <tt>beargit</tt>?</h2>
+	
+	<p><tt>git</tt> is a great tool for managing source code and other files. However, even great tools can be used for evil; what if someone uses it to create <tt>git</tt> commits with hideous messages such as "St****rd RuLEz!"? So in this homework, you will be developing your own version of <tt>git</tt>, which will put an end to such behavior by requiring every commit message to contain the words "GO BEARS!". ;-)</p>
+
+    <p>At its core, <tt>beargit</tt> is essentially a simpler version of <tt>git</tt>, which you should have become familiar with
+    in Lab 0. <tt>beargit</tt> can track individual files in the current working directory (no subdirectories!).
+    It maintains a <tt>.beargit/</tt> subdirectory containing information about your repository. 
+    For each commit that the user makes, a directory is created inside the <tt>.beargit/</tt>
+    directory (<tt>.beargit/&lt;ID&gt;</tt>, where &lt;ID&gt; is the ID of the commit). The <tt>.beargit/</tt> directory additionally contains two files: <tt>.index</tt> (a list of all currently
+    tracked files, one per line, no duplicates) and <tt>.prev</tt> (contains the ID of the last commit, or
+    0..0 if there is no commit yet). Each <tt>.beargit/&lt;ID&gt;</tt> directory contains a copy of each
+    tracked file (as well as the <tt>.index</tt> file) at the time of the commit, a <tt>.msg</tt> file that
+    contains the commit message (one line) and a <tt>.prev</tt> file that contains the commit ID
+    of the previous commit.</p>
+
+
+    <h2>Key differences between <tt>beargit</tt> and <tt>git</tt>:</h2>
+
+    <ul>
+		<li>The only supported commands are <tt>init</tt>, <tt>add</tt>, <tt>rm</tt>, <tt>commit</tt>, <tt>status</tt> and <tt>log</tt>. For each of them, only the most basic command line options are supported.
+        <li><tt>beargit</tt> does not track diffs between files. Instead, each time you make a commit, it simply copies all files that are being tracked into the <tt>.beargit/&lt;ID&gt;</tt> directory (where <tt>&lt;ID&gt;</tt> is the commit ID).</li>
+		<li>Commit IDs are not based on cryptographic hash functions, but instead are a fixed sequence of 40-character strings that only contain '6', '1' and 'c' (why we chose those characters is left as an exercise to the reader).</li>
+		<li>Any commits with a commit message that does not contain "<tt>GO BEARS!</tt>" (with exactly this capitalization and spelling) will be rejected with an error message.</li>
+		<li>No user, date or other additional information is tracked by <tt>beargit</tt>. It does not allow to track subdirectories, or files starting with <tt>'.'</tt>.</li>
+		<li>The <tt>rm</tt> command only causes <tt>beargit</tt> to stop tracking a file, but does not delete it from the file system.</li>
+    </ul>
+       
+        
+    <h2>Files:</h2>
+    <ul>
+        <li><tt>beargit.c</tt> - This is the file that you will fill in with your implementation of <tt>beargit</tt>.</li>
+        <li><tt>beargit.h</tt> - Do not edit - This file contains declarations of various constructs in <tt>beargit.c</tt> along with convenient <tt>#define</tt>s. See the "Important Numbers" section below.</li>
+        <li><tt>main.c</tt> - Do not edit - Contains the main for <tt>beargit</tt> (which parses command line options and calls into the functions defined in <tt>beargit.c</tt>).</li>
+        <li><tt>Makefile</tt> - Do not edit - This tells the program <tt>make</tt> how to build your code when you run the <tt>make</tt> command. This is a convenient alternative to having to repeatedly type long commands involving <tt>gcc</tt>.</li>
+        <li><tt>util.h</tt> - Do not edit - Contains helper functions that you may wish to use when completing the assignment.</li>
+    </ul>
+
+    <p><strong>You should only modify and submit <tt>beargit.c</tt>. Our autograder will overwrite all other files with a fresh copy.</strong></p>
+
+    <h2>Important Numbers: (see <tt>beargit.h</tt>)</h2>
+
+	<p>In lecture, you learned about using <tt>#define</tt> to define constants as a single source of truth. You should use the appropriate constants from <tt>beargit.h</tt> whenever you are using any of the following numbers:</p>
+
+    <ul>
+        <li>Commit ID lengths are limited to 40 characters (not including the null terminator).</li>
+        <li>Filenames are limited to 512 characters (including null terminator).</li>
+        <li>Commit messages are limited to 512 characters in length (including null terminator).</li>
+    </ul>
+
+	<h2>Preliminaries:</h2>
+	
+	<p>For this homework, you will be using some C functionality that you may not be familiar with. We will now highlight some of these features:</p>
+
+    <h4>C library functions:</h4>
+    
+    <p>You may wish to familiarize yourself with the following C library functions: <tt>fprintf, sprintf, fopen (and fclose, fwrite, etc.), strcmp, strlen, strtok,</tt> and <tt>fgets</tt>. You can find documentation of the C library <a href="http://www.cplusplus.com/reference/clibrary/">here</a> (use the search box at the top to find out about each function). Make sure not to stray away from the "C library" section, as the linked website also contains C++ documentation.</p>
+	
+	<p>When you look at the existing code in <tt>beargit.c</tt>, you will see examples of how these functions can be used to achieve the desired functionality. We recommend trying to understand the provided functions first, before starting to implement your own.</p>
+   
+    <h4>Handling I/O (more than just <tt>printf</tt>):</h4>
+
+    <p>Unix machines use a concept called "streams" to handle arbitrary I/O. We will need two of these output streams in this homework. The first is stdout, which is where your output goes when you call <tt>printf</tt>. We will use stdout to output all output indicating a "successful" action. The other output stream is stderr, which is where we will output all error messages. By default, both of these streams, stdout and stderr, are printed to your screen when you run a program.</p>
+
+    <p>Outputting to either stdout or stderr can be done similarly to using printf. The only change is that you use the <tt>fprintf</tt> function, and the first argument you pass in must be either "stderr" or "stdout" (without quotes).</p>
+
+
+    <pre>[inside your C code]
+fprintf(stdout, "%d\n", 3); // prints the number 3 to stdout, along with a newline
+fprintf(stderr, "%d\n", 4); // prints the number 4 to stderr, along with a newline</pre>
+
+	<p>If you want to know what messages went to <tt>stdout</tt> or <tt>stderr</tt>, you can forward them to a file instead of the terminal, by appending <tt>2&gt;log_err</tt> and/or <tt>1&gt;log_out</tt> to your command (e.g., <tt>./my_program 2&gt;log_err</tt>). This will forward everything from <tt>stderr</tt> to the file <tt>log_err</tt> (and equivalently for <tt>stdout</tt> if you add <tt>1&gt;log_out</tt>).
+
+    <h4>Included helper functions:</h4>
+
+    <p>To make life easier for you, we provide helper functions for common operations that you will encounter while implementing <tt>beargit</tt>. You fill find these in <tt>utils.h</tt>. Here is a brief overview of each of these functions:</p>
+
+    <ul>
+        <li><tt>void fs_mkdir(const char* dirname)</tt>: Create a new directory of name <tt>dirname</tt></li>
+        <li><tt>void fs_rm(const char* filename)</tt>: Delete the file <tt>filename</tt></li>
+        <li><tt>void fs_mv(const char* src, const char* dst)</tt>: Move the file <tt>src</tt> to <tt>dst</tt>, potentially overwriting it</li>
+        <li><tt>void fs_cp(const char* src, const char* dst)</tt>: Copy the file <tt>src</tt> to <tt>dst</tt>, potentially overwriting it</li>
+        <li><tt>void write_string_to_file(const char* filename, const char* str)</tt>: Create or overwrite the file <tt>filename</tt> and write <tt>str</tt> into it, including the NULL-character</li>
+        <li><tt>void read_string_from_file(const char* filename, char* str, int size)</tt>: Open the file <tt>filename</tt> and read its content into the location pointed to by <tt>str</tt>; limit the amount to read to at most <tt>size</tt> bytes, including the NULL character</li>
+    </ul>
+	
+	<p>The last two functions should only be used together. Specifically, don't try to use <tt>read_string_from_file</tt> to read multi-line files, but only for single strings that you previously wrote into a file using <tt>write_string_to_file</tt>.</p>
+	
+	<b>While these functions perform some basic checks to prevent you from accidentally overwriting important files, be careful whenever you call any function that modifies the file system. There is always a risk of unintentionally deleting or overwriting files, especially when working on your own machine!</b>
+
+    <h2>Setup:</h2>
+
+    <p>To get starter code for this homework, we will be using <tt>git</tt>. 
+    First, you must enter into your cs61c class repository in your class
+    account (this is the repository you created in last week's lab; probably located in <tt>~/work</tt>).
+	Once in this directory, run the following:</p>
+
+    <pre>git remote add hw1_starter git@github.com:cs61c-spring2015/hw1_starter
+git fetch hw1_starter
+git merge hw1_starter/master -m "merge hw1 skeleton code"</pre>
+
+    <p>Once you complete these steps, you will have the <tt>hw1</tt> directory inside of
+    your repository, which contains the files you need to begin working.</p>
+
+    <p>As you develop your code, you should make commits in your <tt>git</tt> repo and push them as you 
+    see fit. Be sure not to get confused between <tt>beargit</tt>, which you 
+    are writing for this homework, and <tt>git</tt>, which is managing your 
+    real class repository.</p>
+
+
+    <h2>Required functionality:</h2>
+
+    <p>While the version of <tt>beargit</tt> that we've given to you compiles, you can't do much except call
+    <tt>beargit init</tt> to create a new repository, and call <tt>beargit add &lt;file&gt;</tt> to start
+    tracking a file. Everything else you need to implement yourself! </p>
+
+    <p>We recommend that you implement the beargit commands in this order, as this makes testing easier:</p>
+    <ol>
+        <li><tt>beargit status</tt></li>
+        <li><tt>beargit rm</tt></li>
+        <li><tt>beargit commit</tt></li>
+        <li><tt>beargit log</tt></li>
+    </ol>
+    
+    <p>For each of these, you need to implement one of the functions below (but feel
+ free to define new helper functions to make things easier). We give you an
+ outline of each function's job, as well as the errors you need to be able to
+ detect, and the output you need to produce.</p>
+
+	<p><b>Note: Whenever you see the notation <tt>&lt;something&gt;</tt>, you should replace it with the appropriate value for <i>something</i>, without the angle brackets</b></p>
+	
+    <h3>Testing your code in CS61C</h3>
+		
+    <p>Unlike CS classes you may have taken in the past, we will not provide you with a full 
+    autograder for the assignment. Instead, you should devise a methodology to
+    test your code to ensure that it performs as you intend it to. The autograder
+    that produces your final grade will include many more test cases than the
+    autograder/sanity check provided with the homework.</p>
+
+    <h4>But... why?</h4>
+
+    <p>When you write production code in the "real" world (and upper division 
+    classes), much of the time you will not be provided with any test cases to
+    validate your code against (not even a sanity check). The ability to write
+    good test cases is just as important a skill for a programmer as the ability to write
+    functioning code.</p>
+
+    <p>The test cases you write for this homework won't be submitted or graded, but we may ask
+    you to submit test cases for future assignments.</p>
+	
+	<h4>Automated basic tests</h4>
+	
+	<p>To make life a bit easier for you, we are providing you with two ways to test your implementation. The first one is an automated testing tool that will run your implementation against a series of basic tests to determine whether its output is sensible. Note that this is just a small subset of the tests that the actual autograder will be running. Even if your program passes all these tests, it may still fail on some of the test cases in the autograder. You therefore shouldn't rely on this tool for your testing but consider it a sanity check.</p>
+	
+	<p> To run these tests, go into the main source directory and type <tt>make check</tt>. You will see output similar to the following:</p>
+		
+    <pre>Running test cases...
+
+  [  OK  ] beargit_test_add_0
+  [  OK  ] beargit_test_add_1
+  [  OK  ] beargit_test_rm_0
+  [ FAIL ] beargit_test_rm_1 file is missing but no (or incorrect) error message (error type: OUTPUT)
+  [ FAIL ] beargit_test_status_0 expected 4 lines of output but found 0 (error type: OUTPUT)
+  [ FAIL ] beargit_test_status_1 expected 2 lines of output but found 0 (error type: OUTPUT)
+  [  OK  ] beargit_test_commit_0
+  [ FAIL ] beargit_test_commit_1 successful commit should not display any output (error type: OUTPUT)
+  [ FAIL ] beargit_test_log_0 there are no commits, but no correct error message was shown (error type: OUTPUT)
+  [ FAIL ] beargit_test_log_1 there are no commits, but no correct error message was shown (error type: OUTPUT)
+
+TESTS PASSING: 4 / 10</pre>
+
+	<p>You should pay close attention to the error messages, as they are designed to give you a hint what is going wrong.</p>
+	
+	<h4>Manual testing</h4>
+	
+	<p>For your own testing, we provide you with a script that creates a new test directory for you (called <tt>test</tt>), which you can use to experiment with your implementation in a fresh directory (where it will generate the <tt>.beargit/*</tt> files and directories). Every time you use the script, your previous directory will be deleted, so you can start afresh. <b>Be careful to not leave any important data in the test directory!</b></p>
+	
+	<p>To run the script and create a new test directory, run the following in your <tt>hw1</tt> directory (this will automatically move you into the test directory and add your beargit executable to the PATH, so that you can run it):
+		
+    <pre>$ source init_test</pre>
+	
+	<p>You can then run commands such as:</p>
+	
+	<pre>$ beargit init
+$ touch test.txt
+$ beargit add test.txt</pre>
+
+    <h3>Step 1: The <tt>status</tt> command</h3>
+
+    <h4>Functionality:</h4>
+
+    <p>The status command in <tt>beargit</tt> should read the file 
+    <tt>.beargit/.index</tt> and print a line for each tracked file. The 
+    exact format is described below. Unlike <tt>git status</tt>, <tt>beargit status</tt> should not print anything about untracked files.</p> 
+
+    <h4>Output to stdout:</h4>
+
+    <pre>$ beargit status
+Tracked files:
+
+  &lt;file1&gt;
+  [...]
+  &lt;fileN&gt;
+
+&lt;N&gt; files total</pre>
+
+    <p>For each file in the above output, <tt>&lt;file*&gt;</tt> should be replaced with the filename of that file.</p>
+
+    <h4>Return value and output to stderr:</h4>
+
+    <p>This function should always return 0 (indicating success) and should never output to stderr.</p>
+
+
+    <h3>Step 2: The <tt>rm</tt> command</h3>
+	
+	<p><i>Hint: You may want to have a look at the provided implementation of <tt>beargit add</tt> before implementing this command.</i></p>
+ 
+    <h4>Functionality:</h4>
+       
+    <p>The rm command in <tt>beargit</tt> takes in a single argument, which specifies
+    the file to remove from the index (which is stored in the file <tt>.beargit/.index</tt>). If the filename
+    passed in is not currently being tracked, you should print an error as indicated
+    below. Note that this behavior is different from <tt>git</tt> in that it doesn't delete the file from your file system.</p>
+
+    <h4>Output to stdout:</h4>
+    <p>None.</p>
+
+    <h4>Return value and output to stderr:</h4>
+
+    <p>If the filename specified in the provided argument exists in the index, 
+    the function should return 0 and produce no output on stderr. If the filename
+    specified does not exist in the index, the function should return 1 and output
+    the following to stderr:</p>
+
+    <pre>$ beargit rm FILE_THAT_IS_NOT_TRACKED.txt
+ERROR: File &lt;filename&gt; not tracked</pre>
+
+
+    <h3>Step 3: The <tt>commit</tt> command</h3>
+ 
+    <h4>Functionality:</h4>
+       
+    <p>The commit command involves a couple of steps:</p> 
+
+    <ul>
+        <li>First, check whether the commit string contains "GO BEARS!". If not, display an error message.</li>
+        <li>Read the ID of the previous last commit from <tt>.beargit/.prev</tt></li>
+        <li>Generate the next ID (<tt>newid</tt>) in such a way that:
+            <ol> 
+                <li>All characters of the id are either 6, 1 or c 
+                <li>Generating 100 IDs in a row will generate 100 IDs that are all unique (<i>Hint: you can do this in such a way that you go through all possible IDs before you repeat yourself. Some of the ideas from the number representation class may help you!</i>)</li>
+            </ol>
+            </li>
+        <li>Generate a new directory <tt>.beargit/&lt;newid&gt;</tt> and copy <tt>.beargit/.index</tt>, <tt>.beargit/.prev</tt> and all tracked files into the directory.</li>
+        <li>Store the commit message (&lt;msg&gt;) into <tt>.beargit/&lt;newid&gt;/.msg</tt></li>
+        <li>Write the new ID into <tt>.beargit/.prev.</tt></li>
+    </ul>
+	
+    <h4>IMPORTANT RULE THAT WILL AFFECT YOUR GRADE IF YOU DON'T READ IT!</h4>
+	
+	Now that we have your attention: when implementing the code that checks whether the commit message includes <tt>GO BEARS!</tt>, you are not allowed to use any library functions, including any of the <tt>str*</tt> ones you may have seen before.
+
+    <h4>Output to stdout:</h4>
+    <p>None.</p>
+
+     <h4>Return value and output to stderr:</h4>
+
+     <p>If the commit message does not contain the exact string "GO BEARS!", then you 
+     must output the following to stderr and return 1:</p>
+
+    <pre>$ beargit commit -m "G-O- -B-E-A-R-S-!"
+ERROR: Message must contain "GO BEARS!"</pre>
+
+    <p>If the commit message does contain the string "GO BEARS!", then the function should
+    produce no output and return 0.</p>
+
+    <h3>Step 4: The <tt>log</tt> command</h3>
+ 
+    <h4>Functionality:</h4>
+       
+    <p>The goal of the log command is to print out all recent commits. See below for the individual steps:</p> 
+
+    <ul>
+        <li>List all commits, latest to oldest. <tt>.beargit/.prev</tt> contains the ID of the latest
+        commit, and each directory <tt>.beargit/<ID></tt> contains a <tt>.prev</tt> file pointing to that
+        commit's predecessor.</li>
+        <li>For each commit, print the commit's ID followed by the commit message (see below
+        for the exact format).</li>
+    </ul>
+
+    <h4>Output to stdout:</h4>
+
+    <pre>$ beargit log
+[BLANK LINE]
+commit &lt;ID1&gt;
+    &lt;msg1&gt;
+[BLANK LINE]
+commit &lt;ID2&gt;
+    &lt;msg2&gt;
+[...]
+commit &lt;IDN&gt;
+    &lt;msgN&gt;
+[BLANK LINE]</pre>
+
+
+    <h4>Return value and output to stderr:</h4>
+
+    <p>If there are no commits to the beargit repo, beargit should return 1 and
+    output the following to stderr:</p>
+    
+    <pre>[assume that no commits have been made]
+$ beargit log
+ERROR: There are no commits!</pre>
+
+    <p>If there are commits, you should produce the output indicated in the "Output to stdout" section above and return 0.</p>
+
+    <h2>Submission</h2>
+        
+    <p>There are <strong>two</strong> steps required to submit hw1. Failure to perform both steps will result in loss of credit:</p>
+
+    <ol>
+        <li><p>First, you must submit using the standard unix submit program on the instructional servers. This assumes that you followed the earlier instructions and did all of your work inside of your <tt>git</tt> repository. To submit, follow these instructions after logging into your cs61c-XX class account:</p>
+
+            <pre>$ cd ~/work                                              # your git repo, should contain a directory called hw1 with your soln
+$ cd hw1
+$ submit hw1</pre>
+            <p> Once you type <tt>submit hw1</tt>, follow the prompts generated by the submission system. It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+            <br>
+        </li>
+
+        <li><p>Additionally, you must submit hw1 to your GitHub repository. To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+
+        <pre>$ cd ~/work                                              # your git repo, should contain a directory called hw1 with your soln
+$ git add -u                                             # should add all modified files in hw1 directory (must include beargit.c)
+$ git commit -m "Homework 1 submission"
+$ git tag -f "hw1"                                       # The tag MUST be "hw1". Failure to do so will result in loss of credit.
+$ git push origin master --tags                          # Note the "--tags" at the end. This pushes tags to github</pre>
+            </li>
+
+    </ol>
+
+    <h4>Resubmitting</h4>
+    <p>If you need to re-submit, you can follow the same set of steps that you would 
+    if you were submitting for the first time. The only exception to this is in the very last
+    step, <tt>git push origin master --tags</tt>, where you may get an error like the following:</p>
+
+
+    <pre>(21:28:08 Sun Feb 01 2015 cs61c-ta@hive12 Linux x86_64)
+~/work $ git push origin master --tags
+Counting objects: 22, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (19/19), done.
+Writing objects: 100% (21/21), 9.73 KiB | 0 bytes/s, done.
+Total 21 (delta 4), reused 0 (delta 0)
+To git@github.com:cs61c-spring2015/cs61c-ta
+   bf20433..d1ff9ed  master -> master
+ ! [rejected]        hw1 -> hw1 (already exists)
+error: failed to push some refs to 'git@github.com:cs61c-spring2015/cs61c-ta'
+hint: Updates were rejected because the tag already exists in the remote.</pre>
+
+<p>If this occurs, simply run the following instead of <tt>git push origin master --tags</tt>:</p>
+
+<pre>$ git push -f origin master --tags</pre>
+
+
+<p>Note that in general, force pushes should be used with caution. They will overwrite
+your remote repository with information from your local copy. As long as you have
+not damaged your local copy in any way, this will be fine.</p>
+
+</div>
+</body>
+</html>

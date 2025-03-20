@@ -1,0 +1,104 @@
+CS 61C Homework 4
+Name: 
+Login: 
+
+P1 - Waveform Diagrams - 4 pts
+
+*1 pt
+1) 5 times; 35,65,95,125,155
+
+*1 pt
+2) 3 times; 95,125,155
+
+*1 pt
+3) 5, 65, 125 ns
+
+*1 pt
+4) 65, 125 ns
+
+**Parts 3 and 4 - 0.5 pt credit if missing 1 time
+
+
+P2 - Clock Frequency - 3 pts
+
+*1 pt
+1) No, it does not work properly because of the hold time of the register. S_i must stay stable for
+   2 ns after the clock trigger, but since Y_i arrives at the clock trigger, S_i will change 1 ns 
+   after the clock trigger because of the 1 ns propogation delay, violating the hold time requirement.
+
+*1 pt
+2) CPD: 3 + 1 + 1 + 2 ns = 7 ns
+   Freq = 1/CPD = 1/(7 ns) = 142.9 MHz
+**0.5 pt each
+
+*1 pt
+3) Add X_i and Y_i first, then add the result of that with the output of the register.
+
+
+P3 - Simple FSM and Truth Tables - 3 pts
+
+**Listed below are three possible solutions; there are more.
+  If the names of the states can be swapped to match any of these solutions, then the answer is correct.
+
+** 3 state solution **
+CurState	| Input	| NextState	| Output
+Start		| 0	| Start		| 0
+Start		| 1	| Seen1		| 0 
+Seen1		| 0	| Start		| 0
+Seen1		| 1	| Seen11	| 1
+Seen11		| 0	| Start		| 1
+Seen11		| 1	| Seen11	| 1 
+
+** 4 state solution named by last two input bits **
+CurState	| Input	| NextState	| Output
+00		| 0	| 00		| 0
+00		| 1	| 01		| 0 
+01		| 0	| 10		| 0
+01		| 1	| 11		| 1
+10		| 0	| 00		| 0
+10		| 1	| 01		| 0 
+11		| 0	| 10		| 1
+11		| 1	| 11		| 1
+
+** Another 4 state solution **
+CurState	| Input	| NextState	| Output
+Start		| 0	| Start		| 0
+Start		| 1	| Seen1		| 0 
+Seen1		| 0	| Start		| 0
+Seen1		| 1	| Seen11	| 1
+Seen11		| 0	| Start		| 1
+Seen11		| 1	| Seen111	| 1 
+Seen111		| 0	| Start		| 1
+Seen111		| 1	| Seen111	| 1
+
+** -1 pt if states are not named intuitively or starting state is not clear
+   -0.5 pt each if, from starting state:
+     a) 0 doesn't output 0
+     b) 1 doesn't output 0
+     c) 10 doesn't output 0
+     d) 11 doesn't output 1
+     e) 110 doesn't output 1
+     f) 111 doesn't output 1
+     g) 1101 doesn't output 0
+** Start at first row if starting state is ambiguous
+
+P4 - Truth Tables, Boolean Algebra, FSMs, Logic Circuits - 5 pts
+
+*3 pts
+1)
+
+Out = Cur_0 * ~In
+
+Next1 = ~Cur_1 * In
+
+Next0 = ~In
+**1 pt per part
+
+*2 pt
+2)
+
+retval = ((state >> 1) ^ 1) & state & (x ^ 1)
+state = (x ^ 1) + ((((state>>1) ^ 1) & x) << 1)
+
+
+

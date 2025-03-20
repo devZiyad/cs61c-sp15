@@ -1,0 +1,152 @@
+<html><head>
+<title>CS61C Spring 2015 Homework 6</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div class='header'>
+<h1>CS61C Spring Homework 6</h1>
+TA: Shreyas Chand
+</div>
+
+<div class='content'>
+<p>Due Sunday, May 3rd, 2015 @ 23:59:59</p>
+<p>
+<ul class="error">
+  <li> Update 1 (4/27 10:35 PM): Add short description of code and driver code to try it out. (<a href="hw6.s"><code>hw6.s</code></a>) Clarify Problem 3 question to ask about *number* of accesses.</li>
+  <li> Update 2 (4/30 3:30 PM): Add several clarifications for Problems 1, 2, and 4. TAKE NOTE OF PROBLEM 2 CHANGES. SOME VALUES HAVE CHANGED. These changes should simplify the answer expression and result in fewer assumptions needing to be made about the data.</li>
+  <li> Update 2.5 (4/30 5:10 PM): Add another clarification for Problem 2 for what can be assumed in the worst case.</li>
+</ul>
+
+<h2>Goals</h2>
+<p>This assignment is intended to check and exercise your knowledge of Virtual Memory with exam-style questions.</p>
+
+<h2>Setup</h2>
+<p>You should write up your solutions in <a href="hw6.txt"><tt>hw6.txt</tt></a>.
+<b>Please use the provided format in <tt>hw6.txt</tt>.</b>
+File names are case-sensitive and the submission program will not accept your submission if your file names differ at all from those specified.
+Detailed <a href="#submit">submission instructions</a> are given at the bottom of this page. Failure to follow these will result in loss of credit.</p>
+
+<h2>Exercises</h2>
+<p> For exercises 1-3, consider the following system parameters: </p>
+<ul>
+    <li> Virtual Address Length: 64-bits </li>
+    <li> Physical Memory Size: 4 GiB </li>
+    <li> Page size: 32 B </li>
+    <li> TLB: <ul>
+        <li> Fully associative </li>
+        <li> 8 entries </li>
+        <li> LRU replacement policy </li>
+    </ul></li>
+</ul>
+<h3>Problem 1: Warming Up</h3>
+<ol type='a'>
+  <li> What is the <span class="error">minimum (Update 2)</span> bit width of the Page Table Base Address Register? </li>
+    <li> How many rows are there in the page table? </li>
+    <li> <span class="error">(Update 2) At most,</span> how many entries can be valid across all Page Tables at one time? </li>
+</ol>
+
+<h3>Problem 2: Analyzing Code</h3>
+<p>Now suppose we run the following code (the MIPS code, the C is provided for reference to aid in understanding):</p>
+<table border='1'>
+    <tr>
+        <td><pre>
+# $a0 = int* in, $a1 = int* hist, $a2 = num_scores
+update_hist:
+    addu $t0 $a0 $0
+    addu $t1 $a1 $0
+    addu $t2 $0 $0
+    sll $a2 $a2 2
+
+    hist_loop:
+        beq $t2 $a2 hist_done
+        addu $t3 $t0 $t2
+        lw $t3 0($t3)
+
+        sll $t3 $t3 2
+        addu $t3 $t1 $t3
+        lw $t4 0($t3)
+        addiu $t4 $t4 1
+        sw $t4 0($t3)
+
+        addu $t2 $t2 4
+        j hist_loop
+
+    hist_done:
+    jr $ra</pre></td>
+        <td><pre>
+void update_hist(int* in, int* hist, int num_scores) {
+    for (int i = 0; i < num_scores; i++) {
+        hist[in[i]] += 1;
+    }
+} </pre></td>
+    </tr>
+</table>
+
+<p><span class="error">Update 1:</span> The above code creates a histogram out of some set of input data. If you would like to see it in action, download <a href="hw6.s">hw6.s</a> and run it in MARS.</p>
+
+
+<p>For the following questions you may assume: 1) Both <code>in</code> and <code>hist</code> point to page-aligned arrays. 2) The <code>update_hist</code> procedure is page aligned. 3) This is the only process currently running on the machine.</p>
+If <code>update_hist</code> is called with <code>num_scores = N</code> and <code>in</code> points to an array containing <span class="error">uniformly randomly distributed</span> values from <span class="error"><s>0 to 9</s> 0 to 15 (inclusive) (Update 2) </span>,<br>
+<ol type='a'>
+  <li> in the <i>worst-case</i> scenario, how many page faults can occur? <span class="error">(Update 2.5) Do not assume anything insidious about the distribution of values in <code>in</code>. For example, do not assume a distribution such that <code>in</code> has mostly 0's. There is an approximately equal amount of each number in the input array <code>in</code>. The order of values will not be such that something bad will happen as a consequence.</span></li>
+     <li> in the <i>best-case</i> scenario, how many elements in <code>in</code> can be processed before a TLB-miss is incurred? </li>
+</ol>
+
+
+<h3>Problem 3: Optimization Effects </h3>
+(<span class="error">Update 1</span>)
+Consider the <code>update_hist</code> procedure once again. In order to handle super large arrays efficiently, we decide to try to optimize the code using loop unrolling, by simply duplicating the loop body 16 times (You can assume all input arrays have a length that is a multiple of 16). What effect does this have on performance just in terms of memory/disk accesses? Could the total number of memory/disk accesses (and thus the overall time spent on IO) increase, decrease or stay the same?
+
+<h3>Problem 4: Cool Down </h3>
+<p> Now consider the following system parameters: </p>
+<ul>
+    <li> Virtual Address Length: 16-bits </li>
+    <li> Physical Memory Size: 4 GiB </li>
+    <li> Offset length: 13-bits </li>
+    <li> TLB: <ul>
+        <li> Fully associative </li>
+        <li> 8 entries </li>
+        <li> LRU replacement policy </li>
+    </ul></li>
+</ul>
+
+<ol type='a'>
+  <li> In the <i>best-case</i> scenario, how many total bytes of memory can be <span class="error"> <s> made available for reference</s> accessed with at most one memory access? Assume there are no data caches ($L1, $L2, $L3 etc. do not exist.) (Update 2)</span> </li>
+    <li> If every process requires a minimum of 4 pages (1 each for Stack, Heap, Static and Code), in the <i>best-case</i> scenario, how many processes can be guaranteed to run simultaneously without causing any page faults? </li>
+</ol>
+
+<h3 id="submit">Submission</h3>
+<p>There are <strong>two</strong> steps required to submit hw6.txt. Failure to perform both steps will result in loss of credit:</p>
+<ol>
+<li><p>First, you must submit using the standard unix submit program on the instructional servers.
+    To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+<pre>
+$ mkdir ~/files_for_submit
+$ cd ~/files_for_submit
+$ mkdir hw6
+$ cd hw6
+$ cp [Your hw6 text file location] hw6.txt               # replace the braces with the location of your hw6.txt file
+$ submit hw6
+</pre>
+<p> Once you type <tt>submit hw6</tt>, follow the prompts generated by the submission system.
+    It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+<br>
+</li>
+<li><p>Additionally, you must submit hw6.txt to your GitHub repository.
+    To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+<pre>
+$ cd ~/work                                              # this is the location of your git repo on your class account
+$ mkdir hw6
+$ cd hw6
+$ cp [Your hw6 text file location] hw6.txt               # replace the braces with the location of your hw6.txt file
+$ cd ..
+$ git add hw6/hw6.txt
+$ git commit -m "Homework 6 submission"
+$ git tag "hw6"                                          # The tag MUST be "hw6". Failure to do so will result in loss of credit.
+$ git push origin master --tags                          # Note the "--tags" at the end. This pushes tags to github</pre>
+</li>
+</div>
+</body></html>

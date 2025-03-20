@@ -1,0 +1,417 @@
+<html><head>
+<title>CS61C Spring 2015 Lab 0</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+<div class="header">
+    <h1>CS61C Spring 2015 Lab 0 - <tt>git</tt> and Number Representation</h1>
+</div>
+
+<div class="content">
+<h2>Goals</h2>
+<ul>
+  <li>Setup your class account.</li>
+  <li>Learn <tt>git</tt> and setup your GitHub private repository.</li>
+  <li>Build more intuition for working with binary.</li>
+  <li>Get to know your classmates!</li>
+</ul>
+
+<h2>Reading</h2>
+<ul>
+	<li>P&H (4th or 5th): 2.4</li>
+</ul>
+
+<h2>Policies and Partners</h2>
+<p>You are <b>REQUIRED</b> to have a partner for lab
+checkoffs. This will reduce the number of check-offs we have to perform (allowing 
+us to answer more of your questions) as well
+as give you someone to discuss class material with. <b>BOTH</b> partners will need to
+be present at check-off to receive credit and both partners will be asked to
+participate during the check-off. Try your best to find someone in your lab
+section with similar work habits as yourself.</p>
+
+<h2>How Checkoffs Work</h2>
+<p> You'll notice that at the end of (almost) every exercise, there is a section
+labelled "Check-off." The items in this section are what you must successfully 
+demonstrate to your TA in order to receive credit for completing the lab. Once
+you and your partner finish ALL of the exercises, you should put your names AND 
+logins on the checkoff list on the board, and a TA or Lab Assistant will come
+and check you off.</p> 
+
+<p>Labs in CS61C are graded out of 4 points. A lab is considered on-time if
+it is turned in within a week of the lab session in which it is initially assigned to you.
+For example, the lab assigned to you in this weeks lab is this document, lab 0.
+Thus, the latest you may get lab 0 checked off for full credit is the beginning of your lab
+next week. Each week that the lab is late past this point, you lose one point
+on the lab.</p>
+
+
+<h2>The CS61C Lab Machines</h2>
+<p>In CS61C, we will use the machines in <a href="http://inst.eecs.berkeley.edu/cgi-bin/clients.cgi?choice=11&string=">330 Soda</a> for all work/grading purposes. Unfortunately, although the lab is open this week,
+the machines are not yet ready for use. Instead, you can complete today's lab
+by ssh-ing into <tt>cory.eecs.berkeley.edu</tt>. We will discuss more about the
+machines in 330 Soda during next week's lab.</p>
+
+
+<!--Whenever you're working from home, you should <code>ssh</code> 
+into one of the 28 s330 machines (<code>s330-1.cs.berkeley.edu</code> to <code>
+s330-28.cs.berkeley.edu</code>) in order to do your work. Unless we specifically 
+instruct you to do so, don't ssh into any other instructional machine to do 
+61C work.</p>
+
+<p>Although not required, we also highly recommend that you learn to use a text 
+editor that works well over <code>ssh</code>. Going forward, this will save you
+a considerable amount of time setting up your environment in almost every EECS
+class. The instructional machines (in our case the s330 machines) have everything
+you need for this class pre-installed. The s330 machines are powerful 
+workstation-class desktops with the following specifications:</p>
+
+<pre>
+Model: Dell Optiplex 9020
+CPU: Intel Core i7, 3.4 GHz, quad-core, Hyper Threading
+Memory: 32GB RAM (4x8GB)
+Disk: 500GB SATA drive
+GPU: GeForce GT 740 1 GB DDR3 PCI Express 3.0 x16 Cuda GPU
+OS: Ubuntu Linux
+</pre> -->
+
+
+<h2>Exercises</h2>
+
+<h4>In today's lab only, you should do exercises zero through three alone.</h4>
+
+<h3>Exercise 0:  Account Setup</h3>
+
+<p>Once you are logged in, you should do the following on your class account
+to ensure that your account has been setup correctly:</p>
+<ol>
+    <li> Log into your account using the details on the form. Since the 
+    machines in 330 Soda are not ready yet, you should ssh into <tt>cory.eecs.berkeley.edu</tt> 
+    instead from your own laptop. Once you do so, you should be 
+        prompted to enter some personal information (name, SID) so that we can 
+        accurately assign grades at the end of the semester. Please be particularly
+        careful when entering this information, as the later parts of this lab
+        will reject your submission if your registration information is incorrect.
+    </li>
+    <li> If you were not prompted to enter your information in the last step, 
+        run <code> register </code> at the command line. 
+    </li>
+    <li> Run <tt>check-register</tt> to confirm that your information is set as you'd expect.
+    </li>
+    <li> Finally, you should change your password. In Terminal, enter 
+        <code> ssh update.cs.berkeley.edu </code> and follow the prompts.
+    </li>
+    <li> Now you're ready to start the lab! The rest of the lab assumes that you 
+    remain ssh'd into your class account on <tt>cory.eecs.berkeley.edu</tt>.</li>
+</ol>
+
+<p><b>Checkoff:</b></p>
+Run <tt>check-register</tt> and show the results to your TA.
+
+
+<h3>Exercise 1: GitHub Account Form</h3>
+<p>This semester, we will be requiring that you use <tt>git</tt>, a distributed
+version control system. Version control systems are better tools for sharing
+code than emailing files, using flash drives, or even other file sharing mechanisms
+like Dropbox.</p>
+
+<p>We'll be using <a href="http://github.com">GitHub</a> to host private
+repositories in which you'll store your code. If the previous 
+sentence means nothing to you, don't be alarmed! We'll walk through the process
+shortly. But first, you'll need to create a GitHub account if you don't already
+have one.</p>
+
+<p> To create an account, head over to 
+<a href="http://github.com">http://github.com</a>. On the homepage, fill in the 
+requested fields to create an account. Make sure you note the username you 
+choose, as we'll need to use that in the next step. It's highly recommended
+that you choose a somewhat professional username, since you'll likely want to
+link to your GitHub account on your resume in the future.</p>
+
+<p> Now, fill in the Google form linked below. Again, please be extremely careful
+when entering the requested information - mistyping will likely get your submission 
+rejected, at which point you'll have to talk to a TA to get your account fixed. 
+To fill out the form, you will need to be logged into your
+berkeley.edu Google account. If you do not have a berkeley.edu email address, 
+ask your TA to configure your repositories manually.</p>
+
+<p><a href="https://docs.google.com/a/berkeley.edu/forms/d/1lKi3BovJamplJMqgJE4usqVy5OZKHx0LTi4oPtq2EBQ/viewform" target="new">https://docs.google.com/a/berkeley.edu/forms/d/1lKi3BovJamplJMqgJE4usqVy5OZKHx0LTi4oPtq2EBQ/viewform</a> </p>
+
+<p>This form connects your GitHub username to a free private repository that we 
+automatically create for you under the cs61c-spring2015 organization. The backend 
+will take a couple of minutes to process your submission and then will send you 
+an email, but you can continue to work on through this lab while you wait.</p>
+
+<p>First, lets configure <tt>git</tt> so that it knows who you are. Run the 
+commands listed below, replacing
+<tt>YOUR NAME</tt> with your first and last name (inside quotes) and <tt>YOUR EMAIL ADDRESS</tt>
+with the email address you used to register for your GitHub account:</p>
+
+<pre>
+$ git config --global user.name "YOUR NAME"
+$ git config --global user.email "YOUR EMAIL ADDRESS"
+</pre>
+
+<p>Next, in order to interact with GitHub without repeatedly entering a username and 
+password, we'll need to setup an SSH key. To do so, follow the instructions here:
+
+<a href="github_ssh_key_guide/sshkeys.html">GitHub Generating SSH-keys Guide (Adapted for inst machines)</a>
+
+<p>Getting the following output at the end of Step 4 in the above link means your
+setup was successful:</p>
+
+<pre>
+Hi username! You've successfully authenticated, but GitHub does not
+provide shell access.
+</pre>
+
+<h3>Exercise 2: Learn <tt>git</tt></h3>
+
+<p>Visit <a href="http://try.github.com" target="new">try.github.com</a> to work through 
+a quick hands-on introduction to <tt>git</tt> and GitHub (a host for git repositories). You can stop after completing section 1.25 ("The Final Push").
+Here, you'll work on a "simulated" repository, so that you get some experience before
+you create your actual coursework repository. Don't worry if you don't feel like 
+an expert after this tutorial - git is a complicated program, so we'll be 
+incorporating it into upcoming assignments to help you familiarize yourself 
+with its intricacies.</p>
+
+<p><b>Checkoff:</b></p>
+<ul>
+    <li>Show your TA the completed try.github.com tutorial.</li>
+</ul>
+
+<h3>Exercise 3: Create your <tt>git</tt> repository for CS61C</h3>
+<p>Since we've already done a whirlwind tour of <tt>git</tt> in the last exercise,
+let's jump right in and create a local repository to house our coursework for CS61C:</p>
+
+<p>First, we'll make a directory that represents the highest-level ("root") directory
+in our git repository. We'll call this directory "work", place it in the home directory of our class account, and enter into the directory:</p>
+
+<pre>
+$ mkdir ~/work
+$ cd ~/work
+</pre>
+
+<p>Next, we'll run <tt>git init</tt>, which will place our <tt>~/work</tt> directory under version control.</p>
+
+<pre>
+$ git init
+</pre>
+
+<p>As in the last exercise, this will create a directory inside <tt>~/work</tt>
+called <tt>.git/</tt>. This is where <tt>git</tt> stores all of the information
+about your repository.</p> 
+
+<p>We won't need to work with any files for the number-representation part of this lab,
+so let's create a dummy README file to put under version control:</p>
+
+<pre>
+$ echo "Hello World! This is cs61c-XX's repository." > README
+</pre>
+
+<p>Now, type <tt>git status</tt>. You should get output like the following:</p>
+
+<pre>
+On branch master
+
+Initial commit
+
+Untracked files:
+  (use "git add &ltfile&gt..." to include in what will be committed)
+
+        README
+
+nothing added to commit but untracked files present (use "git add" to track)
+</pre>
+
+<p>Here, git is telling us that we have a file named README that is not 
+tracked as part of the repository.</p>
+
+<p>In order to place the file under version control, let's use <tt>git add</tt> 
+to stage the <tt>README</tt> file to be committed. 
+Since README is a new file, we're telling git to begin tracking
+changes to the file. Essentially, by using the <tt>git add</tt> command, we are 
+telling git which changes we want added to the repository when we next type 
+<tt>git commit</tt>. A commit is basically a snapshot of all of the files in 
+your repository at some point in time.</p>
+
+<pre>
+[tell git to start tracking the README file:]
+$ git add README
+</pre>
+
+<p>Now, if you type <tt>git status</tt> once again, you'll see output like the following:</p>
+
+<pre>
+On branch master
+
+Initial commit
+
+Changes to be committed:
+  (use "git rm --cached &lt;file&gt;..." to unstage)
+
+        new file:   README
+
+</pre>
+
+<p>This output indicates that we've now staged the <tt>README</tt> file to 
+be committed to the repo next time we type <tt>git commit</tt>.
+
+<p>
+Now, we will actually make a commit using <tt>git commit</tt>. This command will 
+take a commit message, which will allow us to easily identify what was added or 
+changed in the repo at this point in time.</p>
+
+<pre>
+$ git commit -m 'First Commit! - Added new README file'
+</pre>
+
+<p>Now, if you once again type <tt>git status</tt>, you'll see output like the following:</p>
+
+<pre>
+On branch master
+nothing to commit, working directory clean
+</pre>
+
+<p>This is exactly what we wanted. Since we just made a commit, the files in 
+the directory and the versions of them known to <tt>git</tt> are the same.
+Thus, <tt>git</tt> reports that the current working directory (<tt>~/work</tt>)
+is clean.</p>
+
+<p>Now, if you type <tt>git log</tt>, you should see the commit history of your repository:</p>
+
+<pre>
+$ git log
+commit 160694f5e5a229a12c82262511756cef1d0714c0
+Author: Sagar Karandikar &lt;skarandikar@berkeley.edu&gt;
+Date:   Thu Jan 22 14:33:41 2015 -0800
+
+    First Commit! - Added new README file
+
+</pre>
+
+<p>Once you make more commits, the output of <tt>git log</tt> will show you 
+information about the most recent commits in the repository.</p>
+
+
+<p>As it stands, there are two problems with our local repository:
+
+<ol>
+    <li>We don't have a backup copy. You should always backup your code!</li>
+    <li>Our local copy is private only to us. What if we want to share our code
+    with our project partner?</li>
+</ol>
+
+<p>We will resolve both of these issues by using GitHub. GitHub will store
+a "remote" copy of our repository. This serves both as a backup that we can
+re-clone if we accidentally destroy our local copy and allows us to share
+the contents of the repository with other GitHub users if we'd like.</p>
+
+<p>Currently, we only have a single local copy of our repository. Let's go ahead
+and push to our private repository on GitHub. In order to do so, we'll need to 
+add a "remote", which points to our space on GitHub. You should replace cs61c-xx 
+in the command below with your login:</p>
+
+<pre>
+[in the command below, you MUST replace cs61c-xx with your login]
+$ git remote add origin git@github.com:cs61c-spring2015/cs61c-xx
+</pre>
+
+<p>At this point, you should go check the email address you used to sign up
+for GitHub. You should see an email that looks like the following:</p>
+
+<img src="img/invite.png" width="90%" />
+
+<p>Follow the link in the email. Once you do so, you should see your repository,
+named after your class account login (<tt>cs61c-xx</tt>). Unlike default repositories
+you create on GitHub which are public, <strong>this repository is private and visible 
+only to you and the CS61C Staff.
+This is important when doing coursework since you don't want to share your
+work with the entire class.</strong></p>
+
+<p>Now that our repository exists on GitHub, let's tell <tt>git</tt> to send 
+the contents of our repository to GitHub. We do this with the <tt>git push</tt> command, 
+specifying where we want to send the code (to "origin", which we defined above) 
+and the branch ("master"). We will cover branches in more detail later on.</p>
+
+<pre>
+$ git push -u origin master
+</pre>
+
+<p>Now, let's head to the GitHub website and click on the repo name (your class account login). 
+Alternatively, you can go directly to https://github.com/cs61c-spring2015/cs61c-xx, replacing 
+xx with the two letters at the end of your class account login.
+You should see something similar to the screenshot below: </p>
+
+<img src="img/pushed_repo.png" width="90%"/>
+
+<p>Woo! Notice how our README file is now uploaded to the copy of the repository
+on GitHub. Anything that you commit to the repository and then push will be
+stored on GitHub in addition to your local copy of the repository.</p>
+
+<p>As we do more work in this course, you should create subdirectories in this 
+repository to place your projects. The general workflow you'll use will adhere
+to the following format:</p>
+
+<pre>
+$ cd ~/work
+$ mkdir assignment_name
+$ [copy assignment files into the assignment_name directory as instructed by the assignment]
+$ git add assignment_name/
+$ git commit -m 'adding skeleton for assignment_name'
+$ git push origin master
+$ [work on assignment, modifying files in the ~/work/assignment_name directory]
+$ git add -u # the -u tells git to stage changes to all known files - aka skeleton files you filled in 
+$ git commit -m "completed question 1 in assignment_name"
+$ git push origin master
+$ [go back to "work on assignment step," repeat until done assignment]
+</pre>
+
+<p>At this point, we've covered enough of the basics of <tt>git</tt> to make it useful 
+as a code backup system. In a later lab, we'll discuss more about how to 
+use <tt>git</tt> as a collaborative tool. We'll explore topics like branching, merging,
+and pulling.</p>
+
+<p><b>Checkoff:</b></p>
+Show your TA your private repository on the GitHub website with the README committed.
+
+<h3>Exercise 4: Binary Alphabet</h3>
+
+<h4>At this point, you may begin to work with a partner.</h4>
+
+<p>Let's take 4-bit numbers.
+If we stack five 4-bit numbers on top of each other in binary, we can make patterns and pictures!
+To help visualize this, you can think of 0's and 1's as white and black instead.
+For example, what does the following bit pattern look like?
+</p>
+<table border=0 cellpadding=0 cellspacing=0>
+  <tr> <td><tt>0</tt><td><tt>&nbsp;1</tt><td><tt>&nbsp;1</tt><td><tt>&nbsp;0</tt><td>&nbsp;
+       <td>&#x25a1;<td>&nbsp;&#x25a0;<td>&nbsp;&#x25a0;<td>&nbsp;&#x25a1;
+  <tr> <td><tt>1</tt><td><tt>&nbsp;0</tt><td><tt>&nbsp;0</tt><td><tt>&nbsp;1</tt><td>&nbsp;
+       <td>&#x25a0;<td>&nbsp;&#x25a1;<td>&nbsp;&#x25a1;<td>&nbsp;&#x25a0;
+  <tr> <td><tt>1</tt><td><tt>&nbsp;1</tt><td><tt>&nbsp;1</tt><td><tt>&nbsp;1</tt><td>&nbsp;--&gt;&nbsp;
+       <td>&#x25a0;<td>&nbsp;&#x25a0;<td>&nbsp;&#x25a0;<td>&nbsp;&#x25a0;
+  <tr> <td><tt>1</tt><td><tt>&nbsp;0</tt><td><tt>&nbsp;0</tt><td><tt>&nbsp;1</tt><td>&nbsp;
+       <td>&#x25a0;<td>&nbsp;&#x25a1;<td>&nbsp;&#x25a1;<td>&nbsp;&#x25a0;
+  <tr> <td><tt>1</tt><td><tt>&nbsp;0</tt><td><tt>&nbsp;0</tt><td><tt>&nbsp;1</tt><td>&nbsp;
+       <td>&#x25a0;<td>&nbsp;&#x25a1;<td>&nbsp;&#x25a1;<td>&nbsp;&#x25a0;
+</table>
+<p><b>Checkoff:</b></p>
+<ul>
+  <li>What five decimal digits produce the pattern above?  What five hexadecimal digits?
+  <li>What letter is drawn with 1,1,9,9,6? 0xF8F88?
+  <li>What is the hexadecimal representation you would use to spell the letter 'B'?  'N' (you probably won't want to use 5 hex digits for this one)?
+</ul>
+
+<h3>Exercise 5: 1,000 $1 Bills</h3>
+<p>I hand you a thousand $1 bills and ten envelopes.
+Your job is to find a way to put various numbers of dollar bills in those ten envelopes so that no matter what amount of money I ask you for (between $1-1000), you can simply hand me some combination of envelopes and always be assured of giving me the correct amount of cash.</p> 
+<p><b>Checkoff:</b></p>
+<ul>
+  <li>Explain to your TA how to distribute the dollar bills in the ten envelopes.
+</ul>
+
+ 
+</body>
+</html>

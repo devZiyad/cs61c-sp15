@@ -1,0 +1,309 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+	<title>Lab 11 - CS61C Sp15</title>
+	<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+<div class="header">
+	<h1>CS61C Spring 2015 Lab 11: MapReduce and Spark</h1>
+</div>
+
+<div class="content">
+
+<h2>Goals</h2>
+<ul>
+	<li>Get hands-on experience running MapReduce and gain a deeper understanding of the MapReduce paradigm.</li>
+    <li>Become more familiar with Apache Spark and get hands on experience with running Spark on a local installation.</li>
+    <li>Learn how to apply the MapReduce paradigm to Spark by implementing certain problems/algorithms in Spark.</li>
+</ul>
+
+
+<h2>Setup</h2>
+<p>Copy the contents of <tt>~cs61c/labs/11</tt> to a suitable location in your home directory.</p>
+<p>It will be helpful if inexperienced Java programmers partner with experienced Java programmers for this lab.</p>
+<p>You will also be working with Spark (in Python!), so you may need to brush up a bit on your Python!</p>
+
+
+<h2>Background Information</h2>
+<p>In lecture we've exposed you to cluster computing (in particular, the MapReduce framework), how it is set up and executed, but now it's time to get some hands-on experience running programs with a cluster computing framework!</p>
+
+<p>In this lab, we will be introuducing you to two different cluster computing frameworks:
+<ul>
+  <li>The first one is Hadoop -- an open source platform which implements the MapReduce framework.
+      For this lab, you will be running the Map and Reduce routines are run locally (within one process).</li>
+  <li>The second framework is Spark!
+      In this lab, we will be converting some of the code write for Hadoop into Python to run in Spark to give us some practice in writing Map and Reduce routines in Spark as well.</li>
+</ul>
+<p>Both of these frameworks have their own websites (<a href="http://hadoop.apache.org/">Hadoop</a> and <a href="http://spark.apache.org/">Spark</a>), so you are free to try to install either onto your local machines, although it may be easier to ssh into the lab computers to complete this lab.
+Be sure to understand the Spark framework well, as we will be using Spark in the upcoming project!</li>
+
+<h3>Avoid Global Variables</h3>
+<p>When using both Hadoop and Spark, avoid using global variables!
+This defeats the purpose of having multiple tasks running in parallel and creates a bottleneck when multiple tasks try to access the same global variable.
+As a result, most algorithms will be implemented without the use of global variables.
+If necessary, in Hadoop, you can make use of the configuration variables across machines and in Spark, you can make use of broadcast variables, however, we will not need either of these for the lab.</p>
+
+<h3>How to run Spark via the command line</h3>
+<p>For this lab and the project we will be providing you all with a Makefile that will help you run your Spark files, but should you create your own new files (or use Spark outside of this class, which you should!), you will need to know how to run Spark via the command line.
+For our version of Spark (which is 1.1.0), in order to run your Spark file xxx.py (similar to how  you run your Python files with python xxx.py), you just run the following command:</p>
+<pre class='output'>
+$ <span class='input'>spark-submit xxx.py </span><span style="color:#666666;"># Runs the Spark file xxx.py</span>
+</pre>
+<p>If your Spark file takes in arguments (much like the Spark files we have provided), the command will be similar, but you will instead add however any arguments that you need, like so:</p>
+<pre class='output'>
+$ <span class='input'>spark-submit xxx.py arg1 arg2 </span><span style="color:#666666;"># Runs the Spark file xxx.py and passes in arg1 and arg2 to xxx.py</span>
+</pre>
+<p>Spark also includes this neat interpreter that runs with Python 2.7.3 and will let you test out any of your Spark commands right in the interpreter! The interpreter also takes in files (pass in the file with --py-files flag) and will load your file in the same directory as the executable.
+If you are looking to just run the interpreter, the command is as follows:</p>
+<pre class='output'>
+$ <span class='input'>pyspark </span><span style="color:#666666;"># Runs the Spark interpreter. Feel free to test stuff out here!</span>
+</pre>
+<p>If you want to preload some files (say a.py, b.py, c.py), you can run the following command:</p>
+<pre class='output'>
+$ <span class='input'>pyspark --py-files a.py, b.py, c.py </span><span style="color:#666666;"># Runs the Spark interpreter and you can now import stuff from a, b, and c!</span>
+</pre>
+
+<h3>Spark Debugging Quick-tips</h3>
+<p>If you ever find yourself wondering why your output is strange or something breaks when you run your Spark files, remember these few quick-tips!</p>
+  <ul>
+    <li>Make use of the <a href="http://spark.apache.org/docs/latest/api/python/pyspark.rdd.RDD-class.html#take">take</a> function!
+        The take function can be run on any RDD object (so any object you are trying to parallelize or have run any transformation / action functions on (you will read about this later).
+        This function takes in one argument N, which is an integer and it will return back to you the first N elements inside of your RDD object.
+        For more information about this, check out the documentation on take.</li>
+    <li>You can also test out your functions (map, reduce, etc) inside of the Spark interpreter (pyspark, mentioned above).
+        Simply import the function you want to test out in pyspark (explained above) and you will be able to run this function and check if the output is what you expected!
+        Here is a short example from wordcount.py:
+    </li>
+  <br>
+  <pre class='output'>
+  $ <span class='input'>pyspark --py-files wordcount.py </span><span style="color:#666666;"># Run the pyspark interpreter with the wordcount.py file in the executable's directory</span>
+  &gt;&gt;&gt; <span class='input'>from wordcount import flat_map </span><span style="color:#666666;"># Import the function you want to test out, in this case, flat_map</span>
+  &gt;&gt;&gt; <span class='input'>file = sc.sequenceFile("/home/ff/cs61c/data/billOfRights.txt.seq") </span><span style="color:#666666;"># Load up the sequence file billOfRights.txt.seq</span>
+  &gt;&gt;&gt; <span class='input'>file.take(5) </span><span style="color:#666666;"># Returns back to you the first 5 elements in billOfRights.txt.seq</span>
+  <span class='input'>[(&lt;doc_name_1&gt;, &lt;text 1&gt;), (&lt;doc_name_2&gt;, &lt;text 2&gt;), ..., (&lt;doc_name_5&gt;, &lt;text 5&gt;)]</span>
+  &gt;&gt;&gt; <span class='input'>flat_map_output = file.flatMap(flat_map) </span><span style="color:#666666;"># Run the imported function flat_map on the file</span>
+  &gt;&gt;&gt; <span class='input'>flat_map_output.take(5) </span><span style="color:#666666;"># Return back the first 5 words in your document.</span>
+  <span class='input'>[u'Amendment', u'I', u'Congress', u'shall', u'make']</span></pre>
+  </ul>
+
+<h3>Documentation, and Additional Resources</h3>
+<ul>
+	<li>The Java API documentation is on the web <a href="http://download.oracle.com/javase/6/docs/api/">here</a>. The classes java.util.HashMap, java.util.HashSet and java.util.ArrayList are particularly likely to be useful to you.</li>
+	<li>The Hadoop Javadoc is also available <a href="http://archive.cloudera.com/cdh/3/hadoop/api/index.html">here</a>. You mostly shouldn't need this, but it may be handy for <tt>org.apache.hadoop.io.Text</tt>.</li>
+    <li>A quickstart programming guide for Spark (click the Python tab to see the Python code) is avaiable <a href="http://spark.apache.org/docs/latest/programming-guide.html">here</a>!</li>
+    <li>The version of Spark we will be using will be 1.1.0 and the link to the API documentation is available <a href="http://spark.apache.org/docs/latest/api/python/index.html">here</a>.
+        For this lab, you should not need to reference too much, but you may have to look at this for the project.</li>
+</ul>
+
+
+<h2>Exercises</h2>
+
+<p>The following exercises use three different sample input files, two of which are provided by the staff and can be found in <tt>~cs61c/data</tt>:</p>
+<ol>
+	<li><tt>billOfRights.txt.seq</tt> -- the 10 Amendments split into separate documents (a very small input)</li>
+	<li><tt>complete-works-mark-twain.txt.seq</tt> -- The Complete Works of Mark Twain (a medium-sized input)</li>
+</ol>
+
+<p>Notice the <tt>.seq</tt> extension, which signifies a Hadoop sequence file. These are NOT human-readable. To get a sense of the texts you'll be using, simply drop the <tt>.seq</tt> portion to view the text file (i.e. <tt>~cs61c/data/billOfRights.txt</tt>).</p>
+
+<p>Although an exercise may not explicitly ask you to use it, we recommend testing your code on the billOfRights data set first in order to verify correct behavior and help you debug.</p>
+
+<p>We recommend deleting output directories when you have completed the lab, so you don't run out of your <a href="https://inst.eecs.berkeley.edu/cgi-bin/pub.cgi?file=disk.quotas">500MB of disk quota</a>. You can do this by running:</p>
+
+<pre class='output'>
+$ <span class='input'>make destroy-all</span>
+</pre>
+
+<p>Please be careful with this command as it will delete all outputs generated in this lab.</p>
+
+<h3>Exercise 0: Generating an Input File for Hadoop</h3>
+<p>For this exercise you will need the <tt><a href="Makefile">Makefile</a></tt> and <tt><a href="Importer.java">Importer.java</a></tt>.
+In this lab, we'll be working heavily with textual data.
+We have some pre-generated datasets as indicated above, but it's always more fun to use a dataset that you find interesting.
+This section of the lab will walk you through generating your own dataset using works from Project Gutenberg (a database of public-domain literary works).</p>
+
+<p>Step 1: Head over to <a href="http://gutenberg.org">Project Gutenberg</a>, pick a work of your choosing, and download the "Plain Text UTF-8" version into your lab directory.</p>
+
+<p>Step 2: Open up the file you downloaded in your favorite text editor and insert &quot;---END.OF.DOCUMENT---&quot; (without the quotes) by itself on a new line wherever you want Hadoop to split the input file into separate (key, value) pairs.
+The importer we're using will assign an arbitrary key (like &quot;doc_xyz&quot;) and the value will be the contents of our input file between two &quot;---END.OF.DOCUMENT---&quot; markers.
+You'll want to break the work into reasonably-sized chunks, but don't spend too much time on this part (chapters/sections within a single work or individual works in a body of works are good splitting points).</p>
+
+<p>Step 3: Now, we're going to run our Importer to generate a .seq file that we can pass into the Hadoop programs we'll write.
+The importer is actually a MapReduce program!
+You can take a look at Importer.java if you want, but the implementation details aren't important for this part of the lab.
+You can generate your input file like so:</p>
+
+<pre class='output'>
+$ <span class='input'>make generate-input myinput=YOUR_FILE_FROM_STEP_2.txt</span>
+</pre>
+
+<p>Your generated .seq file can now be found in the convertedOut directory in your lab7 directory.
+Throughout the rest of this lab, you'll be able to run the mapreduce programs we write using <tt>make</tt> commands.
+The <tt>make</tt> commands will be of the form <tt>make PROGRAMNAME-INPUTSIZE</tt>.
+If you wish to try out the input file you generated here, you can instead run: </p>
+
+
+<pre class='output'>
+$ <span class='input'>make PROGRAMNAME myinput=YOUR_SEQ_FILE_FROM_STEP_3.txt.seq</span> <span style="color:#666666;"># Output in wc-out-PROGRAMNAME/ directory</span>
+</pre>
+
+
+<h3>Exercise 1: Running Word Count</h3>
+<p>For this exercise you will need the <tt><a href="Makefile">Makefile</a></tt> and already-completed <tt><a href="WordCount.java">WordCount.java</a></tt>.
+You must compile and package the <tt>.java</tt> source file into a <tt>.jar</tt> and then run it on our desired input. Luckily, this is available as a convenient <tt>make</tt> command:</p>
+
+<pre class='output'>
+$ <span class='input'>make wordcount-small</span>
+</pre>
+
+<p>This will run WordCount over <tt>billOfRights.txt.seq</tt>. Your output should be visible in <tt>wc-out-wordcount-small/part-r-00000</tt>.
+If we had used multiple reduces, the output would be split across <tt>part-r-[id.num]</tt>, where Reducer "<tt>id.num</tt>" outputs to the corresponding file.
+The key-value pair for your Map tasks is a document identifier and the actual document text.</p>
+
+<p>Next, try your code on the larger input file <tt>complete-works-mark-twain.txt.seq</tt>.
+In general, Hadoop requires that the output directory not exist when a MapReduce job is executed, however our Makefile takes care of this by removing our old output directory.
+Remember that we DON'T need to rebuild <tt>wc.jar</tt>, separately; the Makefile takes care of all the details.</p>
+
+<pre class='output'>
+$ <span class='input'>make wordcount-medium</span>
+</pre>
+
+<p>Your output for this command will be located in the <tt>wc-out-wordcount-medium</tt> directory. The first few lines will be confusing since the words you see there are actually numbers (for example, chapter numbers). Search through the file for a word like &quot;the&quot; to get a better understanding of the output. 
+
+You may also notice that the Reduce &quot;percentage-complete&quot; moves in strange ways.
+There's a reason for it -- your code is only the last third of the progress counter.
+Hadoop treats the distributed shuffle as the first third of the Reduce.
+The sort is the second third.
+The actual Reduce code is the last third.
+Locally, the sort is quick and the shuffle doesn't happen at all.
+So don't be surprised if progress jumps to 66% and then slows.</p>
+
+
+<h3>Exercise 2: Document Word Count</h3>
+<p>Open <tt><a href="DocWordCount.java">DocWordCount.java</a></tt>.
+Notice that it currently contains the same code as <tt>WordCount.java</tt> (but with modified class names), which you just compiled and tried for yourself.
+Modify it to <b>count the number of documents containing each word</b> rather than the number of times each word occurs in the input. </p>
+
+<p>You should only need to modify the code inside the <tt>map()</tt> function for this part.
+Each call to <tt>map()</tt> gets a single document, and each document is passed to exactly one <tt>map()</tt>.</p>
+
+<p>You can test DocWordCount using either of the following (for our two data sets):</p>
+
+<pre class='output'>
+$ <span class='input'>make docwordcount-small </span> <span style="color:#666666;"># Output in wc-out-docwordcount-small/</span>
+</pre>
+
+<p>OR</p>
+
+<pre class='output'>
+$ <span class='input'>make docwordcount-medium </span><span style="color:#666666;"># Output in wc-out-wordcount-medium/</span>
+</pre>
+
+
+<h4>Check-off</h4>
+<ul>
+	<li>Explain your modifications to <tt>DocWordCount.java</tt> to your TA.</li>
+	<li>Show your output for <tt>billOfRights</tt> (aka the output for running <tt>make docwordcount-small)</tt>.
+	    In particular, what values did you get for "Amendment", "the", and "arms"?  Do these values make sense?</li>
+</ul>
+
+
+<h3>Exercise 3: Working with Spark</h3>
+<p>Now that you have gained some familiarity with the MapReduce paradigm, we will shift gears into Spark and investigate how to do what we did in the previous exercise in Spark!
+We have provided a complete <tt><a href="wordcount.py">wordcount.py</a></tt>, to get you a bit more familiar with how Spark works.
+To help you with understanding the code, we have added some comments, but feel free to check out <a href="http://spark.apache.org/docs/latest/programming-guide.html#transformations">transformations</a> and <a href="http://spark.apache.org/docs/latest/programming-guide.html#actions">actions</a> on the Spark website for a more detailed explanation on some of the methods that can be used in Spark.
+</p>
+
+<p>
+To get you started on implementing <tt><a href="DocWordCount.java">DocWordCount.java</a></tt> in Spark, we have provided a skeleton file <tt><a href="docwordcount.py">docwordcount.py</a></tt>.
+For this lab, we will be using the same .seq files that we used for Hadoop, but Spark also allows us to work with other inputs as well!
+If you're interested, you can take a look at the Spark website, but you will not need to worry about that for this lab.
+</p>
+
+<p>
+In this part, you may find it useful to look at the transformations and actions link provided above, as there are methods that can you help sort an output or remove duplicate items.
+To help with distinguishing when a word appears in a document, you may want to make use of the document ID as well -- this is mentioned in the comments of flat_map.
+Make sure the output you get in Spark is similar to the output you get in Hadoop.
+</p>
+
+<p>To test your docwordcount.py, you can run either of the following two commands:</p>
+<pre class='output'>
+$ <span class='input'>make sparkdwc-small </span> <span style="color:#666666;"># Output in wc-out-docwordcount-small/</span>
+</pre>
+
+<p>OR</p>
+
+<pre class='output'>
+$ <span class='input'>make sparkdwc-medium </span><span style="color:#666666;"># Output in wc-out-wordcount-medium/</span>
+</pre>
+
+
+<h4>Check-off</h4>
+<ul>
+  <li>Explain to your TA what you modified in <tt>docwordcount.py</tt>.</li>
+  <li>Show your output for <tt>billOfRights</tt> (aka the output for running <tt>make sparkdwc-small)</tt>.</li>
+</ul>
+
+
+<h3>Exercise 4: Full Text Index Creation</h3>
+<p>Open <tt><a href="index.py">index.py</a></tt>.
+Notice that the code is similar to <tt>docwordcount.py</tt>.
+Modify it to output every word and a list of locations (document identifier followed by the word index of EACH time that word appears in that document).
+Make sure your word indices start at zero.
+Your output should have lines that look like (minor line formatting details don't matter):</span>
+</p>
+
+<pre>
+(word1	document1-id, word# word# ...)
+(word1	document2-id, word# word# ...)
+. . .
+(word2	document1-id, word# word# ...)
+(word2	document3-id, word# word# ...)
+. . .
+</pre>
+
+<p>Notice that there will be a line of output for EACH document in which that word appears and EACH word and document pair should only have ONE list of indices.
+Remember that you need to also keep track of the document ID as well.
+</p>
+
+<p>For this exercise, you may not need all the functions we have provided.
+If a function is not used, feel free to remove the method that is trying to call it.
+Make sure your output for this is sorted as well (just like in the previous exercise.
+</p>
+
+<p>You can test index by using either of the following commands (for our two data sets):</p>
+
+<pre class='output'>
+$ <span class='input'>make index-small </span><span style="color:#666666;"># Output in wc-out-index-small/</span>
+</pre>
+
+<p>OR</p>
+
+<pre class='output'>
+$ <span class='input'>make index-medium </span><span style="color:#666666;"># Output in wc-out-index-medium/</span>
+</pre>
+
+<p>The output from running <tt>make index-medium</tt> will be a large file.
+In order to more easily look at its contents, you can use the commands <tt>cat</tt>, <tt>head</tt>, <tt>more</tt>, and <tt>grep</tt>:</p>
+
+<pre class='output'>
+$ <span class='input'>head -25 OUTPUTFILE</span>       <span style="color:#666666;"># view the first 25 lines of output</span>
+$ <span class='input'>cat OUTPUTFILE | more</span>     <span style="color:#666666;"># scroll through output one screen at a time (use Space)</span>
+$ <span class='input'>cat OUTPUTFILE | grep the</span> <span style="color:#666666;"># output only lines containing 'the' (case-sensitive)</span>
+</pre>
+
+<p>Make sure to verify your output.
+Open <tt>complete-works-mark-twain.txt</tt> and pick a few words.
+Manually count a few of their word indices and make sure they all appear in your output file.
+
+<h4>Check-off</h4>
+<ol>
+	<li>Explain your code in <tt>index.py</tt> to your TA.</li>
+	<li>Show your TA the first page of your output for the word &quot;Mark&quot; in <tt>complete-works-mark-twain.txt.seq</tt> to verify correct output. You can do this by running: <tt>cat wc-out-index-medium/part-r-00000 | grep Mark | less</tt> </li>
+</ol>
+
+
+</div>
+</body>
+</html>

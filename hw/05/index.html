@@ -1,0 +1,210 @@
+<html><head>
+<title>CS61C Spring 2015 Homework 5</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+
+<div class='header'>
+<h1>CS61C Spring Homework 5</h1>
+TA: Donggyu Kim, Nolan Lum
+</div>
+
+<div class='content'>
+<p>Due Sunday, April 5th, 2015 @ 23:59:59</p>
+<p>
+<ul class="error">
+  <li>Update 3/26 9:50 PM: Added a new direction for the cache miss rate in Problem 2.b. </li>
+  <li>Update 3/30 7:10 PM: Fixed a typo in hw.txt. Please use a new template for your submission </li>
+  <li>Update 3/30 11:40 AM: Any change for the caches does not change the clock time and frequency(2GHz), but may change their clock cycles. This assumption does not affect your solution unless you worry about the change of the clock time for Problem 1. </li>
+  <li>Update 4/3 12:15 PM: Please check the Piazza post about the cache miss types before submitting.</li>
+  <li>Update 4/4 3:10 PM: Cache miss rates should be given as a fraction or three significant digits.</li>
+</ul>
+
+<h2>Goals</h2>
+<p>This assignment will cover caches and floating point numbers.</p>
+
+<h2>Setup</h2>
+<p>You should writeup your solutions in <a href="hw5.txt"><tt>hw5.txt</tt></a>.
+<b>Please use the provided format in <tt>hw5.txt</tt>.</b>
+File names are case-sensitive and the submission program will not accept your submission if your file names differ at all from those specified.
+Detailed <a href="#submit">submission instructions</a> are given at the bottom of this page. Failure to follow these will result in loss of credit.</p>
+
+<h2>Exercises</h2>
+<h3>Problem 1: Cache Block Size, Associativity, and AMAT (15 pts)</h3>
+<p> Suppose we have 16 bit byte-addresses and the clock frequency is 2GHz. We have the cache parameters as follows: </p>
+<ul>
+	<li> Cache size: 4KiB </li>
+	<li> Block size: 1 word (4 bytes) </li>
+	<li> Cache hit time: 2 cycles </li>
+	<li> Cache miss time: 100 cycles </li>
+</ul>
+<p>Now suppose we access the following addresses, in order:</p>
+<pre>
+0x0000, 0x0004, 0x0008, 0x000c, 0x1000, 0x1004, 0x1008, 0x100c, 0x0000, 0x0004, 0x0008, 0x000c
+</pre>
+<ol type='a'>
+<li> First, we start with a direct-mapped cache. </li>
+	<ol type='b'>
+	<p><li> What are the widths of the tag, set index, and block offset fields? </li></p>
+	<p><li> Is each memory access a cache hit or a miss? Also, identify the cache miss type if it's a miss, and fill in the following table. </li></p>
+	<table border='1'><tbody>
+		<tr>
+			<td> Address </td>
+			<td> Cache Hit / Miss? </td>
+			<td> Miss Type(Compulsory, Capacity, or Conflict) </td>
+		</tr>
+		<tr>
+			<td> 0x0000 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x0004 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x0008 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x000c </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x1000 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x1004 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x1008 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x100c </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x0000 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x0004 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x0008 </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td> 0x000c </td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody></table>
+	</p>
+	<p><li> Calculate the miss rate and the AMAT in ns. How much does it decrease or increase the memory access time compared to having no cache? </li></p>
+	</ol>
+<br>
+<li> Next, we increase the block size to 2 words. The overall cache size remains unchanged. </li>
+	<ol type = 'b'>
+	<p><li> Repeat (a.1) for a cache with a block size of 2 words. </li></p>
+	<p><li> Repeat (a.2) for a cache with a block size of 2 words. </li></p>
+	<p><li> Calculate the miss rate. Note that we have different hit or miss times (or both) with the increased block size. 
+		Choose the valid one among the following timing parameters, and calculate the AMAT in ns.
+		How much does it decrease or increase the memory access time compared to having no cache? </li>
+	<ul>
+		<li> Cache hit time: 1, 2, 3 cycles </li>
+		<li> Cache miss time: 90, 100, 110 cycles </li>
+	</ul></p>
+	</ol>
+<br>
+<li> Lastly, we increase the associativity of the cache in (b) whose block size is two words. The overall cache size remains unchanged. </li>
+	<ol type = 'b'>
+	<p><li> Repeat (a.1) for a two-way set associative cache. </li></p>
+	<p><li> Repeat (a.2) for a two-way set associative cache. </li></p>
+	<p><li> Repeat (b.3) for a two-way set associative cache. </li></p>
+	</ol>
+</ol>
+
+<h3>Problem 2: Cache Friendly Programming (5 pts)</h3>
+
+<p> The following C program is run (with no optimization) on a processor with a direct-mapped data cache 
+	with a size of 1KiB and a block size of 16 bytes. </p>
+<pre>
+int i, j, array[256*256];
+
+/* ... */
+
+for (i = 0 ; i < 255 ; i++) {
+  for (j = 0 ; j < 256 ; j++) {
+    array[256*j] += array[256*j + i + 1];
+  }
+}
+</pre>
+<p> Assume <tt>sizeof(int) == 4</tt> and <tt>array == 0x4000.</tt> </p>
+<ol type = 'a'>
+<p><li> Calculate the miss rate. </li></p>
+<p><li> Rewrite the code to improve the performance (don't use cache blocking). What is the miss rate in this case? Give a fraction or three significant digits for the percentage.</li></p>
+<p><li> Will a write-back cache be helpful with the code in (b)? Explain briefly, in one or two sentences. </li></p>
+</ol>
+
+<h3>Problem 3: Floating Point Numbers (10 pts)</h3>
+If you're starting this homework early and we haven't covered this yet don't worry. We'll be going over floating point representation in Thursday's lecture.
+
+For the following questions, we will be referring to the IEEE 32-bit floating point representation <b><i>except</i></b> 
+with a 6 bit exponent (bias of 2^6/2 - 1 = 31) and a denorm implicit exponent of -30.
+<ol type="a">
+	<li>Convert -42.375 to floating point format. Write your answer in hexadecimal.</li>
+    <li>Convert the floating point number 0xD3510000, which follows the 6 bit exponent representation as described above, to decimal. Please specify infinities as <tt>+inf</tt> or <tt>-inf</tt>, and not a number as <tt>NaN</tt>.</li>
+	<li>What's the smallest non-infinite positive integer (an integer has nothing to the right of the decimal) it CANNOT represent? Leave your answer in decimal (ex: 12). </li>
+	<li>What's the smallest positive value it can represent that is not a denorm? Leave your answer as a power of 2 (ex: 2^x).</li>
+	<li>What's the smallest positive value it can represent? Leave your answer as a power of 2 (ex: 2^x). </li>
+</ol>
+
+<h3 id="submit">Submission</h3>
+<p>There are <strong>two</strong> steps required to submit hw5.txt. Failure to perform both steps will result in loss of credit:</p>
+<ol>
+<li><p>First, you must submit using the standard unix submit program on the instructional servers. 
+	To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+<pre>
+$ mkdir ~/files_for_submit
+$ cd ~/files_for_submit
+$ mkdir hw5
+$ cd hw5
+$ cp [Your hw5 text file location] hw5.txt               # replace the braces with the location of your hw5.txt file
+$ submit hw5
+</pre>
+<p> Once you type <tt>submit hw5</tt>, follow the prompts generated by the submission system. 
+	It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+<br>
+</li>
+<li><p>Additionally, you must submit hw5.txt to your GitHub repository. 
+	To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+<pre>
+$ cd ~/work                                              # this is the location of your git repo on your class account
+$ mkdir hw5
+$ cd hw5
+$ cp [Your hw5 text file location] hw5.txt               # replace the braces with the location of your hw5.txt file
+$ cd ..
+$ git add hw5/hw5.txt
+$ git commit -m "Homework 5 submission"
+$ git tag "hw5"                                          # The tag MUST be "hw5". Failure to do so will result in loss of credit.
+$ git push origin master --tags                          # Note the "--tags" at the end. This pushes tags to github</pre>
+</li>
+</div>
+</body></html>

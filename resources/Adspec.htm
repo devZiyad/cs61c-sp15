@@ -1,0 +1,485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html style="--wm-toolbar-height: 67px;"><head><script src="Adspec_files/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app213.us.archive.org';v.server_ms=3936;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Adspec_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Adspec_files/wombat.js" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden"};</script>
+<script type="text/javascript" src="Adspec_files/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://users-tima.imag.fr:80/cis/guyot/Cours/Oparithm/english/Adspec.htm","20150228014939","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1425088179");
+</script>
+<link rel="stylesheet" type="text/css" href="Adspec_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Adspec_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Keywords" content="Adder, Additionneurs, Sklansky, Kogge and stone, Brent and Kung">
+<meta name="description" content="Page des additionneurs">
+
+	<meta name="GENERATOR" content="Visual Page 2.0 for Windows">
+	<title>Additionneurs speciaux</title>
+</head>
+
+<body bgcolor="#EFEFEF"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr; height: 67px;">
+</div><div id="wm-ipp-print">The Wayback Machine - 
+https://web.archive.org/web/20150228014939/http://users-tima.imag.fr:80/
+cis/guyot/Cours/Oparithm/english/Adspec.htm</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/Adspec.htm","20150228014939",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=p7PEIJWi","https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+<p>
+<table border="1" width="700">
+	<tbody><tr>
+		<td>
+			<p align="CENTER"><b><font size="7" color="red">Special purpose adders</font></b>
+		</p></td>
+	</tr>
+</tbody></table>
+<br>
+
+<table border="0" cellpadding="4" cellspacing="0" width="720">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Special purpose adders</font></b>
+		</p></td>
+		<td width="580" height="10" valign="TOP">
+			<p>Some arithmetic algorithms can be realized with only one modified adder. For example :
+			</p><ul>
+				<li><b>if</b> A + B &lt; 2<sup>n</sup> <b>then</b> S = A + B <b>else</b> S = A + B – 2<sup>n</sup> ; // modulo
+				2<sup>n</sup> sum
+				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> <b>then</b> S = A + B <b>else</b> S = 2<sup>n</sup> – 1 ; // adder with
+				saturation
+				</li><li><b>if</b> a/s <b>then</b> S = A – B <b>else</b> S = A + B ; // adder/subtractor/comparator
+				</li><li><b>if</b> A <font face="Symbol">&gt;</font> B <b>then</b> S = A <b>else</b> S = B ; // maximum value
+				</li><li>S = A + B ; S' = A + B + 1 ; // two-output adder
+				</li><li>S = A + B ; S' = A + B + 1 ; S" = A + B + 2 ; // three-output adder
+				</li><li><b>if</b> A – B <font face="Symbol">³</font> 0 <b>then</b> S = A – B <b>else</b> S = B – A ; // absolute
+				value of the difference
+				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> – 1 <b>then</b> S = A + B <b>else</b> S = A + B – 2<sup>n</sup> + 1 ; //
+				modulo 2<sup>n</sup> – 1
+				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> + 1 <b>then</b> S = A + B <b>else</b> S = A + B – 2<sup>n</sup> – 1 ; //
+				modulo 2<sup>n</sup> + 1
+			</li></ul>
+			<p>The cost and the delay are similar to a fast adder's ones.
+		</p></td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="51" valign="TOP">
+			<p align="RIGHT"><a name="Sklansky"></a><b><font size="4">Fast adder</font></b>
+		</p></td>
+		<td width="560" height="51" valign="TOP">The special purpose adders of this page are built around the <a href="Additi.htm#Sklansky" target="_blank">Sklansky's
+			adder</a>, which is recalled here for convenience of comparison.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="350" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="add">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" valign="TOP">&nbsp;</td>
+		<td width="560" valign="TOP">The "<a href="Additi.htm#BKcell">BK</a>" cells outputs are either <font color="#009900">'P'</font>,<font color="#009900"> </font><font color="red">'G'</font> or <font color="#0033CC">'K'</font>, nevertheless a carry
+			c<sub>i</sub> is never <font color="#009900">'P'</font> because in this applet the "HA" cell at the right
+			is modified in order to exclude the value <font color="#009900">'P'</font> for c<sub>1</sub>.</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="sat"></a><b><font size="4">Addition with saturation</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">If the output carry c<sub>n</sub> is neglected then S = A + B – 2<sup>n</sup> whenever A + B is too large. In order
+			to retain the continuity of the addition, the adder with saturation is sometimes preferred to the adder modulo.
+			It computes S = min( A + B , 2<sup>n</sup> – 1) .</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="380" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="sat">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="addsub"></a><b><font size="4">Adder/ subtractor</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">Adders spontaneously calculate the addition modulo 2<sup>n</sup>. To get the opposite -B of a number B, all the
+			bits are logically complemented and a <u>1 is added</u>. The addition of B with -B obtained in this way gives 2<sup>n</sup>
+			that is 0. <br>
+			The input carry c<sub>0</sub> of an adder is used to add the bit a/s and disjunction gate to complement B. This
+			"operations box" executes addition if a/s = <font color="#0033CC">'0' </font>and subtraction if a/s =
+			<font color="red">'1'</font>.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="377" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="sous">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="Over"></a><b><font size="4">Overflow</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>Just like the adder, the adder/subtractor may overflow, but it may as well underflow. If the last carry c<sub>n</sub>
+			and the carry c<sub>n-1 </sub>differ, then the output S is incorrect :
+			</p><ul>
+				<li><font color="#0033CC">'0'</font> <font color="red">'1'</font>: 2<sup>n</sup> should be added to S to get the
+				correct result (overflow)
+				</li><li><font color="red">'1'</font> <font color="#0033CC">'0'</font>: 2<sup>n</sup> should be subtracted to S to get
+				the correct result (underflow)
+			</li></ul>
+		</td>
+	</tr>
+	<tr>
+		<td width="140" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Addition/ subtraction with saturation</font></b>
+		</p></td>
+		<td width="560" valign="TOP">Just as with the <a href="#sat" target="_blank">addition with saturation</a>, the two carries c<sub>n</sub> and
+			c<sub>n-1</sub> may be used to select the largest representable positive interger or the smallest representable
+			negative integer. S = min ( max ( A ± B , -2<sup>n-1</sup>) , 2<sup>n-1</sup>–1) .</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Comparison of signed integers</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">After a subtraction S = A – B, the sign of S indicates A <font face="Symbol">³</font> B or otherwise A &lt;
+			B. A slight modification of the adder/subtractor wiring allows the output carry c<sub>n</sub> to indicate A&nbsp;&lt;&nbsp;B,
+			A&nbsp;=&nbsp;B or A&nbsp;&gt;&nbsp;B; necessary for comparisons. This indication is only valid with subtraction.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="377" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="comp">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="max"></a><b><font size="4">The larger from A and B</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">In order to compare A and B, it not necessary to compute the difference A – B. Only the sign of A – B is needed,
+			that is the carry out. This comparator is simpler (less "BK") therefore faster (less fan-out) than a
+			complete subtractor. A multiplexers row selects the max.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="391" align="TOP">
+<param name="background" value="efefef">
+<param name="mode" value="max">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="Clate"></a><b><font size="4">Carry-late adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">If the carry in c<sub>0</sub> of an adder S = A + B + c<sub>0 </sub>is ready later than the inputs A and B, a carry-late
+			adder is appropriate. The delay between input c<sub>0 </sub>and outputs S is small and independent of the number
+			of bits.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="377" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="clate">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">On the contrary, if the carry in c<sub>0 </sub>is ready as soon as the inputs A and B, then the approach used in
+			the above described <a href="#addsub" target="_blank">adder/subtractor</a> would be more efficient because requesting
+			less "BK" cells.</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="Plus1"></a><b><font size="4">Two-output adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">To design this <a href="#Sklansky" target="_blank">adder</a> S = A + B + c<sub>0</sub> first the output are duplicated.
+			Then for the output S the value <font color="#0033CC">'0'</font> is substituted to c<sub>0 </sub>and the value
+			<font color="red">'1'</font> is substituted to c<sub>0</sub> for the output S'. The obtained adder calculates simultaneously
+			S = A + B and S' = A + B + 1 .</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="SpecialAdder.class" width="800" height="350" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="plus1">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">
+			<p>The output of the "BK" is either <font color="#009900">'P'</font>,<font color="#009900"> </font><font color="red">'G'</font> or <font color="#0033CC">'K'</font>, and the carry c<sub>i</sub> must be <font color="#0033CC">'0'
+			</font>or <font color="red">'1'</font>.
+			</p><ul>
+				<li>To calculate S = A + B, <font color="#0033CC">'K'</font> or <font color="#009900">'P'</font> give <font color="#0033CC">'0'</font>,
+				<font color="red">'G'</font> gives <font color="red">'1'</font>.
+				</li><li>To calculate S' = A + B + 1, <font color="#0033CC">'K'</font> gives <font color="#0033CC">'0'</font>, <font color="#009900">'P'</font> or <font color="red">'G'</font> give <font color="red">'1'</font>.
+			</li></ul>
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b> </b><a name="Plus2"></a><b><font size="4">Three-output adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">We want to calculate S = A + B, S' = A + B + 1 and S" = A + B + 2. To get S and S" we calculate beforehand
+			<u>without carry propagation</u> two numbers X and Y such that X + Y = A + B. In that way we get the least significant
+			bits s<sub>0</sub> and s"<sub>0</sub>. Then the n-1 most significant bits of X and Y are added with the preceding
+			<a href="#Plus1" target="_blank">two-output adder</a> .</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="SpecialAdder.class" width="800" height="398" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="plus2">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">
+			<p>Where is the third output S' = A + B + 1 ? The calculation of S' from S and S", either S' = S + 1 or S'
+			= S" – 1, only claims <a href="Flottan.htm#predic" target="_blank">one inverter and some 2-input multiplexers</a>.
+			</p><ul>
+				<li>The least significant bit s'<sub>0</sub> is the complement of s<sub>0</sub>.
+				</li><li>For the other bits : <b>if</b> s<sub>0</sub> = 0 <b>then</b> s'<sub>i</sub> = s<sub>i</sub> <b>else</b> s'<sub>i</sub>
+				= s"<sub>i</sub> .
+			</li></ul>
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">In much the same way as above, a two-output adder can calculate S = A + B – 1, S' = A + B and S" = A + B +
+			1 by calculating two numbers X and Y such that X + Y = A + B + 2<sup>n</sup> – 1 with a row of HA' cells, dual
+			of the HA cell. An extra inverter deals with the 2<sup>n</sup> .</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="SpecialAdder.class" width="800" height="398" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="moins1">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="abs"></a><b><font size="4">Absolute value of the difference</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>With four slight modifications, <a href="#Sklansky" target="_blank">Sklansky</a>'s adder with <a href="#Clate" target="_blank">a late carry-in</a> returns S = <font size="2" face="Symbol">½ </font>A – B <font size="2" face="Symbol">½</font>.
+			</p><ul>
+				<li>insert a row of inverters to complement B (or A)
+				</li><li>modify the "<a href="Additi.htm#BKcell" target="_blank">BK</a>" cell giving c<sub>n</sub> to change
+				the value <font color="#009900">'P'</font> into <font color="red">'G'</font> for the signal "feed-back"
+				(<font color="#0033CC">'K'</font> gives <font color="#0033CC">'0'</font>, <font color="#009900">'P'</font> or <font color="red">'G'</font> give <font color="red">'1' </font>)
+				</li><li>insert a row of "<a href="Additi.htm#BKcell" target="_blank">BK</a>" cells connected to "feed-back"
+				(yellow cells)
+				</li><li>modify the later cells to either complement the result S or increment it according to "feed-back".
+			</li></ul>
+		</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="391" align="TOP">
+<param name="background" value="efefef">
+<param name="mode" value="abs">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="797">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="sigabs"></a><b><font size="4">Addition in "Sign Magnitude"<br>
+			representation</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">Let s<sub>a</sub> and s<sub>b</sub> be the sign of A and B respectively and M<sub>a</sub> and M<sub>b</sub> their
+			magnitude (absolute value). The addition of A and B is performed by the addition of M<sub>a</sub> and M<sub>b</sub>
+			if A and B have the same sign, and the subtraction otherwise. In any cases, the result S sign is the sign of the
+			addend with the larger magnitude.<br>
+			<br>
+			<b>if</b> (s<sub>a</sub><font size="2" face="Symbol">Å</font> s<sub>b</sub>) <b>then</b> { M<sub>s</sub>
+			= M<sub>a</sub> + M<sub>b</sub> , s<sub>s</sub>= s<sub>a</sub> }<br>
+			<b>else if</b> M<sub>a</sub> <font face="Symbol">³</font> M<sub>b</sub> <b>then</b> { M<sub>s</sub> = M<sub>a</sub>
+			– M<sub>b</sub> , s<sub>s</sub>= s<sub>a</sub> }<br>
+			<b>else</b> { M<sub>s</sub> = M<sub>b</sub> – M<sub>a</sub> , s<sub>s</sub>= s<sub>b</sub> }<br>
+			The adder in "Sign Magnitude" representation inherits from both the <a href="#addsub" target="_blank">"adder/subtractor"</a>
+			and the <a href="#abs" target="_blank">"absolute value of the difference"</a> operator.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="410" align="TOP">
+<param name="background" value="efefef">
+<param name="mode" value="sigabs">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">The horizontal line "feed-back" controls the last row of modified "BK" cells (yellow) :<br>
+			<b>if</b> feed-back = <font color="#009900">'2'</font> <b>then</b> M<sub>s</sub> = M<sub>a</sub> + M<sub>b</sub>;
+			//identity: <font color="#009900">'P'</font> gives <font color="#0033CC">'0'</font>, <font color="red">'G'</font>
+			gives <font color="red">'1'</font> and <font color="#0033CC">'K'</font> gives <font color="#0033CC">'0'</font><br>
+			<b>if</b> feed-back = <font color="red">'1'</font> <b>then</b> M<sub>s</sub> = M<sub>a</sub> – M<sub>b</sub>;<b>
+			/</b>/incr: <font color="#009900">'P'</font> gives <font color="red">'1'</font>, <font color="red">'G'</font> gives
+			<font color="red">'1'</font> and <font color="#0033CC">'K'</font> gives <font color="#0033CC">'0'</font><b><br>
+			if</b> feed-back = <font color="#0033CC">'0'</font> <b>then</b> M<sub>s</sub> = M<sub>b</sub> – M<sub>a</sub>;
+			//invert: <font color="#009900">'P'</font> gives <font color="red">'1'</font>, <font color="red">'G'</font> gives
+			<font color="#0033CC">'0'</font> and <font color="#0033CC">'K'</font> gives <font color="red">'1'</font></td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="modm"></a><b><font size="4"> modulo 2</font><sup><font size="4">n</font></sup><font size="4">–
+			1 adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>An adder delivers spontaneously a modulo 2<sup>n</sup> sum. With a slight modification, the <a href="#Sklansky" target="_blank">Sklansky</a>'s adder with <a href="#Clate" target="_blank">a late carry</a> delivers a modulo 2<sup>n</sup>
+			– 1 sum S.</p>
+			<ul>
+				<li><b>if</b> A + B &lt; 2<sup>n</sup> – 1 <b>then</b> S = A + B ;
+				</li><li><b>if</b> A + B <font face="Symbol">³</font> 2<sup>n</sup> – 1 <b>then</b> S = <font size="2" face="Symbol">½
+				</font>A + B + 1 <font size="2" face="Symbol">½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font>
+			</li></ul>
+			<p>In both cases we get S = <font size="2" face="Symbol">½ </font>A + B <font size="2" face="Symbol">½</font>&nbsp;<sub>modulo
+			(2</sub><font size="2">n</font><sub>– 1)</sub>.<sub> <br>
+			</sub>The condition is given by the carry out c<sub>n</sub>: if c<sub>n</sub> = <font color="#0033CC">'K'</font>
+			then A&nbsp;+&nbsp;B &lt; 2<sup>n</sup> – 1, if c<sub>n</sub> = <font color="#009900">'P'</font> then A&nbsp;+&nbsp;B
+			= 2<sup>n</sup> – 1, if c<sub>n</sub> = <font color="red">'G'</font> then A&nbsp;+&nbsp;B &gt; 2<sup>n</sup> –
+			1. Therefore the "feed-back" signal that controls the "+1" is <font color="#0033CC">'0' </font>if
+			c<sub>n</sub> = <font color="#0033CC">'K'</font> and is <font color="red">'1' </font>otherwise (just as before
+			for absolute value). The yellow cells are the same as in the <a href="#Clate" target="_blank">carry-late adder</a>.
+		</p></td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="374" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="modm">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4"> </font></b><font size="4"><a name="modp"></a></font><b><font size="4">Modulo
+			2</font><sup><font size="4">n</font></sup><font size="4">+ 1 adder</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<ul>
+				<li><b>if</b> A + B &lt; 2<sup>n</sup> + 1 <b>then</b> S = A + B ;
+				</li><li><b>if</b> A + B <font face="Symbol">³</font> 2<sup>n</sup> + 1 <b>then</b> S = <font size="2" face="Symbol">½
+				</font>A + B – 1 <font size="2" face="Symbol">½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font>
+			</li></ul>
+			<p>The previous adder is used with two inputs X and Y such that X + Y = A + B + 2<sup>n</sup> – 1 + c<sub>0</sub>.
+			A row of "HA' " cells carries on this addition propagation-free. The input<sub> </sub>carry c<sub>0</sub>
+			= <font color="#0033CC">'0'.</font>
+			</p><ul>
+				<li><b>if</b> X + Y &lt; 2<sup>n+1</sup> <b>then</b> S =<font size="2" face="Symbol">½ </font>X + Y + 1
+				<font size="2" face="Symbol">½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font><sub> </sub>;
+				</li><li><b>if</b> X + Y <font face="Symbol">³</font> 2<sup>n+1 </sup><b>then</b> S = <font size="2" face="Symbol">½
+				</font>X + Y<font size="2" face="Symbol"> ½</font>&nbsp;<sub>modulo 2</sub><font size="2">n ;</font>
+			</li></ul>
+			<p>The horizontal "feed-back" signal that controls the "+1" is the "nand" of x<sub>n</sub>
+			and (c<sub>n</sub> = <font color="red">'G' </font>). The result bit s<sub>n</sub> is the "and" of x<sub>n</sub>
+			and (c<sub>n</sub> = <font color="#009900">'P'</font>).
+		</p></td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="422" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="modp">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">The value range for A and B is from 0 to 2<sup>n</sup>. The inputs bits a<sub>n</sub> and b<sub>n</sub> are missing
+			in the above adder. These two bits indicate whether A = 2<sup>n</sup> and B = 2<sup>n</sup> respectively.<br>
+			<b>if</b> A = 2<sup>n</sup> and B = 2<sup>n</sup> <b>then</b> ( A + B ) modulo 2<sup>n</sup> + 1 = 2<sup>n</sup>
+			– 1.<br>
+			<b>if</b> A = 2<sup>n</sup> and B &lt; 2<sup>n</sup> <b>then</b> A is rewritten ( 2<sup>n</sup> – 1 ) + 1, all
+			the a<sub>i</sub> input bits are set to <font color="red">'1' </font>as well as the input carry c<sub>0</sub>.<br>
+			<b>if</b> A &lt; 2<sup>n</sup> and B = 2<sup>n</sup> <b>then</b> B is rewritten ( 2<sup>n</sup> – 1 ) + 1 thanks
+			to the input carry c<sub>0</sub>.</td>
+	</tr>
+</tbody></table>
+
+</p><hr align="CENTER">
+<spacer type="HORIZONTAL" size="140"> <applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Navig.class" width="250" height="48" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="page" value="2">
+<param name="lang" value="a">
+</applet>
+ <a href="https://web.archive.org/web/20150228014939/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"><script type="text/javascript">
+<!--
+Xt_param = 's=190561&p=en-Special-Adders';
+Xt_r = document.referrer;
+Xt_h = new Date();
+Xt_i = '<img width="39" height="25" border="0" ';
+Xt_i += 'src="https://web.archive.org/web/20150228014939/http://logv27.xiti.com/hit.xiti?'+Xt_param;
+Xt_i += '&hl='+Xt_h.getHours()+'x'+Xt_h.getMinutes()+'x'+Xt_h.getSeconds();
+if(parseFloat(navigator.appVersion)>=4)
+{Xt_s=screen;Xt_i+='&r='+Xt_s.width+'x'+Xt_s.height+'x'+Xt_s.pixelDepth+'x'+Xt_s.colorDepth;}
+document.write(Xt_i+'&ref='+Xt_r.replace(/[<>"]/g, '').replace(/&/g, '$')+'" title="Analyse d\'audience">');
+//-->
+</A></A></A></A></A></script></a><a href="https://web.archive.org/web/20150228014939/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"><noscript> Mesure d'audience ROI frequentation
+par <img src="https://web.archive.org/web/20150228014939im_/http://logv27.xiti.com/hit.xiti?s=190561&amp;p=en-Special-Adders" width="39" height="25" align="BOTTOM" alt="Audience rating" border="2"/> </a></a><a href="https://web.archive.org/web/20150228014939/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"></noscript></a>
+
+
+
+
+</spacer></body></html>
+<!--
+     FILE ARCHIVED ON 01:49:39 Feb 28, 2015 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 18:52:11 Mar 16, 2025.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.558
+  exclusion.robots: 0.033
+  exclusion.robots.policy: 0.019
+  esindex: 0.011
+  cdx.remote: 23.56
+  LoadShardBlock: 3196.091 (3)
+  PetaboxLoader3.datanode: 3080.136 (4)
+  PetaboxLoader3.resolve: 774.261 (2)
+  load_resource: 682.401
+-->

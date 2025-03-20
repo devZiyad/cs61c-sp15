@@ -1,0 +1,245 @@
+<html><head>
+	<title>CS61C Spring 2015 Project 3</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<style type="text/css">
+		table{background:#cdc;border-collapse:collapse;font-family:monospace}td{border:0.125em solid #aba;padding:0.25em}thead{background:#676;color:#fff;text-transform:uppercase}
+    td{font-size: 1.2em;}
+		span.inst{color:#d00}span.rgtr{color:#00a}span.immd{color:#a0a}span.label{color:#666}
+		div.highlight{background:#cdc;padding:1em}
+		span.warn{color:#f00;font-weight:bold;}
+		table.colonly{display:inline-block;vertical-align:top;}table.colonly td{border-top:0em;border-bottom:0em;padding-top:0.1em;padding-bottom:0.1em;}td.center{text-align:center}
+	</style>
+</head>
+<body>
+
+<div class="header">
+	<div class="header-text">
+		<h1>CS61C Spring 2015 Project 3: Performance Optimization/Convolutional Neural Networks</h1>
+		TA: Martin Maas. This project is based on <a href="https://twitter.com/karpathy">Andrej Karpathy</a>'s fantastic <a href="http://cs.stanford.edu/people/karpathy/convnetjs/">convnetjs</a> implementation. If you want to learn more about CNNs, check out the website!</p>
+	</div>
+</div>
+
+<div class="content">
+	<p><b>Due Sunday, April 19, 2015 @ 11:59pm</b></p>
+
+	<div class="highlight">
+		<h3>IMPORTANT INFO</h3>
+
+		<p>In contrast to previous projects, Project 3 can only be done on the hive machines. We require software packages, hardware extensions and large data sets that are not available on other machines. If you haven't done so yet, you should set up an SSH client (such as PuTTY) if you would like to work remotely.</p>
+	</div>
+
+	<h2>Updates</h2>
+
+	<ul>
+    <li>Monday, April 13, 3:07am: Added -O3 compiler flag and adjusted the assignment and grading rubric to account for the substantially higher performance.</li>
+	<li>Monday, April 13, 7:38pm: Small clarification that you should report the total time spent in each layer for Step 2.1 (i.e., not just the time of a single execution of the layer).</li>
+	<li>Monday, April 13, 7:38pm: Some further clarifications regarding Step 2.1.</li>
+	</ul>
+	
+	<h2>Introduction</h2>
+	<p>In this project, you will apply some of the performance optimization techniques that you have learned in class to the real-world problem of classifying images using a Convolutional Neural Network (CNN). The task is simple: You will be given a large number of 32x32 images and have to find out whether or not each of them contains a cat.</p>
+
+	<h3>How does a Computer tell a Cat from a Chair?</h3>
+
+	<p>Image classification describes a problem where a computer is given an image and has to tell what it represents (usually from a set of possible categories). Image classification has long been considered a difficult challenge, and a lot of work has been done over the years to improve its accuracy (i.e., what fraction of pictures gets classified correctly).</p>
+
+	<p>Lately, Convolutional Neural Networks (CNNs) have emerged as a promising solution to this problem. In contrast to classical algorithms, which explicitly encode some insight about the real world into a function, CNNs instead <i>learn</i> a function by being presented with a large number of examples and adjusting themselves based on these examples -- this is called <i>training</i>. Once the CNN has learned the function (or to be more precise, an approximation of it), it can repeatedly apply it to inputs it has not seen before.</p>
+
+	<p>In this project, we give you a pre-trained CNN that can classify 32x32 images into 10 categories (such as dog, cat, car or plane). Using this CNN, we develop an application that takes a large set (i.e., 1000's) of images as input and finds those that contain cats. Unfortunately, our initial implementation is very slow -- your job is to make it faster!</p>
+
+	<h3>How do Convolutional Neural Networks Work?</h3>
+
+	<p>For this project, we do not require you to understand how CNNs work in detail. However, we want to give you enough information to get a sense of the high-level concepts. If you would like to learn more, we encourage you to take one of the Machine Learning or Computer Vision classes in the department, or check out <a href="http://cs231n.stanford.edu/">this brief online-course</a>.</p>
+	
+	<p>At a high level, a CNN consists of multiple <i>layers</i>. Each layer takes a multi-dimensional array of numbers as input and produces another multi-dimensional array of numbers as output (which then becomes the input of the next layer). When classifying images, the input to the first layer is the input image (i.e., 32x32x3 numbers for 32x32 pixel images with 3 color channels), while the output of the final layer is a set of likelihoods of the different categories (i.e., 1x1x10 numbers if there are 10 categories).</p>
+	
+	<p align="center"><img src="cnn.jpg" style="width: 80%; border: 1px solid black;"><br>High-level Overview of the CNN we use for this project (data dimensions not to scale).</p>
+	
+	<p>Each layer has a set of <i>weights</i> associated with it -- these weights are what the CNN "learns" when it is presented with training data. Depending on the layer, the weights have different interpretations, but for the purpose of this project, it is sufficient to know that each layer takes the input, performs some operation on it that is dependent on the weights, and produces an output. This step is called the "forward" pass: we take an input and push it through the network, producing the desired result as an output. This is all that needs to be done to use an already trained CNN to classify images.</p>
+	
+	<p>In order to train the network, we first perform the same forward pass. Afterwards, we compare the output with the correct result (e.g., the correct categorization) and then go backwards through the network to adjust the weights to get closer to this output -- this is called <i>back-propagation</i>. In Project 4, we will show you how to use this approach to train a network yourself, but in Project 3, we will give you a pre-trained network and you only have to worry about the forward pass.</p>
+	
+	<p>For this project, we will be using a specific CNN that has been trained on the CIFAR-10 data set, which consists of 50,000 32x32 images showing 10 different categories. The network consists of 11 layers, each performing a particular operation on a specific size of input, producing a specific size of output. Throughout the project, you can assume this specific network with the provided weights.</p>
+
+	<h2>Step 0: Obtaining the Files & Getting Started</h2>
+
+	<p>Similarly to Project 1, we will be distributing the project files through Github. You can look back on the Step 0 for Project 1 for more specific steps. However, make sure that you are using your newly created Project 3 repository, which should be in the form of proj3-XX-YY.git - <b>even if you have the same partner as in Project 1</b>! The repository that contains the starter code is named proj3_starter.</p>
+
+	<p>An abridged version of the commands is reproduced below:</p>
+        
+        <pre>cd ~                            # Make sure you are outside of any existing repositories (eg. ~/work)
+git clone git@github.com:cs61c-spring2015/proj3-XX-YY.git
+cd proj3-XX-YY                  # Go inside the directory that was created
+git remote add proj3_starter git@github.com:cs61c-spring2015/proj3_starter
+git fetch proj3_starter
+git merge proj3_starter/master -m "merge proj3 skeleton code"</pre>
+
+	<p>Once you have obtained the files, you should first try out the application and make sure everything is working correctly. You can run the application by executing the following in your project directory:</p>
+
+        <pre>make run</pre>
+
+	<p>This will launch a webserver to which you can connect using your web browser (<b>we highly recommend Google Chrome</b>). If you are physically working on one of the hive machines, you can open a browser and navigate to <tt>http://localhost:12345</tt> to access the page. Otherwise, if you use Linux or a Mac, you can run the following command on your own machine, which will allow you to connect to the hive machine and forward all traffic from one of your local ports to that machine (if you have a Windows machine, please use <a href="putty_instructions.pdf">these instructions</a> instead -- thanks Jeffrey!).</p>
+
+	<pre>
+ssh -L 12345:localhost:12345 cs61c-XX@hiveYY.cs.berkeley.edu</pre>
+
+	<p style="color:red">If you are getting an error message that the port 12345 is already in use, another user is probably already running the web server on the same machine. In this case, you can run it on a different port (e.g., <tt>22222</tt>) by running <tt>python cnn.py &lt;port&gt;</tt> instead of <tt>make run</tt>. Whichever port you choose, make sure to replace any occurence of 12345 in the instructions with this port.</p>
+
+	<p>After setting up port forwarding (and starting the web server on the hive machine), you should be able to navigate to <tt>http://localhost:12345</tt> on your local browser. You should now be seeing the following page:</p>
+
+	<p align="center"><img src="screen.png" style="width: 40%; border: 1px solid black;"></p>
+
+	<p>You should play around with the app a little bit and see how it can be used to find all the images of cats out of a much larger collection. Also note that the application is showing you the accuracy (i.e., how many pictures were correctly classified as cat/no cat) and the performance of the classifier. The performance of the version we gave you is very poor: it only reaches about 250 Cat/s (which will be our performance metric for this assignment, even though the correct term would be <i>images classified per second</i>).</p>
+
+	<p>We challenge you to speed this up by a factor of 12x, making the app achieve at least 3 KCat/s (=3,000 Cat/s).</p>
+
+	<h2>Step 1: Finding your way around the project</h2>
+	
+	<p>We will first go through the project's code, in order to help you orient yourself. Note that this project is much more open-ended than previous assignments you have encountered in this course: you can speed up the application whichever way you like, as long as it still produces the correct results. Don't let this intimidate you -- we made sure that it is possible to reach the required speed-up without exploiting all the different possible optimizations.</p>
+	
+	<h3>Code Overview</h3>
+	
+	<p>All relevant code for this project can be found in a single file: <tt>src/cnn.c</tt>. You may change this file in whichever way you like, as long as it still performs the same computations as before, and does so correctly for all possible inputs. There are many different ways by which you can achieve substantial speed-ups on this code, and we want to give you full freedom to experiment with any of them.</p>
+	
+	<p>The source code is divided into multiple sections. Each of these sections roughly corresponds to a different data type. The first data type is <tt>vol_t</tt>. It represents a three-dimensional array (or <i>Volume</i>) of numbers, which is used to hold the results between layers. In the figure above, these correspond to V0, V1, etc.</p>
+		
+		<p>Next, we have a number of the different kinds of layers: <tt>conv</tt>, <tt>relu</tt>, <tt>pool</tt>, <tt>fc</tt> and <tt>softmax</tt>. You do not need to understand what these different layers are doing, but each of them has:</p>
+		
+		<ul>
+			<li>A data structure holding a description of the layer's parameters. Note that each layer has a <b>fixed</b> set of parameters that don't change during execution. They determine (for example) the size of its input and output volumes, and are set when the CNN is defined. For example, the CNN we are using has 3 conv layers, each with slightly different parameters.</li>
+			<li>A <tt>*_forward</tt> function which performs the layer's main operation. These functions first take the layer's struct, as well as an array of pointers to input and output volumes. They also accept <tt>start</tt> and <tt>end</tt> indices into this array. This allows each layer to process a batch of inputs at once, which you may use for your optimizations. For example, you could have an array with pointers to input volumes and  set <tt>start = 5</tt> and <tt>end = 9</tt> to process inputs 5,6,7,8,9 at once and write the results into the corresponding entries of the output array.</li>
+			<li>Two functions, <tt>make_*</tt> and <tt>*_load</tt>. The first generates a layer with a specific set of parameters, the second loads any weights for this layer from the file system. You probably won't need to ever edit any of these functions, unless you are making changes to the layer structure itself (which is why we included them in <tt>cnn.c</tt>).</li>
+		</ul>
+		
+	<p>The final important data structure is <tt>network_t</tt>, which holds all the information describing the CNN. This includes all layers, and an instance of each of the different intermediate Volumes. Note that these Volumes are not used for actually storing data (this is done by the batches we will describe below). They are there to make the dimensions of the different volumes easily available in one place.</p>
+	
+	<p>Finally, all intermediate data is represented as <i>batches</i>. You can think of them as the intermediate data associated with a set of input images. While their type looks complicated (<tt>batch_t</tt> is shorthand for <tt>vol_t***</tt>), these are just two-dimensional arrays of pointers to Volumes. The first dimension tells you which layer the Volume belongs to (i.e., V0, V1, etc. in the figure above) and the second dimension tells you which input you are looking at. In the code we gave you, we only ever look at batches of size 1 (i.e., we process one sample at a time), but you will later need to modify your program to consider larger batches, in order to parallelize computation. Batches can be allocated using the <tt>make_batch</tt> function and are freed with <tt>free_batch</tt>.</p>
+	
+	<p>Finally, the <tt>net_forward</tt> function takes a batch (as well as <tt>start</tt>/<tt>end</tt> indices) and applies the CNN to each entry from <tt>start</tt> to <tt>end</tt> by calling the forward functions on each layer. This function is used in <tt>net_classify_cats</tt> to take a set of input images, put them each into the V0 volume of a single-element batch, and then run the network on them, in order to classify them as cat or no cat. Be careful about these functions: These functions are called from outside cnn.c and therefore should continue to work as before, even though you will have to modify them as you optimize your implementation.</p>
+	
+	<h3>Running your Implementation</h3>
+
+	<p>In addition to the application mode, we provide you with two other ways of running the CNN, which will be helpful during development:</p>
+
+	<ol>
+	<li><b>Testing:</b> As you modify the application, you need to make sure that the results at every level of the CNN remain the same (up to a small delta, to tolerate floating point rounding errors). To help you check that none of the changes broke the program, you can run <tt>make test</tt>, which will run your implementation against 20 images to ensure that all results (including the intermediate Volumes) remain the same. We also run your program on a large data set and compare all the outputs, to catch bugs that were introduced when parallelizing the code. This is not completely sufficient for testing (and you may still have subtle bugs, e.g., to do with parallelism), but should give you a quick way to check for the most obvious errors.</li>
+
+	<li><b>Benchmarking:</b> To measure the impact of your optimizations, you can run the CNN from the command line by running <tt>make benchmark</tt>. This will run your CNN on a set of input images and measure its performance. Note that your performance can vary, for example as a result of other users on the same machine. When we grade your project, we will run it in isolation on its own machine, so it should perform at least as well as when you tested it. If you want to just quickly run the program, we also provide you with different sizes of benchmarks (through <tt>make benchmark-small</tt>, <tt>make-benchmark-large</tt> and <tt>make benchmark-huge</tt>).</li>
+	</ol>
+	
+	<h3>Where do I start?</h3>
+	
+	<p>We realize that the above information is not sufficient to fully understand every detail of the code. Fortunately, you won't need to do so in order to make it run faster: by looking at the structure of the code, you should be able to see potential sources of parallelism and other ways to optimize the code. Below, we will give you some first steps to get begin, and also provide you with a number of hints to try out. From there, you should experiment with different techniques and see how well they work.</p>
+
+	<h2>Step 2: Profiling & Amdahl's Law</h2>
+	
+	<p>Whenever you start optimizing some given code, you first have to determine where it spends most of its time. For example, speeding up a part of the program that only takes 5% of the overall runtime will at most get you 5% a speed-up and is probably not worth your time. </p>
+	
+	<p>In lecture, you heard about Amdahl's law, which is a great way to estimate the expected performance impact of an optimization. As we saw in class, to apply Amdahl's law, we first have to find out what fraction of time is spent in the different parts of the program.</p>
+	
+	<p>As the first part of your assignment, answer the following questions and put your responses into <tt>answer.txt</tt> in your project directory. Report all results with respect to the execution of <tt>make benchmark</tt>, which runs on a set of 2,400 images (you should report the cumulative times for processing all images, rather than individual runs or averages).</p>
+	
+	<ol>
+	<li>Extend your <tt>cnn.c</tt> implementation to output the <i>total</i> amount of time spent in each of the layers of the Convolutional Neural Network. Run <tt>make-benchmark</tt> and write down the time spent in each layer in <tt>answers.txt</tt>, both as absolute time in ms and percentage of the total execution time. (Hint: we provide a function <tt>timestamp_us()</tt> that may be useful).</li>
+	
+	<li>Now, compute the percentage of time spent in each <b>type</b> of layer (e.g., conv or relu). What type of layer is taking up the largest fraction of runtime? Which one is taking up the smallest fraction?</li>
+		
+	<li>For each of the different types of layer, use Amdahl's Law to compute the overall speed-up if were able to make that type of layer 4x faster. Based on this computation, which layer should we focus our optimization efforts on?</li>
+</ol>
+	<p><b>(Don't forget to submit your <tt>answers.txt</tt> with your implementation!)</b></p>
+
+	<h2>Step 3: Unrolling and other optimizations</h2>
+	
+	<p>Now it is time to optimize the CNN implementation! Use your results from Step 2 to guide your efforts -- there are only a few places in the application that are actually worth optimizing.</p>
+
+	<p>You should first try to speed up the computation by trying to apply conventional code optimizations. While we won't tell you all the exact steps, here are some hints that should help you get started:</p>
+
+	<ul>
+	<li>Sometimes you can replace a function by multiple specialized functions that do the same but are optimized for specific input values.</li>
+	<li>Are there any places in the program where a variable always has the same value, but it is loaded from memory every time?</li>
+	<li>Are there any places where you could do manual loop unrolling?</li>
+	<li>Can you classify multiple samples at once instead of classifying them one after the other?</li>
+	<li>Is there a better ordering of the different loops?</li>
+	</ul>
+
+	<p>Once you have improved performance using these optimizations, you can start applying vectorization and parallelization to make the program even faster. Note that you have considerable freedom to apply any of these optimizations, and there is more than one correct solution. Try to experiment with different approaches and see which one gives you the best performance.</p>
+
+	<h2>Step 4: SIMD Instructions</h2>
+
+	<p>In your lab, you learned how to apply SIMD instructions to improve performance. The processors in the hive machines support the Intel AVX extensions, which allow you to do SIMD operations on 256 bit values (not just 128 bit, as we have seen in the lab). You should use these extensions to perform four operations in parallel (since all floating point numbers are doubles, which are 64 bit in size).</p>
+	
+	<p>As a reminder, you can use the <a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/">Intel Intrinsics Guide</a> as a reference to look up the relevant instructions. You will have to use the <t>__m256d</t> type to hold 4 doubles in a <tt>YMM</tt> register, and then use the <tt>_mm256_*</tt> intrinsics to operate on them.
+
+	<p>As a guidance, these optimizations should be able to give you a 2x speedup with relative ease. Note, however, that you won't need to achieve quite this performance to get a good grade in this project; the next step will get you a substantially larger speed-up.</p>
+
+	<h2>Step 5: OpenMP</h2>
+
+	<p>Finally you should use OpenMP to parallelize computation. Note that the easiest way to parallelize the classification of a large number of images is to classify batches of them in parallel (since these batches are independent). Note that you will need to make sure that none of the different threads overwrites each others' data. Just adding a <tt>#pragma omp parallel for</tt> is not enough, and will cause errors.</p>
+
+	<p>Node that the hive machines have 4 cores with two hyperthreads (HT) each. This means that you should expect a speed-up of 4-8x (note that hyperthreads mean that two different programs execute on the same physical core at the same time; they will therefore compete for processor resources, and as a result, you will not get the same performance as if you were running on two completely separate cores).</p>
+
+	<p>Your OpenMP implementation should give you a speed-up of at least 4x.</p>
+
+	<h2>Grading Rubric</h2>
+
+	<p>This is an open-ended project: we want to give you the freedom to experiment with whichever optimizations you can come up with. Your score will therefore be mostly determined by the performance of your implementation. We will take the KCat/s that your application achieves, multiply them by 10 and use this as a base score between 0 and 30 (i.e., if your implementation achieves 2 KCat/s, you will get 20/30 points; but if your implementation achieves more than 3 KCat/s, you will still only get 30 points). In addition, your answers to Step 2 are worth another 10 points. In summary, your overall grade (out of 40 points) will be calculated as:</p>
+
+	<p>Grade = min(30, (10 * Performance in KCat/s)) + (grade on answers.txt out of 10) </p>
+		
+	<p style="color:red">Note: We don't allow any form of pre-computation in this project. A guidance is that your application should perform every floating point operation that the original program does. If we encounter cases that attempt to achieve high performance by pre-computing the results, we consider this cheating and will give 0 points.</p>
+
+	<h2>Competition!!!</h2>
+	
+	<p>Of course, it is possible to do substantially better than 3 KCat/s. Do you have what it takes to break the 5 KCat/s barrier? Great, because we are starting a competition: the teams who send us the fastest implementations by the end of the semester will not only be remembered as the winners of the CS61C Spring'15 Project 3 competition, but also receive a small amount of extra credit. We will announce the results of the competition in lecture and post them on the course website! (the exact submission date will be announced later during the semester)</p>
+
+	<h2>Submission</h2>
+
+	<p><span class="warn">Make sure that your implementation is correct and passes all the provided tests! If not, you risk losing all 30 possible points</span>.</p>
+				
+	<p>There are <strong>two</strong> steps required to submit proj3. Failure to perform both steps will result in loss of credit:</p>
+
+	<ol>
+		<li><p>First, you must submit using the standard unix submit program on the instructional servers. This assumes that you followed the earlier instructions and did all of your work inside of your <tt>git</tt> repository. To submit, follow these instructions after logging into your cs61c-XX class account:</p>
+
+			<pre>
+cd ~/proj3-XX-YY                             # Or where your shared git repo is
+submit proj3</pre>
+				
+			<p> Once you type <tt>submit proj3</tt>, follow the prompts generated by the submission system. It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+			<br />
+		</li>
+
+		<li><p>Additionally, you must submit proj3 to your <b>shared</b> GitHub repository:</p>
+
+			<pre>
+cd ~/proj3-XX-YY                             # Or where your shared git repo is
+git add -u                           
+git commit -m "project 3 submission"  
+git tag "proj3-sub"                        # The tag MUST be "proj3-sub". Failure to do so will result in loss of credit.
+git push origin proj3-sub                  # This tells git to push the commit tagged proj3-sub</pre>
+		</li>
+	</ol>
+
+	<h4>Resubmitting</h4>
+
+	<p>If you need to re-submit, you can follow the same set of steps that you would if you were submitting for the first time, but you will need to use the <tt>-f</tt> flag to tag and push to GitHub:</p>
+
+	<pre>
+# Do everything as above until you get to tagging
+git tag -f "proj3-sub"
+git push -f origin proj3-sub</pre>
+
+	<p>Note that in general, force pushes should be used with caution. They will overwrite your remote repository with information from your local copy. As long as you have not damaged your local copy in any way, this will be fine.</p>
+
+	<hr/>
+
+	<h4>References</h4>
+
+	<ul>
+	<li><a href="http://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf">Learning Multiple Layers of Features from Tiny Images</a>, Alex Krizhevsky, 2009.</li>
+	<li><a href="http://cs.stanford.edu/people/karpathy/convnetjs/">ConvNetJS</a>, Andrej Karpathy.</li>
+	</ul>
+</div>
+</body>
+</html>

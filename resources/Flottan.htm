@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html style="--wm-toolbar-height: 67px;"><head><script src="Flottan_files/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app214.us.archive.org';v.server_ms=546;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="Flottan_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="Flottan_files/wombat.js" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden"};</script>
+<script type="text/javascript" src="Flottan_files/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://users-tima.imag.fr:80/cis/guyot/Cours/Oparithm/english/Flottan.htm","20150630054113","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1435642873");
+</script>
+<link rel="stylesheet" type="text/css" href="Flottan_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="Flottan_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="Keywords" content="Floating Point Addition, Zero leading prediction">
+<meta name="Description" content="Floating point addition page">
+
+	<meta name="GENERATOR" content="Visual Page 2.0 for Windows">
+	<title>Floating-point addition</title>
+</head>
+
+<body bgcolor="#EFEFEF"><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display: block; direction: ltr; height: 67px;">
+</div><div id="wm-ipp-print">The Wayback Machine - 
+https://web.archive.org/web/20150630054113/http://users-tima.imag.fr:80/
+cis/guyot/Cours/Oparithm/english/Flottan.htm</div>
+<script type="text/javascript">//<![CDATA[
+__wm.bt(750,27,25,2,"web","https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/Flottan.htm","20150630054113",1996,"https://web-static.archive.org/_static/",["https://web-static.archive.org/_static/css/banner-styles.css?v=p7PEIJWi","https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv"], false);
+  __wm.rw(1);
+//]]></script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+ 
+
+<p>
+<table border="1" width="700">
+	<tbody><tr>
+		<td>
+			<p align="CENTER"><b><font size="7" color="red">Floating-point addition</font></b>
+		</p></td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Floating point numbers format</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The binary coding of floating-point real numbers is composed of three fields. The sign <font size="2">S</font>
+			(1&nbsp;bit), the exponent <font size="2">E</font> (8&nbsp;bits) and the mantissa <font size="2">M</font>, or significand
+			(23&nbsp;bits).<br>
+			The number value is (-1)<sup>S</sup> × 2<sup>(E - 127)</sup> × (1 + <font size="2">M</font> / 8388608
+			) . However if <font size="2">E</font> = 0, the number value is (-1)<sup>S</sup> × 2<sup>(-126)</sup> ×
+			( <font size="2">M</font> / 8388608 ) and if <font size="2">E</font> = 255, the value is infinite.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Format.class" width="700" height="190" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Addition and subtraction</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">
+			<p>Since floating-point numbers are coded as "<a href="Adspec.htm#sigabs" target="_blank">sign/magnitude</a>",
+			reversing the sign-bit inverses the sign. Consequently the same operator performs as well addition or subtraction
+			according to the two operand's signs. <br>
+			Addition/subtraction of floating-point numbers S = A + B is more complex than multiplication or division of floating-point
+			numbers.<br>
+			Floating-point addition progresses in 4 steps:
+			</p><ul>
+				<li>Mantissa alignment if A and B exponents are different,
+				</li><li>Addition/subtraction of the aligned mantissas,
+				</li><li>Renormalization of the mantissas sum S if not already normalized,
+				</li><li>Rounding of sum S' .
+			</li></ul>
+			<p>The alignment step keeps a "guard bit" and a "round bit" and yields a "sticky bit"
+			for the rounding step. The "sticky bit" is the "or" of all the bits discarded during the alignment
+			shift.
+		</p></td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="AddFloat.class" width="760" height="350" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Adder/ subtractor</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">A floating-point adder is made up of the following blocks:<br>
+			<b>Block 1</b>: outputs the larger of the two exponents (8 bits), outputs the absolute value of the exponents difference
+			(5 bits), reveals the "hidden bit" of both mantissas.<br>
+			<b>Block 2</b>: output at left the smaller operand mantissa (23 bits), output at right <a href="Adspec.htm#max" target="_blank">the larger</a> operand mantissa (23 bits). The "implicit bit" is added, totaling 24 bits.<br>
+			<b>Shifter 1</b>: shifts to the right the smaller operand mantissa, appends the "guard bit", "round
+			bit" and "sticky bit", totaling 27 bits.<br>
+			<b>Complementer</b>: on request, does the logic complement for a subtraction. <br>
+			<b>Adder 1</b>: adds the two inputs and the carry in. Outputs the sum and a carry out totaling 28 bits, 2 of them
+			before the decimal point, 5 bits serve for the rounding, of whom 2 dropped.<br>
+			<b>Zero-leading-counter</b>: the ZLC output is the number of leading <font color="#0033CC">'0'</font>. If inhibited
+			outputs 1.<br>
+			<b>Shifter 2</b>: shifts to the left ( ZLC – 2 ) positions (i.e. from 2 to the right up to 23 to the left). The
+			fist bit is dropped ( implicit <font color="red">'1'</font> ).<br>
+			<b>Adder 2</b>: subtracts ( ZLC – 1 ) from the larger of the two exponents.</td>
+	</tr>
+</tbody></table>
+<a name="addsub"></a> <applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="ProcFloat.class" width="660" height="530" align="BOTTOM" hspace="25">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT">&nbsp;
+		</p></td>
+		<td width="560" height="10" valign="TOP">This adder/subtractor implements faithfully the IEEE 754 standard. Nevertheless some blocks that would clutter
+			up the figure are not included, namely the <a href="#round" target="_blank">rounding logic</a> , the exceptions
+			(infinite, NaN, denormal, zero) and the "flags".</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="shift"></a><b><font size="4">Alignment shifter</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">Floating-point numbers addition requires integer additions/subtractions, parametrised shifts (to the right for
+			alignment, to the left for renormalization) and a counting of the result leading zeroes . Addition/subtraction
+			can be completed with delay log<sub>2</sub>(n). The parametrised shift's delay, below, is log<sub>2</sub>(n) as
+			well. A circuit of "or" and "and" gates computes the "sticky" bit.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="shift.class" width="1000" height="394" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Zero leading counter (&nbsp;ZLC&nbsp;)</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">A binary tree counts up by dichotomy the number of <font color="#0033CC">'0'</font> in the most significant positions.
+			If the size of the sub-strings is a power of two, then there is no need for adders but multiplexers can be used
+			instead. Actually only the size of the left substring has to be a power of two. The substring at right must simply
+			be shorter than or of the same size as the left substring.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CountTree.class" width="710" height="318" align="BOTTOM" hspace="10">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="zlc"></a><b><font size="4">Cell of zero leading counter</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">This cell combines the number of leading <font color="#0033CC">'0'</font> of two 16-bit strings to obtain the number
+			of leading <font color="#0033CC">'0'</font> of the concatenation of the two strings (32 bits).<br>
+			<b><font size="6">.</font> if</b> X &lt; 16 <b>then</b> S = X <b>else</b> S = 16 + Y<br>
+			<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CountCell.class" width="433" height="133" align="BOTTOM">
+			<param name="background" value="efefef">
+			<param name="lang" value="a">
+			</applet>
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="pred"></a><b><font size="4">Zero leading prediction</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">From the mantissas A and B, one can construct in constant time a number P with the same number of leading zeroes,
+			but for at most one, as the <u>difference</u> D = A – B <u>without having to wait</u> for the subtraction completion.
+			When fed to a ZLC, this string predicts the number of positions required by the shifter. If the result of the shift
+			still exhibits a leading zero, then a shift of one more position is necessary to normalize the result. Otherwise
+			the shifted value is already normalized.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Predict.class" width="700" height="300" align="BOTTOM" hspace="10">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">The prediction is valid if<font color="black"> A is normalized and B less than or equal to A. This is the always
+			the case in a significand subtraction. The leading zeroes result from a carry </font>string<font color="black">
+			</font><font color="#009900">'P'</font><font color="black">*</font> <font color="red">'G' </font><font color="#0033CC">'K'</font><font color="black">* , made up with a number (possibly null) of </font><font color="#009900">'P'</font><font color="black">
+			followed by a unique </font><font color="red">'G' </font><font color="black">followed by a number (possibly null)
+			of </font><font color="#0033CC">'K'</font><font color="black"> . The predictor cell outputs a </font><font color="#0033CC">'0'</font><font color="black"> for every pair of symbols in: </font><font color="#009900">'P' 'P'</font><font color="black"> ;</font><font color="#009900"> 'P' </font><font color="red">'G'</font><font color="black"> ;</font><font color="red"> 'G' </font><font color="#0033CC">'K'</font><font color="black"> et </font><font color="#0033CC">'K' 'K'</font><font color="black">
+			and outputs a </font><font color="red">'1'</font><font color="black"> for every other pair.<br>
+			This predictor does not take into account the carry propagation, which may lead to bits misspredicted. Nevertheless
+			because only one bit in </font><font color="#009900">'P'</font><font color="black">*</font> <font color="red">'G'
+			</font><font color="#0033CC">'K'</font><font color="black">* might be incorrectly predicted, the error is tolerable
+			since its correction is easy.</font></td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="701">
+	<tbody><tr>
+		<td width="141" height="10" valign="TOP">
+			<p align="RIGHT"><b><font size="4">Predictor cell "Pred"</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The leading<font color="#0033CC"> '0'</font> prediction cell "Pred" output a <font color="red">'1' </font>at
+			the end of the string <font color="#009900">'P'</font><font color="black">*</font> <font color="red">'G' </font><font color="#0033CC">'K'</font><font color="black">* and </font><font color="#0033CC">'0' </font><font color="black">inside
+			the string (and don't care neither inside nor at the end).</font></td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="BKCell.class" width="680" height="304" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="pred">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="zlcadj"></a><b><font size="4">Zero leading prediction adjustment</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The prediction is incorrect only if the carry string <u>starts</u> with <font color="#009900">'P'</font><font color="black">*</font>
+			<font color="red">'G' </font><font color="#0033CC">'K'</font><font color="black">* </font><font color="#009900">'P'</font><font color="black"> </font><font color="#009900">'P'</font><font color="black">* </font><font color="#0033CC">'K'</font><font color="black">. The following circuit output </font>'Y' whenever the prediction is incorrect, therefore too small
+			by one.</td>
+	</tr>
+</tbody></table>
+<applet name="Adjust" archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Adjust.class" width="695" height="240" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">Z indicates a string <font color="#0033CC">'K'</font><font color="black">* </font><font color="#009900">'P'</font><font color="black">* </font><br>
+			Q indicates a string <font color="#009900">'P'</font><font color="black">*</font> <font color="red">'G' </font><font color="#0033CC">'K'</font><font color="black">* </font><font color="#009900">'P'</font><font color="black">*</font>
+			(including <u>only one</u> <font color="red">'G'</font>)<br>
+			N indicates a string <u>starting with</u> <font color="#009900">'P'</font><font color="black">* </font><font color="#0033CC">'K'</font><br>
+			Y indicates a string <u>starting with</u> <font color="#009900">'P'</font><font color="black">*</font> <font color="red">'G'
+			</font><font color="#0033CC">'K'</font><font color="black">* </font><font color="#009900">'P'</font><font color="black">
+			</font><font color="#009900">'P'</font><font color="black">* </font><font color="#0033CC">'K'</font><font color="black">,
+			i.e. Q followed by N.<br>
+			U </font>indicates any other string<font color="black">.</font></td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="abs"></a><b><font size="4">Absolute value of the difference</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">The <a href="Adspec.htm#abs" target="_blank">absolute value</a> of the exponents difference is needed to control
+			Shifter 1. With four slight modifications, <a href="Additi.htm#Sklansky" target="_blank">Sklansky</a>'s adder with
+			<a href="Adspec.htm#Clate" target="_blank">a late carry-in</a> returns S = <font size="2" face="Symbol">½
+			</font>A – B <font size="2" face="Symbol">½</font>.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="391" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="absv">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="round"></a><b><font size="4">Rounding to the nearest</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">In a floating point addition, the adder output S is first normalized by shift and then rounded up by adding 0 or
+			1 ulp, to give the result mantissa. The 28-bit S is labeled "adder out" in the <a href="#addsub" target="_blank">floating
+			point adder</a> above. Check whether you are acquainted with the normalization and rounding.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Round.class" width="700" height="250" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="lang" value="a">
+</applet>
+ 
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">&nbsp;</td>
+		<td width="560" height="10" valign="TOP">
+			<p>The vertical arrow <img src="Flottan_files/alter.gif" width="10" height="16" align="BOTTOM" border="0"> permutes the
+			order of the shift and addition. The shift to the left of more than 1 position that never leads to an addition
+			of 1 ulp is disregarded. With a pre-shift one position to the left in case of subtractions, we come down to the
+			following cases :
+			</p><ul>
+				<li>shift to the right 0 or 1 position (S or S/2)
+				</li><li>addition of 0 or 1 ulp (<u>with carry propagation</u>) (S or S/2 or S + 1 or S/2 + 1)
+			</li></ul>
+		</td>
+	</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="700">
+	<tbody><tr>
+		<td width="140" height="10" valign="TOP">
+			<p align="RIGHT"><a name="predic"></a><b><font size="4">Speculative rounding</font></b>
+		</p></td>
+		<td width="560" height="10" valign="TOP">To avoid the extra delay due to the carry propagation when adding 1 ulp for the rounding, <a href="Adspec.htm#Plus2" target="_blank">a three-output adder</a> precalculates : S, S' = S + 1 and S" = S + 2. From this three outputs,
+			all the possible final results can be obtained with a mere extra shift right: S, S/2, S' = S + 1, S"/2 = S/2
+			+ 1.</td>
+	</tr>
+</tbody></table>
+<applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="SpecialAdder.class" width="800" height="410" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="mode" value="predict">
+<param name="lang" value="a">
+</applet>
+ 
+</p><hr align="CENTER">
+<spacer type="HORIZONTAL" size="140"> <applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="Navig.class" width="250" height="48" align="BOTTOM">
+<param name="background" value="efefef">
+<param name="page" value="9">
+<param name="lang" value="a">
+</applet>
+ <a href="https://web.archive.org/web/20150630054113/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"><script type="text/javascript">
+<!--
+Xt_param = 's=190561&p=en-floating-point';
+Xt_r = document.referrer;
+Xt_h = new Date();
+Xt_i = '<img width="39" height="25" border="0" ';
+Xt_i += 'src="https://web.archive.org/web/20150630054113/http://logv27.xiti.com/hit.xiti?'+Xt_param;
+Xt_i += '&hl='+Xt_h.getHours()+'x'+Xt_h.getMinutes()+'x'+Xt_h.getSeconds();
+if(parseFloat(navigator.appVersion)>=4)
+{Xt_s=screen;Xt_i+='&r='+Xt_s.width+'x'+Xt_s.height+'x'+Xt_s.pixelDepth+'x'+Xt_s.colorDepth;}
+document.write(Xt_i+'&ref='+Xt_r.replace(/[<>"]/g, '').replace(/&/g, '$')+'" title="Analyse d\'audience">');
+//-->
+</A></A></script></a><a href="https://web.archive.org/web/20150630054113/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"><noscript> Mesure d'audience ROI frequentation
+par <img src="https://web.archive.org/web/20150630054113im_/http://logv27.xiti.com/hit.xiti?s=190561&amp;p=en-floating-point" width="39" height="25" align="BOTTOM" alt="Audience rating" border="2"/> </a></a><a href="https://web.archive.org/web/20150630054113/http://www.xiti.com/xiti.asp?s=190561" title="Mesurez votre audience"></noscript></a>
+
+
+
+
+</spacer></body></html>
+<!--
+     FILE ARCHIVED ON 05:41:13 Jun 30, 2015 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 18:49:00 Mar 16, 2025.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 1.05
+  exclusion.robots: 0.076
+  exclusion.robots.policy: 0.03
+  esindex: 0.019
+  cdx.remote: 10.279
+  LoadShardBlock: 91.465 (3)
+  PetaboxLoader3.datanode: 131.024 (4)
+  load_resource: 404.845
+  PetaboxLoader3.resolve: 362.661
+-->

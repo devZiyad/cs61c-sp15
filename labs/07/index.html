@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <title>CS61C Spring 2015 Lab 7</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style type="text/css"> img{border:1px dotted black;} </style>
+  </head>
+  <body id="frame">
+    <div class="header">
+      <h1>CS61C Spring 2015 Lab 7 - CPU Project Prep</h1>
+    </div>
+
+    <div class="content">
+           
+      <h2>Setup</h2>
+
+      <p>Copy the starter lab files as usual, from the directory: <tt>~cs61c/labs/07</tt></p>     
+  
+  <h2> Exercises<h2>
+
+  <h3>Exercise 1: Fibonacci Numbers</h3>
+    <p>
+    So far we have built circuits that are either 1) purely combinational and require no clock or 2) have memory but run infinitely.
+    In this exercise, we want to build a circuit that will compute the N<sup>th</sup> Fibonacci number.
+    As a quick review the Fibonacci numbers are defined by <tt>F<sub>0</sub> = 0, F<sub>1</sub> = 1,</tt> and <tt>F<sub>i</sub> = F<sub>i-1</sub> + F<sub>i-2</sub></tt>.
+    </p>
+    <ol>
+      <li>Start with just the infinite Fibonacci computation. Hopefully this should be pretty intuitive based on previous exercises that you have done before.
+    How many registers do you need? What arithmetic blocks do you need?  Where should the output be attached?  Make sure you figure out a way to properly initialize the registers for the computation to work.</li>
+      <li>Your sub-circuit will compute up to the 15<sup>th</sup> Fibonacci number and we will assume our input <tt>N > 0</tt> is an unsigned number. How many input bits do you need and how many output bits do you need to represent the 15<sup>th</sup> Fibonacci number?</li>
+      <li>Now to prevent the circuit from computing the Fibonacci numbers to infinity, we will make use of the Enable bit (lower left) on registers.  When unset or pulled high, the registers will continue to load their inputs on the rising edge of the CLK.  If Enabled is pulled low, then the registers will NOT load their inputs.  We need to create a signal that will properly go low when we want the circuit to stop computing Fibonacci numbers.</li>
+      <li>Create an additional part of the circuit that halts the original circuit after N computations.  For this exercise you may find the following blocks useful:  Counter (Memory), Comparator (Arithmetic), and Probe (Wiring).  Make sure that it properly stops on the N<sup>th</sup> Fibonacci number (watch for off-by-one errors) and that it actually stays there (run it for at least 20 clock cycles).</li>
+    </ol>
+    Your output should be in binary, but you can use a probe to display the value in decimal.
+    Make sure you check the attributes of any counter and comparator you use.
+    </p>
+    <p>
+    <b>Bonus:</b>  With proper register initialization, you can get this circuit <tt>fib15</tt> to work properly for <tt>N > 0</tt>.  But register initialization is annoying and must be repeated every time you reset your circuit.  With a clever addition, you can get this <tt>fib15</tt> to work for <tt>N >= 0</tt> without the need for register initialization (Hint: it involves a MUX).
+    </p>
+    <h4><a name="checkoff">Checkoff</a></h4>
+    <ul>
+        <li>Show your TA your <tt>fib15</tt> circuit and verify that for <tt>N = 15</tt> after some time it will return <tt>Out = 610</tt> indefinitely.</li>
+    </ul>
+
+  <div class="section">
+  <h2>Exercise 2: Pipelining</h2>
+  <p>This next exercise will get you some hands-on practice with pipelining. Assume that on power-on, registers initially contain zeros.</p>
+  <div class="section" id="id2">
+    <p>Consider the following 2-input FSM. Its next state and output is computed by multiplying the inputs and adding it to the current state.
+    <p><center><img src="fsm.png"/></center></p>
+    <p>Say the propogation delay of a adder block is 50ns, the propogation delay of a multiplication block is 55 ns, and the clk-to-q delay of a register is 5ns. Calculate the maximum clock rate at which this circuit can operate. Assume that the register setup time is negligible, and that both inputs come from clocked registers
+that receive their data from an outside source.
+    </p>
+    <h4><a name="checkoff">Checkoff</a></h4>
+    <ul>
+    <li>Show your TA the calculations you performed to find the maximum clock rate (non-pipelined).</li>
+  </ul>
+  </div>
+  <div class="section" id="id3">
+    <p>We want to improve the performance of this circuit, and let it operate at a higher clock rate. To do so, we will divide up the multiplication and addition into two different pipeline stages; in the first pipeline stage, we will perform the multiplication of the two inputs. In the second pipeline stage, we will add the product to the state.</p>
+    <p>Our definition of &quot;correctness&quot; will be simple: we will consider the sequence of outputs from this circuit &quot;correct&quot; iff it corresponds to the sequence of outputs the non-pipelined version would emit, potentially with some leading zeros. For example, if for some sequence of inputs the non-pipelined version emits [3,5,1,2,4, ...], a correct circuit might emit the sequence of outputs [0,3,5,1,2,4, ...] for that same sequence of inputs.</p>
+
+    <p>For your convenience and to help standardize check-offs, we are providing a starting point in the files <a href="pipeline.circ"><tt>pipeline.circ</tt></a> and <a href="ROMdata"><tt>ROMdata</tt></a> (use the links or pull from <tt>~cs61c/labs/11/</tt>). In <tt>pipeline.circ</tt>, the sub-circuit <tt>Non-pipelined</tt> is set up exactly as the figure above.  The <tt>main</tt> circuit is set up to produce the output sequence [3,5,1,2,4,-1,0,0,...] on the non-pipelined version of this circuit.  It is also a handy example of how to use memory from a file.  The ROM block should be initialized to the proper data, but if it is zero-ed out, right-click it and choose "Load image..." and select <tt>ROMdata</tt>.</p>
+
+    <p>Note that we need a register to hold the intermediate value of the computation between pipeline stages. This is a general theme with pipelines.</p>
+    <ol>
+      <li>Complete the sub-circuit <tt>Pipelined</tt>.  You will need to add a register to divide the multiplication and addition into separate pipeline stages.</li>
+      <li>Calculate the maximum clock rate for the pipelined version of the circuit.</li>
+      <li>When we talked about pipelining in lecture, we discussed that if a computation depends on the output of a previous computation, it's difficult to pipeline them and we often need to insert a pipeline &quot;bubble&quot; (or several) to ensure that the output of the first computation is ready to be an input to the second. Explain why inserting such &quot;bubbles&quot; is unnecessary for this particular circuit.</li>
+    </ol>
+    <h4><a name="checkoff">Checkoff</a></h4>
+    <ul>
+    <li>Show your TA the completed, pipelined circuit.</li>
+    <li>Show your TA the calculations you performed to find the maximum clock rate (pipelined).</li>
+    <li>Explain to your TA why bubbles are unecessary in this circuit.</li>
+  </ul>
+  </div>
+</div>
+      
+      
+      <div class="section">
+        <h2>Exercise 3: Datapath</h2>
+        <p>
+    It turns out that MARS 4.5 has a new feature called MIPS X-RAY that will visualize the datapath while you are 
+    running your instruction. This might be useful for you for part 2 of the project! To run MARS 4.5 run the command <tt>mars-4.5</tt>.
+    To open up this feature go under "Tools" and select "MIPS X RAY". It should open a window that looks like this:</p>
+  <img src="MIPS X-ray.png" style="height:300px;width:auto">
+        <p>We will use the file <tt>fib.s</tt> to see how each instruction goes through the datapath. Open <tt></tt> and the MIPS X-RAY feature. 
+          You can connect the X-RAY to the instructions by pressing the "Connect to MIPS" button on the bottom left of the screen.
+          Assemble the file by pressing the "Assemble" button on the upper left of the screen.
+          You can then step through the code using the green "Step" button next to the "Assemble" button.
+          The wires that are red signal that the control signal is on. You can also click on any control block to see what is going on inside of it. Play around with the feature, and the following questions will be based off  what is going on in the control block.</p>
+
+  <p>Note: The X-RAY feature generalizes instructions to have the same opcode. You can see this in control with the instructions add and addi. For the questions below, base your soley on the logic of the control block.</p>
+
+  <p> Questions:
+    <ul>
+      <li>What do the bits BIT 0 - BIT 5 represent?</li>
+      <li>For what instruction or type of instructions is opALU0 active? What operation in the ALU does opALU0 represent?</li>
+      <li>For what instruction or type of instructions is opALU1 active?</li>
+      <li>For what instruction or type of instructions is ALUSrc active? What does this signal represent with respect to the input to the ALU?</li>
+    </ul>
+  </p>
+  
+      <div class="section">
+        <h4>Checkoff</h4>
+        <ul>
+          <li>Show your answers above to your TA for checkoff.</li>
+        </ul>
+      </div>
+      
+      
+      
+    </div>
+  </body>
+<HEAD>
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+</HEAD>
+</html>
+

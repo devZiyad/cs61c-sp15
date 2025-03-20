@@ -1,0 +1,266 @@
+<html><head>
+<title>CS61C Spring 2015 Homework 0</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+
+<div class="header">
+	<h1>CS61C Spring 2015 Homework 0</h1>
+	TA: David Adams
+</div>
+
+<div class="content">
+	<p>Due Sunday, February 1, 2015 @ 11:59pm</p>
+
+  <p>
+  <ul class="error">
+    <li>Update 1/28 7:00 PM: Fixed wording of Problem 2.1 - "You would like <s>multiple ways</s> to represent the temperature in degrees Celsius"</li>
+      <li>Update 1/27 2:30 PM: Added <a href="#submit">Submission Instructions</a> for <tt>hw0.txt</tt></li>
+  <li>Update 1/21 12:30 PM: Fixed hex in table 2 (0xF5 -> 0xF6)</li>
+    <li>Update 1/21 12:30 PM: Updated Problem 4 - removed underflow, only overflow can occur in fixed-width integer arithmetic. </li>
+  </ul>
+  </p>
+
+	<h2>Goals</h2>
+	<p>This assignment is broken into two parts. The first part is a mini-bio
+	designed to help the course staff get to know you better. The second part will
+	give you practice with binary and the number representation schemes. </p>
+
+	<h2>Overview/Files</h2>
+	<p>The first part of this homework is <a href="hw0.pdf"><tt>hw0.pdf</tt></a> and will be submitted as a hardcopy to your TA. </p> 
+	<p>You should writeup the rest of your solutions in <a href="hw0.txt"><tt>hw0.txt</tt></a>.
+ 	<b>Please use the provided format in <tt>hw0.txt</tt>.</b> File names are case-sensitive and the submission program will not 
+    accept your submission if your file names differ at all from those specified. Detailed <a href="#submit">submission instructions</a> are given at the 
+    bottom of this page. Failure to follow these will result in loss of credit.</p>
+
+	<h2>Exercises</h2>
+
+	<h3>Problem 0: Mini Biography</h3>
+		<p>Fill out <a href="hw0.pdf"><tt>hw0.pdf</tt></a> and hand in to your TA during lab or discussion section. This part of the homework is due at the end of your second lab (Lab 1) on either 1/30, 2/2, or 2/3.</p> 
+
+	<h3>Problem 1: Number representation</h3>
+		<p>Put your answers to the following questions in <code>hw0.txt</code></p>
+		<p>Assume we are dealing with 8 bit numbers for this problem.
+			Complete the following tables to practice encoding decimal values into unsigned and two's complement. The first table is unsigned and the second table is two's complement. The first row of each column has been filled out for you.
+		</p>
+		<p>If a decimal number can't be encoded into binary and hexadecimal with the given scheme, write "n/a" for both columns. </p>
+		<p><b>Note:</b> The '0b' and '0x' prefixes denote the following numeral as binary or hexadecimal respectively.</p>
+		<b>Unsigned</b>
+		<table border="1">
+			<tbody><tr>
+				<td><b>Decimal</b></td>
+				<td><b>Binary</b></td>
+				<td><b>Hexadecimal</b></td>
+			</td></tr>
+			<tr>
+				<td><tt>10</td>
+				<td><code>0b0000 1010</code></td>
+				<td><tt>0x0A</tt></td></tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><code>0b1111 0000</code> <br>
+				</td>
+				<td>&nbsp;</td></td></tr>
+			<tr>
+				<td><code>&nbsp;</code>
+				</td><td>&nbsp;</td><td><tt>0x0F</tt></td>
+			</tr>
+			<tr>
+				<td><code>&nbsp;</code>
+				</td><td>&nbsp;</td><td><tt>0xA1</tt></td>
+			</tr>
+			<tr>
+				<td><tt>250</tt></td>
+				<td><code>&nbsp;</code>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><code>0b1111 1111</code>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp;</code>
+				</td><td>&nbsp;</td><td><tt>0xCC</tt></td>
+			</tr>
+			<tr>
+				<td><code>-35</code></td>
+				<td>&nbsp;
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><code>128</code></td>
+				<td>&nbsp;
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><code>0b0110 1001</code>
+				</td>
+				<td>&nbsp;</td>
+		</tr>
+	</tbody></table>
+
+<br>
+
+			<b>Two's Complement</b>
+		<table border="1">
+			<tbody><tr>
+				<td><b>Decimal</b></td>
+				<td><b>Binary</b></td>
+				<td><b>Hexadecimal</b></td>
+			</td></tr>
+			<tr>
+				<td><tt>-10</td>
+				<td><code>0b1111 0110</code></td>
+				<td><tt>0xF6</tt></td></tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><code>0b1111 0000</code> <br>
+				</td>
+				<td>&nbsp;</td></td></tr>
+			<tr>
+				<td><code>&nbsp;</code>
+				</td>
+				<td>&nbsp;</td>
+				<td><tt>0x0F</tt></td>
+			</tr>
+			<tr>
+				<td><code>&nbsp;</code>
+				</td><td>&nbsp;</td><td><tt>0xA1</tt></td>
+			</tr>
+			<tr>
+				<td><tt>250</tt></td>
+				<td><code>&nbsp;</code>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><code>0b1111 1111</code>
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><code>&nbsp;</code>
+				</td><td>&nbsp;</td><td><tt>0xCC</tt></td>
+			</tr>
+			<tr>
+				<td><code>-35</code></td>
+				<td>&nbsp;
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><code>128</code></td>
+				<td>&nbsp;
+				</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><code>0b0110 1001</code>
+				</td>
+				<td>&nbsp;</td>
+		</tr>
+	</tbody></table>
+
+
+
+<h3>Problem 2: Picking representations</h3>
+<p>Put your answers to the following questions in <code>hw0.txt</code></p>
+<p>Assume we are working with 8-bit numbers for the entirety of this question.
+
+		<li>For each part below, you will be given a choice between unsigned and two's complement.  It's your job to pick the better number representation for the given criteria, or denote that both representations are equally good.  Explain your answer in one sentence or less.:</p>
+		<ol>
+			<li>You would like to represent the temperature in degrees Celsius: 
+			<br><br>&nbsp;&nbsp;&nbsp;<code>UNSIGNED</code>&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;<code>TWO'S COMPLEMENT</code>&nbsp;&nbsp;&nbsp;or <code>BOTH</code></li><br><br>
+
+			<li>You would like to maximize the range (distance between most negative represented number, and most positive represented number): 
+			<br><br>&nbsp;&nbsp;&nbsp;<code>UNSIGNED</code>&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;<code>TWO'S COMPLEMENT</code>&nbsp;&nbsp;&nbsp;or <code>BOTH</code></li><br><br>
+
+			<li>You would like to represent the number of boxes a factory has shipped: 
+			<br><br>&nbsp;&nbsp;&nbsp;<code>UNSIGNED</code>&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;<code>TWO'S COMPLEMENT</code>&nbsp;&nbsp;&nbsp;or <code>BOTH</code></li><br><br>
+		</ol>
+		</li>
+
+<h3>Problem 3: Counting</h3>
+	<p>Put your answers to the following questions in <code>hw0.txt</code></p>
+	<ol type="a">
+		<li>For a system of <code>n</code>-digit unsigned base 4 numbers (n &gt; 1), how many numbers can be represented?
+		</li><br><br>
+
+		<li>For an <code>n</code>-digit 2's complement binary number (n &gt; 1), what is the number of negative integers?
+		</li><br><br>
+		
+		<li>For an <code>n</code>-digit 2's complement number (n &gt; 1), how many zeros are there?
+		</li><br><br>
+
+		<li>
+		For an <code>n</code>-digit 2's complement number (n &gt; 1), what is the difference between the most positive number and the most negative number? 
+		</li><br><br>
+	</ol>
+
+
+<h3>Problem 4: Overflow</h3>
+<p>The following addition and subtraction operations are to be carried out with 8-bit 2's complement numbers. For each operation, calculate the result and label as OVERFLOW or CORRECT</p>
+<p>Example: 1 + 2 = 0b0000 0001 + 0b0000 0010 = 0b0000 0011 = 3, CORRECT</p>
+<ol type="a">
+<li>64 + 64 = ?</li>
+<li>-127 + 30 = ?</li>	
+<li>-127 - 1 = ?</li>
+<li>38 - 40 = ?</li>
+</ol>
+
+<br>    <a id="submit" />
+   	<h2>Submission</h2>
+
+    <p>There are <strong>two</strong> steps required to submit hw0.txt. Failure to perform both steps will result in loss of credit:</p>
+
+    <ol>
+        <li><p>First, you must submit using the standard unix submit program on the instructional servers. To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+
+            <pre>$ mkdir ~/files_for_submit
+$ cd ~/files_for_submit
+$ mkdir hw0
+$ cd hw0
+$ cp [Your hw0 text file location] hw0.txt               # replace the braces with the location of your hw0.txt file
+$ submit hw0</pre>
+            <p> Once you type <tt>submit hw0</tt>, follow the prompts generated by the submission system. It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+            <br>
+        </li>
+
+        <li><p>Additionally, you must submit hw0.txt to your GitHub repository. To do so, follow these instructions after logging into your cs61c-XX class account:</p>
+
+        <pre>
+$ cd ~/work                                              # this is the location of your git repo on your class account
+$ mkdir hw0
+$ cd hw0
+$ cp [Your hw0 text file location] hw0.txt               # replace the braces with the location of your hw0.txt file
+$ cd ..
+$ git add hw0/hw0.txt
+$ git commit -m "Homework 0 submission"
+$ git tag -f "hw0"                                       # The tag MUST be "hw0". Failure to do so will result in loss of credit.
+$ git push origin master --tags                          # Note the "--tags" at the end. This pushes tags to github</pre>
+            </li>
+
+            <p><strong>What's the point of using tags?</strong> Using tags allows the course staff to determine which commit represents your hw0 submission, even if you make later commits to your repository.</p>
+
+            <p>At this point, your repo should look like the following:</p>
+
+            <img src="img/repo.png" />
+
+            <p>Your "releases" page on GitHub (accessible by clicking on "Releases" from your repo's homepage) should look like the following. The "release" listed here reflects the tag we made called "hw0":</p>
+
+            <img src="img/release.png" />
+
+    </ol>
+            
+
+</div></body></html>

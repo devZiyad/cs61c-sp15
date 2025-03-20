@@ -1,0 +1,183 @@
+===============================================================================
+ HOMEWORK 1/2 GRADING SUMMARY
+===============================================================================
+
+ * HOMEWORK 1 SCORE: 100.00
+ * HOMEWORK 1' SCORE: 94.29
+ * FINAL HOMEWORK 1 SCORE: 100.00
+
+ * HOMEWORK 2 SCORE (WITHOUT TESTS): 79.00
+
+===============================================================================
+
+ *** TESTING REPORT: HOMEWORK 1 ***
+
+ Student: Beverly_Fu 
+ Login: cs61c-al
+
+ OPEN TESTS (50.0%)
+   [  OK  ] beargit_test_add_0 
+   [  OK  ] beargit_test_add_1 
+   [  OK  ] beargit_test_rm_0 
+   [  OK  ] beargit_test_rm_1 
+   [  OK  ] beargit_test_status_0 
+   [  OK  ] beargit_test_status_1 
+   [  OK  ] beargit_test_commit_0 
+   [  OK  ] beargit_test_commit_1 
+   [  OK  ] beargit_test_log_0 
+   [  OK  ] beargit_test_log_1 
+ SUBSCORE: 10 / 10 (100.0%)
+
+ ID GENERATION (10.0%)
+   [  OK  ] beargit_test_next_commit_id_0 
+   [  OK  ] beargit_test_next_commit_id_1 
+ SUBSCORE: 2 / 2 (100.0%)
+
+ COMMIT MESSAGE CHECK (10.0%)
+   [  OK  ] beargit_test_is_commit_msg_ok_0 
+   [  OK  ] beargit_test_is_commit_msg_ok_1 
+   [  OK  ] beargit_test_is_commit_msg_ok_2 
+   [  OK  ] beargit_test_is_commit_msg_ok_3 
+ SUBSCORE: 4 / 4 (100.0%)
+
+ RANDOM TESTS (20.0%)
+   [  OK  ] beargit_test_random_short_0 
+   [  OK  ] beargit_test_random_short_1 
+   [  OK  ] beargit_test_random_short_2 
+   [  OK  ] beargit_test_random_short_3 
+   [  OK  ] beargit_test_random_short_4 
+   [  OK  ] beargit_test_random_short_5 
+   [  OK  ] beargit_test_random_short_6 
+   [  OK  ] beargit_test_random_medium_0 
+   [  OK  ] beargit_test_random_medium_1 
+   [  OK  ] beargit_test_random_medium_2 
+   [  OK  ] beargit_test_random_long_0 
+   [  OK  ] beargit_test_random_long_1 
+   [  OK  ] beargit_test_random_big_0 
+   [  OK  ] beargit_test_random_big_1 
+ SUBSCORE: 14 / 14 (100.0%)
+
+ FILE SYSTEM CORRECTNESS (10.0%)
+ * NO ERRORS
+ SUBSCORE: 30 / 30 (100.0%)
+
+
+ *** TOTAL SCORE: 100.00 / 100.00 ***
+
+===============================================================================
+
+ *** TESTING REPORT: HOMEWORK 2 ON HOMEWORK 1 TESTS FOR CLOBBERING ***
+
+ Student: Beverly_Fu 
+ Login: cs61c-al
+
+ OPEN TESTS (50.0%)
+   [  OK  ] beargit_test_add_0 
+   [  OK  ] beargit_test_add_1 
+   [  OK  ] beargit_test_rm_0 
+   [  OK  ] beargit_test_rm_1 
+   [  OK  ] beargit_test_status_0 
+   [  OK  ] beargit_test_status_1 
+   [  OK  ] beargit_test_commit_0 
+   [  OK  ] beargit_test_commit_1 
+   [  OK  ] beargit_test_log_0 
+   [  OK  ] beargit_test_log_1 
+ SUBSCORE: 10 / 10 (100.0%)
+
+ ID GENERATION (10.0%)
+   [  OK  ] beargit_test_next_commit_id_0 
+   [  OK  ] beargit_test_next_commit_id_1 
+ SUBSCORE: 2 / 2 (100.0%)
+
+ COMMIT MESSAGE CHECK (10.0%)
+   [  OK  ] beargit_test_is_commit_msg_ok_0 
+   [  OK  ] beargit_test_is_commit_msg_ok_1 
+   [  OK  ] beargit_test_is_commit_msg_ok_2 
+   [  OK  ] beargit_test_is_commit_msg_ok_3 
+ SUBSCORE: 4 / 4 (100.0%)
+
+ RANDOM TESTS (20.0%)
+   [  OK  ] beargit_test_random_short_0 
+   [  OK  ] beargit_test_random_short_1 
+   [  OK  ] beargit_test_random_short_2 
+   [  OK  ] beargit_test_random_short_3 
+   [  OK  ] beargit_test_random_short_4 
+   [  OK  ] beargit_test_random_short_5 
+   [  OK  ] beargit_test_random_short_6 
+   [  OK  ] beargit_test_random_medium_0 
+   [ FAIL ] beargit_test_random_medium_1 successful add should not display any output
+   [ FAIL ] beargit_test_random_medium_2 successful add should not display any output
+   [ FAIL ] beargit_test_random_long_0 successful add should not display any output
+   [ FAIL ] beargit_test_random_long_1 successful add should not display any output
+   [  OK  ] beargit_test_random_big_0 
+   [  OK  ] beargit_test_random_big_1 
+ SUBSCORE: 10 / 14 (71.4%)
+
+ FILE SYSTEM CORRECTNESS (10.0%)
+ * NO ERRORS
+ SUBSCORE: 30 / 30 (100.0%)
+
+
+ *** TOTAL SCORE: 94.29 / 100.00 ***
+
+===============================================================================
+
+ *** TESTING REPORT: HOMEWORK 2 ***
+
+ Student: Beverly_Fu 
+ Login: cs61c-al
+
+ OPEN TESTS (40.0%)
+   [  OK  ] beargit_test_branch_0 
+   [  OK  ] beargit_test_branch_1 
+   [  OK  ] beargit_test_commit_2 
+   [  OK  ] beargit_test_checkout_0 
+   [  OK  ] beargit_test_checkout_1 
+   [  OK  ] beargit_test_checkout_2 
+   [  OK  ] beargit_test_checkout_3 
+   [  OK  ] beargit_test_checkout_4 
+   [  OK  ] beargit_test_checkout_5 
+   [  OK  ] beargit_test_checkout_6 
+ SUBSCORE: 10 / 10 (100.0%)
+
+ RANDOM TESTS (30.0%)
+   [  OK  ] beargit_test_random_short_0 
+   [  OK  ] beargit_test_random_short_1 
+   [  OK  ] beargit_test_random_short_2 
+   [  OK  ] beargit_test_random_short_3 
+   [  OK  ] beargit_test_random_short_4 
+   [  OK  ] beargit_test_random_short_5 
+   [  OK  ] beargit_test_random_short_6 
+   [  OK  ] beargit_test_random_short_7 
+   [  OK  ] beargit_test_random_short_8 
+   [  OK  ] beargit_test_random_short_9 
+   [  OK  ] beargit_test_random_short_10 
+   [  OK  ] beargit_test_random_short_11 
+   [  OK  ] beargit_test_random_short_12 
+   [  OK  ] beargit_test_random_short_13 
+   [  OK  ] beargit_test_random_medium_0 
+   [  OK  ] beargit_test_random_medium_1 
+   [  OK  ] beargit_test_random_medium_2 
+   [  OK  ] beargit_test_random_medium_3 
+   [  OK  ] beargit_test_random_medium_4 
+   [  OK  ] beargit_test_random_medium_5 
+   [  OK  ] beargit_test_random_long_0 
+   [ FAIL ] beargit_test_random_long_1 successful add should not display any output
+   [  OK  ] beargit_test_random_long_2 
+   [  OK  ] beargit_test_random_long_3 
+   [  OK  ] beargit_test_random_long_4 
+   [  OK  ] beargit_test_random_long_5 
+   [  OK  ] beargit_test_random_big_0 
+   [  OK  ] beargit_test_random_big_1 
+   [  OK  ] beargit_test_random_big_2 
+   [  OK  ] beargit_test_random_big_3 
+ SUBSCORE: 29 / 30 (96.7%)
+
+ FILE SYSTEM CORRECTNESS (10.0%)
+ * NO ERRORS
+ SUBSCORE: 40 / 40 (100.0%)
+
+
+ *** TOTAL SCORE: 79.00 / 80.00 ***
+
+===============================================================================

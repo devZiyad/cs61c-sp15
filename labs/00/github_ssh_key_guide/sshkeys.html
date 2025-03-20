@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://help.github.com/articles/generating-ssh-keys/#platform-linux -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="search" type="application/opensearchdescription+xml" href="https://help.github.com/opensearch.xml" title="GitHub:Help">
+  <title>
+  
+    
+      Generating SSH keys - User Documentation
+    
+  
+  </title>
+
+  
+  <link rel="icon" type="image/x-icon" href="https://help.github.com/assets/images/site/favicon.ico">
+  <link rel="stylesheet" href="https://help.github.com/assets/stylesheets/application.css">
+  <script type="text/javascript" async="" src="./sshkeys_files/ga.js"></script><script src="./sshkeys_files/application.js"></script>
+  <script src="./sshkeys_files/application_cs.js"></script>
+  
+  <meta name="Description" content="          Forget the terminal. Download our native app instead.Download GitHub for MacSkip this guide. Download our native app instead.Download GitHub for WindowsSSH keys are a way to identify truste…">
+
+  <script type="text/javascript">
+    $(function() {
+      $('#quicksearch-query').lunrSearch({
+        
+        indexUrl: '/search/search.json',
+        
+        quickSearchResults:  '.autocomplete-results',
+        quickSearchEntries:  '.result-group',
+        quickSearchTemplate: '#quicksearch-results-template',
+
+        searchResults: '.search-container',
+        searchEntries: '.search-results',
+        searchTemplate: '#search-results-template'
+      });
+    });
+  </script>
+
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-3769691-27']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+  
+</head>
+
+<body id="com" class="platform-switch platform-linux">
+
+<div id="not-footer">
+  
+
+  <div id="header">
+    <div class="clearfix">
+      <h1 class="site-logo"><a href="https://help.github.com/">GitHub Help</a></h1>
+
+      <ul class="top-nav">
+        
+        <li>
+          <button class="js-dropdown-button dropdown-button">Version <div class="dropdown-caret"></div></button>
+          <div class="dropdown-menu js-dropdown-menu">
+            <a href="https://help.github.com/">GitHub.com</a>
+            <a href="https://help.github.com/enterprise/2.1/user">GitHub Enterprise 2.1</a>
+            <a href="https://help.github.com/enterprise/2.0/user">GitHub Enterprise 2.0</a>
+            <a href="https://help.github.com/enterprise/11.10.340/user">GitHub Enterprise 11.10.340</a>
+          </div>
+        </li>
+        
+        
+        <li><a href="https://github.com/contact">Contact Support</a></li>
+        <li><a href="http://www.github.com/">Return to GitHub</a></li>
+        
+      </ul>
+    </div>
+  </div>
+
+  <div id="content-wrapper">
+
+    <div class="site">
+
+      
+
+<!-- hidden articles do not have categories -->
+
+  
+
+
+<div class="content-header small">
+  <h6 class="breadcrumbs">
+    
+    <a href="https://help.github.com/categories/ssh">SSH</a>
+    /
+    
+    Generating SSH keys
+  </h6>
+  <div class="search-form small right">
+    
+  
+
+
+<script id="quicksearch-results-template" type="text/mustache">
+  <div class="header">
+    <a class="initial quicksearch-seemore" href="/search?q=">See more results</a>
+  </div>
+
+  {{#entries}}
+    <tr class="article">
+      <td class="info">
+        <a href="{{url}}" class="js-articles-quicksearch-link">{{title}}</a>
+      </td>
+    </tr>
+  {{/entries}}
+
+</script>
+
+<form accept-charset="UTF-8" action="https://help.github.com/search" id="articles-search" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
+  <div class="outer">
+    <div class="inner fade-label">
+      <input type="text" name="q" id="quicksearch-query" class="js-articles-quicksearch" placeholder="How can we help?">
+      <button><span class="octicon octicon-search"></span></button>
+
+    </div>
+  </div>
+</form>
+<div class="autocomplete-results" style="display: none;">
+  <table class="result-group" border="0" cellpadding="0" cellspacing="0">
+  </table>
+</div>
+
+  </div>
+</div>
+
+<div class="article js-hide-during-search">
+
+  <h2>Generating SSH keys</h2>
+
+  <div id="article-platform-nav" style="display: block;">
+    <ul>
+      <!-- http://bit.ly/TE6i98 -->
+      
+
+      
+     
+        <li class="platform-linux selected">
+          <a href="" data-platform="linux">
+            linux
+          </a>
+        </li>
+      
+     
+    </ul>
+  </div>
+
+  <div class="article-body content-body wikistyle markdown-format">
+    
+
+<div class="platform-mac">
+
+<div class="native-download">
+<p><span class="mega-icon megaphone"></span><span>Forget the terminal. Download our native app instead.</span></p>
+<a href="https://mac.github.com/" class="classy button orange">Download GitHub for Mac</a>
+</div>
+
+</div>
+
+<div class="platform-windows">
+
+<div class="native-download">
+<p><span class="mega-icon megaphone"></span><span>Skip this guide. Download our native app instead.</span></p>
+<a href="https://windows.github.com/" class="classy button primary">Download GitHub for Windows</a>
+</div>
+
+</div>
+
+<div class="intro">
+
+<p>SSH keys are a way to identify trusted computers, without involving passwords. The steps below will walk you through generating an SSH key and then adding the public key to your GitHub account.</p>
+
+</div>
+
+<div class="alert tip">
+
+<p><strong>Tip:</strong> We recommend that you regularly <a href="https://help.github.com/articles/keeping-your-ssh-keys-and-application-access-tokens-safe">review your SSH keys list</a> and revoke any that haven't been used in a while.</p>
+
+</div>
+
+<h3>
+<a name="step-1-check-for-ssh-keys" class="anchor" href="https://help.github.com/articles/generating-ssh-keys/#step-1-check-for-ssh-keys"><span class="octicon octicon-link"></span></a>Step 1: Check for SSH keys</h3>
+
+<p>Since we're working on a clean account, there will be no existing SSH keys. You may move on to the next step.</p>
+
+<div class="platform-mac">
+
+<div class="alert tip">
+
+<p><strong>Tip:</strong> If you have a new installation of Mac OSX, you will not have a <code>~/.ssh</code> directory. It will be created when you run the <code>ssh-keygen</code> command in <strong>step 2</strong> below.</p>
+
+</div>
+
+</div>
+
+<h3>
+<a name="step-2-generate-a-new-ssh-key" class="anchor" href="https://help.github.com/articles/generating-ssh-keys/#step-2-generate-a-new-ssh-key"><span class="octicon octicon-link"></span></a>Step 2: Generate a new SSH key</h3>
+
+<p>To generate a new SSH key, copy and paste the text below, making sure to substitute in your email address. The default settings are preferred, so when you're prompted to "Enter a file in which to save the key", just press <strong>Enter</strong> to continue.</p>
+
+<div class="platform-mac">
+
+<pre class="command-line"><span class="command">ssh-keygen -t rsa -C "<em>your_email@example.com</em>"</span>
+<span class="comment"># Creates a new ssh key, using the provided email as a label</span>
+<span class="output"><span># </span>Generating public/private rsa key pair.</span>
+<span class="output"><span># </span>Enter file in which to save the key (/Users/<em>you</em>/.ssh/id_rsa): <em>[Press enter]</em></span>
+</pre>
+
+</div>
+
+<div class="platform-windows">
+
+<pre class="command-line"><span class="command">ssh-keygen -t rsa -C "<em>your_email@example.com</em>"</span>
+<span class="comment"># Creates a new ssh key, using the provided email as a label</span>
+<span class="output"><span># </span>Generating public/private rsa key pair.</span>
+<span class="output"><span># </span>Enter file in which to save the key (/c/Users/<em>you</em>/.ssh/id_rsa): <em>[Press enter]</em></span>
+</pre>
+
+</div>
+
+<div class="platform-linux">
+
+<pre class="command-line"><span class="command">ssh-keygen -t rsa -C "<em>your_email@example.com</em>"</span>
+<span class="comment"># Creates a new ssh key, using the provided email as a label</span>
+<span class="output"><span># </span>Generating public/private rsa key pair.</span>
+<span class="output"><span># </span>Enter file in which to save the key (/home/<em>you</em>/.ssh/id_rsa):</span>
+</pre>
+
+</div>
+
+<div class="platform-all">
+
+<pre class="command-line"><span class="command">ssh-keygen -t rsa -C "<em>your_email@example.com</em>"</span>
+<span class="comment"># Creates a new ssh key using the provided email</span>
+<span class="output"><span># </span>Generating public/private rsa key pair.</span>
+<span class="output"><span># </span>Enter file in which to save the key (/<em>your_home_path</em>/.ssh/id_rsa):</span>
+</pre>
+
+</div>
+
+<p>Next, you'll be asked to enter a passphrase.</p>
+
+<div class="alert tip">
+
+<p><strong>Tip:</strong> We strongly recommend a very good, secure passphrase. For more information, see <a href="https://help.github.com/articles/working-with-ssh-key-passphrases">Working with SSH key passphrases</a>.</p>
+
+</div>
+
+<pre class="command-line"><span class="output"><span># </span>Enter passphrase (empty for no passphrase): <em>[Type a passphrase]</em></span>
+<span class="output"><span># </span>Enter same passphrase again: <em>[Type passphrase again]</em></span>
+</pre>
+
+<p>Which should give you something like this:</p>
+
+<div class="platform-mac">
+
+<pre class="command-line"><span class="output"><span># </span>Your identification has been saved in /Users/<em>you</em>/.ssh/id_rsa.</span>
+<span class="output"><span># </span>Your public key has been saved in /Users/<em>you</em>/.ssh/id_rsa.pub.</span>
+<span class="output"><span># </span>The key fingerprint is:</span>
+<span class="output"><span># </span><em>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</em></span>
+</pre>
+
+</div>
+
+<div class="platform-windows">
+
+<pre class="command-line"><span class="output"><span># </span>Your identification has been saved in /c/Users/<em>you</em>/.ssh/id_rsa.</span>
+<span class="output"><span># </span>Your public key has been saved in /c/Users/<em>you</em>/.ssh/id_rsa.pub.</span>
+<span class="output"><span># </span>The key fingerprint is:</span>
+<span class="output"><span># </span><em>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</em></span>
+</pre>
+
+</div>
+
+<div class="platform-linux">
+
+<pre class="command-line"><span class="output"><span># </span>Your identification has been saved in /home/<em>you</em>/.ssh/id_rsa.</span>
+<span class="output"><span># </span>Your public key has been saved in /home/<em>you</em>/.ssh/id_rsa.pub.</span>
+<span class="output"><span># </span>The key fingerprint is:</span>
+<span class="output"><span># </span><em>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</em></span>
+</pre>
+
+</div>
+
+<div class="platform-all">
+
+<pre class="command-line"><span class="output"><span># </span>Your identification has been saved in /<em>your_home_path</em>/.ssh/id_rsa.</span>
+<span class="output"><span># </span>Your public key has been saved in /<em>your_home_path</em>/.ssh/id_rsa.pub.</span>
+<span class="output"><span># </span>The key fingerprint is:</span>
+<span class="output"><span># </span><em>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</em></span>
+</pre>
+
+</div>
+
+<p>Then add your new key to the ssh-agent:</p>
+
+<div class="platform-mac">
+
+<pre class="command-line"><span class="comment"># start the ssh-agent in the background</span>
+<span class="command">eval "$(ssh-agent -s)"</span>
+<span class="output"><span># </span>Agent pid 59566</span>
+<span class="command">ssh-add ~/.ssh/id_rsa</span>
+</pre>
+
+</div>
+
+<div class="platform-windows">
+
+<pre class="command-line"><span class="comment"># start the ssh-agent in the background</span>
+<span class="command">ssh-agent -s</span>
+<span class="output"><span># </span>Agent pid 59566</span>
+<span class="command">ssh-add ~/.ssh/id_rsa</span>
+</pre>
+
+</div>
+
+<div class="platform-linux">
+
+<pre class="command-line"><span class="comment"># start the ssh-agent in the background</span>
+<span class="command">eval "$(ssh-agent -s)"</span>
+<span class="output"><span># </span>Agent pid 59566</span>
+<span class="command">ssh-add ~/.ssh/id_rsa</span>
+</pre>
+
+</div>
+
+<div class="platform-all">
+
+<pre class="command-line"><span class="comment"># start the ssh-agent in the background</span>
+<span class="command">eval "$(ssh-agent -s)"</span>
+<span class="output"><span># </span>Agent pid 59566</span>
+<span class="command">ssh-add ~/.ssh/id_rsa</span>
+</pre>
+
+</div>
+
+<h3>
+<a name="step-3-add-your-ssh-key-to-your-account" class="anchor" href="https://help.github.com/articles/generating-ssh-keys/#step-3-add-your-ssh-key-to-your-account"><span class="octicon octicon-link"></span></a>Step 3: Add your SSH key to your account</h3>
+
+<div class="platform-mac">
+
+<p>Run the following command to copy the key to your clipboard. Keep in mind that your key may also be named <code>id_dsa.pub</code>, <code>id_ecdsa.pub</code> or <code>id_ed25519.pub</code>.</p>
+
+<pre class="command-line"><span class="command">pbcopy &lt; ~/.ssh/id_rsa.pub</span>
+<span class="comment"># Copies the contents of the id_rsa.pub file to your clipboard</span>
+</pre>
+
+<p>Alternatively, using your favorite text editor, you can open the public key file and copy the contents of the file manually.</p>
+
+<div class="alert warning">
+
+<p><strong>Warning</strong>: it's important to copy the key exactly without adding newlines or whitespace.</p>
+
+</div>
+
+</div>
+
+<div class="platform-windows">
+
+<p>Run the following command to copy the key to your clipboard. Keep in mind that your key may also be named <code>id_dsa.pub</code>, <code>id_ecdsa.pub</code> or <code>id_ed25519.pub</code>.</p>
+
+<pre class="command-line"><span class="command">clip &lt; ~/.ssh/id_rsa.pub</span>
+<span class="comment"># Copies the contents of the id_rsa.pub file to your clipboard</span>
+</pre>
+
+<p>Alternatively, using your favorite text editor, you can open the public key file and copy the contents of the file manually.</p>
+
+</div>
+
+<div class="platform-linux">
+
+<p>Run the following commands to output the public key to the console.</p>
+
+<pre class="command-line"><span class="command">cat ~/.ssh/id_rsa.pub</span>
+<span class="output">ssh-rsa AAAAB3QzaC1ycQEAAAABIwAQAIEAtQUYBcQoAGYoDOuCDG/zA8w4u+WfmdVKum7AHFHHH+GDEtmLDAl1tuG2AaABz3/cAFJfpJLY0vzpe0U1Uy4OzKQwbZxvwxrwp42IEzuqhOmXIWe9xj9mmmlrIemOHdj9aMfOffffffTjCB/CPQc0utXEuUsIsssss8AtZd8UgoU= YOUR_EMAIL_ADDRESS_HERE</span>
+</pre>
+
+<p>You should copy the output of this command to your clipboard.</p>
+
+</div>
+
+<div class="platform-all">
+
+<p>Open the <em>~/.ssh/id_rsa.pub</em> file with a text editor. This is your SSH key. Select all and copy to your clipboard.</p>
+
+<p><br></p>
+
+</div>
+
+<p>Now that you have the key copied, it's time to add it to GitHub:</p>
+
+<ol>
+<li><p><img src="./sshkeys_files/userbar-account-settings.png" alt="Settings icon in the user bar">In the top right corner of any page, click <span class="octicon octicon-gear" aria-label="The Settings gear" title="The Settings gear"></span>.
+</p></li>
+<li><p><img src="./sshkeys_files/settings-sidebar-ssh-keys.png" alt="SSH keys">In the user settings sidebar, click <strong>SSH keys</strong>.
+</p></li>
+<li><p><img src="./sshkeys_files/ssh-add-ssh-key.png" alt="SSH Key button">Click <strong>Add SSH key</strong>.
+</p></li>
+<li>In the Title field, add a descriptive label for the new key. For example, if you're using a personal Mac, you might call this key "Personal MacBook Air".</li>
+<li><img src="./sshkeys_files/ssh-key-paste.png" alt="The key field">Paste your key into the "Key" field.
+
+</li>
+<li><img src="./sshkeys_files/ssh-add-key.png" alt="The Add key button">Click <strong>Add key</strong>.
+
+</li>
+<li>Confirm the action by entering your GitHub password.</li>
+</ol>
+
+<h3>
+<a name="step-4-test-everything-out" class="anchor" href="https://help.github.com/articles/generating-ssh-keys/#step-4-test-everything-out"><span class="octicon octicon-link"></span></a>Step 4: Test everything out</h3>
+
+<p>To make sure everything is working, you'll now try SSHing to GitHub. When you do this, you will be asked to authenticate this action using your password, which was the passphrase you created earlier.</p>
+
+<p>Open up <span class="platform-mac">your Terminal</span><span class="platform-linux">your Terminal</span><span class="platform-windows">your Git Bash</span><span class="platform-all">the command line</span> and type:</p>
+
+<pre class="command-line"><span class="command">ssh -T git@github.com</span>
+<span class="comment"># Attempts to ssh to GitHub</span>
+</pre>
+
+<div class="platform-linux">
+
+<p>It's possible that you'll see this error message:</p>
+
+<pre class="command-line">...
+Agent admitted failure to sign using the key.
+debug1: No more authentication methods to try.
+Permission denied (publickey).
+</pre>
+
+<p>This is a known problem with certain Linux distributions. For a possible resolution, see <a href="https://help.github.com/articles/error-agent-admitted-failure-to-sign">our help article</a>.</p>
+
+</div>
+
+<p>You may see this warning:</p>
+
+<pre class="command-line"><span class="output"><span># </span>The authenticity of host 'github.com (207.97.227.239)' can't be established.</span>
+<span class="output"><span># </span>RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.</span>
+<span class="output"><span># </span>Are you sure you want to continue connecting (yes/no)?</span>
+</pre>
+
+<p>Don't worry! This is supposed to happen. Verify that the fingerprint in your terminal matches the one we've provided up above, and then type "yes."</p>
+
+<pre class="command-line"><span class="output"><span># </span>Hi <em>username</em>! You've successfully authenticated, but GitHub does not</span>
+<span class="output"><span># </span>provide shell access.</span>
+</pre>
+
+<p>If that username is yours, you've successfully set up your SSH key! Don't worry about the "shell access" thing, you don't want that anyway.</p>
+
+<p>If you receive a message about "access denied," you can <a href="https://help.github.com/articles/error-permission-denied-publickey">read these instructions for diagnosing the issue</a>.</p>
+
+<p>If you're switching from HTTPS to SSH, you'll now need to update your remote repository URLs. For more information, see <a href="https://help.github.com/articles/changing-a-remote-s-url">Changing a remote's URL</a>.</p>
+
+
+  </div>
+
+  <div class="support-footer">
+    <hr>
+    <ul class="article-footer button-nav">
+      
+        <li><a href="https://github.com/contact" class="minibutton">
+            <span class="octicon octicon-comment-discussion"></span>
+            Contact a human
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<div class="sidebar">
+  <h3>Article versions</h3>
+  <ul>
+    <li><a href="https://help.github.com/articles/generating-ssh-keys/" skip-conversion="">GitHub.com</a></li>
+
+    
+
+    
+      
+        
+          <li>
+            <a href="https://help.github.com/enterprise/2.1/user/articles/generating-ssh-keys/">GitHub Enterprise 2.1</a>
+          </li>
+        
+      
+        
+          <li>
+            <a href="https://help.github.com/enterprise/2.0/user/articles/generating-ssh-keys/">GitHub Enterprise 2.0</a>
+          </li>
+        
+      
+        
+          <li>
+            <a href="https://help.github.com/enterprise/11.10.340/user/articles/generating-ssh-keys/">GitHub Enterprise 11.10.340</a>
+          </li>
+        
+      
+    
+  </ul>
+</div>
+
+
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+
+<div id="footer">
+  <div class="inner">
+    <a href="https://github.com/" class="invertocat">
+      <img alt="The GitHub Logo" src="./sshkeys_files/invertocat.png" width="24" height="24">
+    </a>
+    <p class="left">
+      © <span id="year">2015</span> GitHub Inc. All rights reserved.
+    </p>
+      <ul class="links right">
+        <li><a href="https://help.github.com/terms-of-service">Terms of Service</a></li>
+        <li><a href="https://help.github.com/privacy-policy">Privacy</a></li>
+        <li><a href="https://help.github.com/security">Security</a></li>
+        
+          <li><a href="https://github.com/contact">Support</a></li>
+        
+      </ul>
+  </div>
+</div>
+
+
+<div class="fullscreen-overlay"></div>
+
+
+</body></html>

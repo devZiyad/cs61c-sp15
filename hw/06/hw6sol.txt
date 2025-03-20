@@ -1,0 +1,60 @@
+======= Problem 1 =======
+a. 32 bits
+    log_2(4GiB) = log_2(2^(32)) = 32
+    The Page Table Base Address Register needs to hold a physical memory byte address.
+
+    [GRADING: 4 points. 2 point of partial credit if wrong answer but correct explanation.]
+b. 2^59
+    2^(#VPN bits) = 2^(#VA bits - #offset bits) = 2^(64 - log_2(32)) = 2^(64 - 5)
+    The Page Table needs to have as many rows as the number of Virtual Pages.
+
+    [GRADING: 4 points. 2 point of partial credit if wrong answer but correct explanation.]
+c. 2^27
+    4 GiB / 32 B = 2^32 / 2^5 = 2^(32 - 5) = 2^27
+    We can only have as many valid entries as available physical pages
+
+    [GRADING: 4 points. 2 point of partial credit if wrong answer but correct explanation.]
+
+======= Problem 2 =======
+a. 2 + 2 + ceil(N/8)
+    We have 15 instructions = 15 * 4 B = 60 B ~ 2 pages of code. These two faults can
+    only happen once each because they will always be the most recently used and kept
+    around in the page table for the entirety of the function.
+
+    The array hist has 16 elements = 16 * 4 B = 64 B = 2 pages. These two faults will
+    only happen once each as well because we are assuming a uniformly distributed input
+    data set so each value in in could go to either page with equal likelihood.
+
+    The array in has N elements = N * 4 B = (N * 4 / 32) = ceil(N/8) pages. Since we are
+    iterating through this array sequentially, we will get a page fault every time we
+    reach the next page.
+
+    [GRADING: 6 Points. 2 points for each part of the answer.]
+
+b. 32
+    We need to reserve 4 pages in the TLB for code (2 pages) and hist (2 pages). The other
+    4 can then be used to store the beginning 4 pages of in. So we have 4 * 32 B of available
+    storage in which 4 * 32 / 4 = 32 elements can be stored.
+
+    [GRADING: 4 Points. 2 points of partial credit for explanation if wrong answer but correct explanation.]
+
+======= Problem 3 ======= 
+The number of page accesses increase since we now have more pages of code to traverse per
+iteration of the loop.
+
+[GRADING: 2 points. 1 for correct answer, 1 for correct explanation.]
+
+======= Problem 4 =======
+a. 64 KiB
+    If we want to be able to access some byte with just one memory access, the VA for
+    that must be translatable using just the TLB (to avoid a memory lookup for the
+    page table. Since the TLB can hold 8 entries, each corresponding to a page of memory,
+    we can access 8 * 2^13 = 64 KiB of data with one access.
+
+    [GRADING: 3 points. 1.5 point of partial credit if wrong answer but correct explanation.]
+b. 2^17 processes
+    There are a total of 4 GiB / 2^13 = 2^(32 - 13) = 2^19 pages available. If each process
+    takes up at most 4 pages, we can have 2^19 / 4 = 2^17 processes running at once with no
+    page faults.
+
+    [GRADING: 3 points. 1.5 point of partial credit if wrong answer but correct explanation.]

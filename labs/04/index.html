@@ -1,0 +1,115 @@
+<html><head>
+<!-- meta ignored -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>CS61C Fall 2015 Lab 4</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+<div class='header'>
+	<h1>CS61C Fall 2015 Lab 4 - Function Calls and Pointers in MIPS</h1>
+</div>
+
+<div class='content'>
+<h2>Goals</h2>
+<p>
+These exercises are intended to give you more practice with function calls and manipulating pointers in MIPS.
+</p>
+
+<h2>Setup</h2>
+<p>
+Copy the directory <tt>~cs61c/labs/04</tt> to an appropriate directory under your home directory.
+</p>
+
+<h2>Exercises</h2>
+<h3>Exercise 1</h3>
+<p>This exercise uses the file <tt><a href="listmanips.s">listmanips.s</a></tt>.</p>
+
+<p>
+We might have left Python behind with CS61A, but we definitely want to bring our friends <tt>map</tt> and <tt>reduce</tt> along with us! In this exercise, you will complete an implementation of <tt>map</tt> in MIPS. Our function will be simplified to mutate the list in-place, rather than creating and returning a new list with the modified values.
+
+Our <tt>map</tt> procedure will take two parameters; the first parameter will be the address of the head node of a singly-linked list whose values are 32-bit integers. So, in C, the structure would be defined as:
+
+</p>
+
+<pre>
+struct node {
+  int value;
+  struct node *next;
+};
+</pre>
+<p>
+Our second parameter will be the address of a function that takes one int as an argument and returns an int. We'll use <code>jalr</code> (see below) to call this function on the list node values.
+</p>
+<p>
+Our <code>map</code> function will recursively go down the list, applying the function to each value of the list nodes, storing the value returned in that node. In C, this would be something like this:
+</p>
+<pre>
+void map(struct node *head, int (*f)(int))
+{
+  if(!head) { return; }
+  head-&gt;value = f(head-&gt;value);
+  map(head-&gt;next,f);
+}
+</pre>
+<p> If you haven't seen the <code>int (*f)(int)</code> kind of declaration before, don't worry too much about it. Basically it means that <code>f</code> is a pointer to a function, which in C is used exactly like any other function.
+</p>
+
+<p>
+You'll need to use an instruction you might not have learned before to implement this: <code>jalr</code>. <code>jalr</code> is to <code>jr</code> as <code>jal</code> is to <code>j</code>. It jumps to the address in the given register and stores the address of the next instruction (i.e., <code>PC+4</code>) in <code>$ra</code>. So, if I didn't want to use <code>jal</code>, I could use <code>jalr</code> to call a function like this:
+
+</p>
+<pre>
+# I want to call the function garply, but not use jal.
+la $t0 garply # so I use la to load the address of garply into a register ($t0)
+jalr $t0      # and then use jalr to jump and link to it.
+</pre>
+
+<p>
+There are 7 places (6 in <code>map</code> and 1 in <code>main</code>) in the provided code where it says &quot;YOUR_INSTRUCTION_HERE&quot;. Replace these with instructions that perform as indicated in the comments to finish the implementation of <code>map</code>, and to provide a sample call to <code>map</code>with <code>square</code> as the function argument. When you've filled in these instructions, running the code should provide you with the following output:
+</p>
+<pre>
+List Before: 9 8 7 6 5 4 3 2 1 0 
+List After: 81 64 49 36 25 16 9 4 1 0
+</pre>
+
+<h4>Checkoff</h4>
+<ul><li>Show your TA your test run.</li></ul>
+
+
+<h3>Exercise 2</h3>
+<p>
+Add the prologue and epilogue to the code in <tt><a href="nchoosek.s">nchoosek.s</a></tt>
+
+so that it computes &quot;n choose k&quot;. the number of combinations of <tt>n</tt> distinct elements
+taken <tt>k</tt> at a time. (This is also the <tt>(n,k)</tt> entry in Pascal's triangle.)
+</p>
+
+<h4>Checkoff</h4>
+<ul>
+	<li>Show your TA your code and its test run.</li>
+</ul>
+
+<h3>Exercise 3</h3>
+
+<p>
+Write two versions of a function named <code>first1pos</code> (starting from <tt><a href="first1pos.s">first1pos.s</a></tt>) that, given a value in <tt>$a0</tt>,
+returns in <tt>$v0</tt> the position of the leftmost bit in the word in <tt>$a0</tt>. 
+If <tt>$a0</tt> contains 0, store -1 in <tt>$v0</tt>. 
+You are allowed to modify <tt>$a0</tt> in the process of finding this position. 
+Positions range from 0 (the rightmost bit) to 31 (the sign bit).
+</p>
+
+<p>
+One of your solutions should repeatedly shift <tt>$a0</tt>, 
+checking the sign bit at each shift.
+The other should start a mask at <tt>0x80000000</tt> 
+and repeatedly shift it right to check each bit in <tt>$a0</tt>.
+</p>
+
+<h4>Checkoff</h4>
+<ul>
+	<li>Show your TA both versions of the function and its test run.</li>
+</ul>
+</div>
+</body></html>

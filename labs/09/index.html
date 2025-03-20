@@ -1,0 +1,183 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<title>CS61C Spring 2015 Lab 9</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+<div class="header">
+	<h1>CS61C Spring 2015 Lab 9 - SIMD Intrinsics and Unrolling</h1>
+</div>
+
+<div class="content">
+
+<h2>Setup</h2>
+<p>Copy the directory <tt>~cs61c/labs/09</tt> to an appropriate location in your home directory.</p>
+<pre class='output'>
+<span class='input'>mkdir ~/lab09<br>cp -r ~cs61c/labs/09/* ~/lab09/</span><span style="color:#666666;"></span>
+</pre>
+<p><b>Note that all code using SSE instructions are only guaranteed to work on the hive machines.</b> Many newer processors support the SSE intrinsics, so it is certainly possible that your machine will be sufficient for this, especially if it is recent, but no guarantees on this.</p>
+
+<h2>Exercises</h2>
+<h3>Exercise 1: Familiarize Yourself</h3>
+<p>Given the large number of available SIMD intrinsics we want you to learn how to find the ones that you'll need in your application.</p>
+<p>Here is a way to find the necessary information:</p>
+<ol>
+	<li>Go to <a href="http://software.intel.com/en-us/avx/" target="link">Intel's website</a>. This can also be found by searching for "Intel Intrinsics Guide."</li>
+	<li>Under the "Getting Started" tab on the left, download the appropriate copy of the Intel Intrinsic Guide.</li>
+</ol>
+
+<p>Do your best to interpret the new syntax and terminology.  Find the 128-bit intrinsics for the following SIMD operations (one for each):</p>
+<ul>
+	<li>Four floating point divisions in single precision (i.e. <tt>float</tt>)</li>
+	<li>Sixteen max operations over signed 8-bit integers (i.e. <tt>char</tt>)</li>
+	<li>Arithmetic shift right of eight signed 16-bit integers (i.e. <tt>short</tt>)</li>
+</ul>
+
+<h4>Checkoff</h4> 
+<ul>
+	<li>Record these intrinsics in a text file to show your GSI.</li>
+</ul>
+
+
+<h3>Exercise 2: Reading SIMD Code</h3>
+<p>In this exercise you will consider the vectorization of 2-by-2 matrix multiplication in double precision:</p>
+<p><img src="matmul.png"></p>
+<p>This accounts to the following arithmetic operations:</p>
+ 
+<pre>
+    C[0] += A[0]*B[0] + A[2]*B[1];
+    C[1] += A[1]*B[0] + A[3]*B[1];
+    C[2] += A[0]*B[2] + A[2]*B[3];
+    C[3] += A[1]*B[2] + A[3]*B[3];
+</pre>
+ 
+<p>You are given the code <tt>sseTest.c</tt> that implements these operations in a SIMD manner.<br>The following intrinsics are used:</p>
+
+<table border=1  cellspacing=0>
+  <tr>
+    <td><tt>__m128d _mm_loadu_pd( double *p )</tt></td>
+    <td>returns vector (p[0], p[1])</td>
+  </tr>
+  <tr>
+    <td><tt>__m128d _mm_load1_pd( double *p )</tt></td>
+    <td>returns vector (p[0], p[0])</td>
+  </tr>
+  <tr>
+    <td><tt>__m128d _mm_add_pd( __m128d a, __m128d b )</tt></td>
+    <td>returns vector (a<sub>0</sub>+b<sub>0</sub>, a<sub>1</sub>+b<sub>1</sub>)</td>
+  </tr>
+  <tr>
+    <td><tt>__m128d _mm_mul_pd( __m128d a, __m128d b )</tt></td>
+    <td>returns vector (a<sub>0</sub>b<sub>0</sub>, a<sub>1</sub>b<sub>1</sub>)</td>
+  </tr>
+  <tr>
+    <td><tt>&nbsp; &nbsp;void _mm_storeu_pd( double *p, __m128d a )</tt></td>
+    <td>stores p[0]=a<sub>0</sub>, p[1]=a<sub>1</sub></td>
+  </tr>
+</table> 
+
+<p>Compile sseTest.c into x86 assembly by running:</p>
+<pre class='output'>
+<span class='input'>make sseTest.s</span><span style="color:#666666;"></span>
+</pre>
+
+<p><b>Find the for-loop in <tt>sseTest.s</tt> and identify what each intrinsic is compiled into.</b> Does the loop actually exist? Comment the loop so that your TA can see that you understand the code.</p>
+<h4>Checkoff</h4> 
+<ul>
+	<li>Show your commented code to your TA and explain the for-loop.</li>
+</ul>
+
+<h3>Exercise 3: Writing SIMD Code</h3>
+<p>For Exercise 3, you will vectorize/SIMDize the following code to achieve approximately 4x speedup over the naive implementation shown here:
+
+<pre>
+   static int sum_naive(int n, int *a)
+   {
+      int sum = 0;
+      for (int i = 0; i &lt; n; i++)
+      {
+         sum += a[i];
+      }
+      return sum;
+   }
+</pre>
+
+<p>You might find the following intrinsics useful:</p>
+<table border=1  cellspacing=0>
+  <tr>
+    <td><tt>__m128i _mm_setzero_si128( )</tt></td>
+    <td>returns 128-bit zero vector</td>
+  </tr>
+  <tr>
+    <td><tt>__m128i _mm_loadu_si128( __m128i *p )</tt></td>
+    <td>returns 128-bit vector stored at pointer p</td>
+  </tr>
+  <tr>
+    <td><tt>__m128i _mm_add_epi32( __m128i a, __m128i b )</tt></td>
+    <td>returns vector (a<sub>0</sub>+b<sub>0</sub>, a<sub>1</sub>+b<sub>1</sub>, a<sub>2</sub>+b<sub>2</sub>, a<sub>3</sub>+b<sub>3</sub>)</td>
+  </tr>
+  <tr>
+    <td><tt>&nbsp; &nbsp;void _mm_storeu_si128( __m128i *p, __m128i a )</tt></td>
+    <td>stores 128-bit vector a at pointer p</td>
+  </tr>
+</table> 
+
+<p>Start with <tt>sum.c</tt>. Use SSE instrinsics to implement the <tt>sum_vectorized()</tt> 
+function.</p>
+
+<p>To compile your code, run the following command:</p>
+<pre class='output'>
+<span class='input'>make sum</span></pre>
+
+<h4>Checkoff</h4> 
+<ul>
+	<li>Show your TA your working code and performance improvement.</li>
+</ul>
+
+<h3>Exercise 4: Loop Unrolling</h3>
+<p>Happily, you can obtain even more performance improvement!
+Carefully unroll the SIMD vector sum code that you created in the previous exercise.
+This should get you about a factor of 2 further increase in performance.
+As an example of loop unrolling, consider the supplied function <tt>sum_unrolled()</tt>:
+
+<pre>
+   <span class="keyword">static int sum_unrolled(int n, int *a)
+   </span>{<span class="keyword">
+      int sum = 0;
+
+      // unrolled loop
+      for (int i = 0; i &lt; n / 4 * 4; i += 4)
+      </span>{<span class="keyword">
+         sum += a[i+0];
+         sum += a[i+1];
+         sum += a[i+2];
+         sum += a[i+3];
+      </span>}<span class="keyword">
+
+      // tail case
+      for (int i = n / 4 * 4; i &lt; n; i++)
+      </span>{<span class="keyword">
+         sum += a[i];
+      </span>}<span class="keyword">
+
+      return sum;
+   </span>}
+</pre>
+
+<p>Also, feel free to check out <a href="http://en.wikipedia.org/wiki/Loop_unrolling">Wikipedia's article on loop unrolling</a> for more information. 
+
+<p>Within <tt>sum.c</tt>, <b>copy your <tt>sum_vectorized()</tt> code into <tt>sum_vectorized_unrolled()</tt> and unroll it four times</b>.</p>
+
+<p>To compile your code, run the following command:</p>
+<pre class='output'>
+<span class='input'>make sum</span><span style="color:#666666;"></span>
+</pre>
+
+<h4>Checkoff:</h4> 
+<ul>
+	<li>Show your TA the unrolled implementation and performance improvement.</li>
+</ul>
+
+</body>
+</html>

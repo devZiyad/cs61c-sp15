@@ -1,0 +1,284 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>CS61C Spring 2015 Lab 8</title>
+<link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+
+<body>
+<div class="header"> 
+<h1>CS61C Lab 8 - Caches</h1>
+</div>
+
+<div class='content'>
+
+<h2>Setup</h2>
+<p>Copy the lab skeleton into your workspace:</p>
+<pre class="output">$ <span class="input">cp -r ~cs61c/labs/08 ~/lab08</pre>
+
+<h2>Exercise 1: Cache Visualization</h2>
+
+<p>Caches is typically one of the hardest topics for students in 61C to grasp 
+at first. This exercise will use some cool cache visualization tools in MARS 
+to get you more familiar with cache behavior and performance terminology with 
+the help of the file <tt><a href="cache.s">cache.s</a></tt> and <tt>
+<a href="wackycache.s">wackycache.s</a></tt>. At this point, read through 
+<tt>cache.s</tt> to get a rough idea of what the program does.</p>
+
+<p>To get started with each of the scenarios below:</p>
+<ol>
+    <li>Open the designated file in MARS. (cache.s or wackycache.s)</li>
+    <li>In the code for cache.s or wackycache.s, set the appropriate Program 
+    Parameters as indicated at the beginning of each scenario (by changing the 
+    immediates of the commented <tt>li</tt> instructions in <tt>main</tt>)</li>
+	<li>Run Tools--&gt;Data Cache Simulator.</li>
+	<li>Set the appropriate Cache Parameters as indicated at the beginning of 
+	each scenario.</li>
+	<li>Enable the Runtime Log and then click "Connect to MIPS".</li>
+	<li>Run Tools--&gt;Memory Reference Visualizer and click "Connect to MIPS".</li>
+	<li>As you execute code in MARS, any <i>DATA</i> memory access (load or 
+	store) will show up (instruction fetches not shown).</li>
+</ol>
+
+<p>The Data Cache Simulator will show the state of your data cache and the 
+Memory Reference Visualization will show you what parts of memory you are 
+accessing and how many times. Please remember that these are running 
+independently from your code, so if you reset your code, you should also 
+reset the cache and memory!</p>
+
+<p>If you run the code all at once, you will get the final state of the cache 
+and hit rate. You will probably benefit the most from setting breakpoints at 
+each memory access to see exactly where the hits and misses are coming from.</p>
+
+<p>Simulate the following scenarios and record the final cache hit rates. Try 
+to reason out what the hit rate will be BEFORE running the code. After running 
+each simulation, make sure you understand WHY you see what you see (the TAs 
+will be asking)!</p>
+
+<p><strong>Do not heistate to ask questions if you feel confused! This is perfectly 
+normal and the staff is there to help you out!</strong></p>
+
+<p>Good questions to ask yourself as you do these exercises:</p>
+
+<ul>
+	<li>How big is your cache block? How many consecutive accesses fit within a single block?</li>
+	<li>How big is your cache?  How many jumps do you need to make before you "wrap around?"</li>
+	<li>What is your cache's associativity? Where can a particular block fit?</li>
+	<li>Have you accessed this piece of data before? If so, is it still in the cache or not?</li>
+</ul>
+
+<h3>Scenario 1: (using <a href="cache.s">cache.s</a>)</h3>
+
+<p><b><u>Cache Parameters:</u></b></p>
+<ul>
+    <li><b>Placement Policy:</b> Direct Mapping</li>
+    <li><b>Block Replacement Policy:</b> LRU</li>
+    <li><b>Set size (blocks):</b> 1 (MARS won't let you change this, why?)</li>
+    <li><b>Number of blocks:</b> 4</li>
+    <li><b>Cache block size (words):</b> 2</li>
+</ul>
+
+<p><b><u>Program Parameters:</u></b></p>
+<ul>
+    <li><b>Array Size:</b> 128</li>
+    <li><b>Step Size:</b> 8</li>
+    <li><b>Rep Count:</b> 4</li>
+    <li><b>Option:</b> 0</li>
+</ul>
+
+<p>Questions:</p>
+<ol>
+    <li>What combination of parameters is producing the hit rate you observe? 
+    (Hint: Your answer should be of the form: "Because parameter A == parameter B")</li>
+    <li>What is our hit rate if we increase Rep Count arbitrarily? Why?</li>
+    <li>How could we modify our program parameters to maximize our hit rate?</li>
+</ol>
+
+<h3>Scenario 2: (using <a href="cache.s">cache.s</a>)</h3>
+
+<p><b><u>Cache Parameters:</u></b></p>
+<ul>
+    <li><b>Placement Policy:</b> N-way Set Associative</li>
+    <li><b>Block Replacement Policy:</b> LRU</li>
+    <li><b>Set size (blocks):</b> 4</li>
+    <li><b>Number of blocks:</b> 16</li>
+    <li><b>Cache block size (words):</b> 4</li>
+</ul>
+
+<p><b><u>Program Parameters:</u></b></p>
+<ul>
+    <li><b>Array Size:</b> 256</li>
+    <li><b>Step Size:</b> 2</li>
+    <li><b>Rep Count:</b> 1</li>
+    <li><b>Option:</b> 1</li>
+</ul>
+
+<p>Questions:</p>
+<ol>
+    <li>Explain the hit rate in terms of the parameters of the cache and the 
+    program.</li>
+    <li>What happens to our hit rate as Rep Count goes to infinity? Why?</li>
+    <li>Suppose we have a program that uses a very large array and during each Rep, 
+    we apply a different operator to the elements of our array (e.g. if Rep Count 
+    = 1024, we apply 1024 different operations to each of the array elements). How 
+    can we restructure our program to achieve a hit rate like that achieved in this
+    scenario? (Assume that the number of operations we apply to each element is 
+    very large and that the result for each element can be computed independently
+    of the other elements.) What is this technique called? 
+    (<a href="http://software.intel.com/en-us/articles/cache-blocking-techniques">Hint</a>)</li>
+</ol>
+
+<h3>Scenario 3:</h3>
+
+<p>For the final scenario, we'll be using a new file: <a href="wackycache.s">wackycache.s</a>.
+ Open it up in MARS and read through the pseudocode to make sure you understand what's happening.</p>
+
+<p><b><u>Cache Parameters:</u></b></p>
+<ul>
+    <li><b>Placement Policy:</b> N-way Set Associative</li>
+    <li><b>Block Replacement Policy:</b> LRU</li>
+    <li><b>Set size (blocks):</b> 4</li>
+    <li><b>Number of blocks:</b> 16</li>
+    <li><b>Cache block size (words):</b> 4</li>
+</ul>
+
+<p><b><u>Program Parameters:</u></b></p>
+<ul>
+    <li><b>Array Size:</b> 256</li>
+    <li><b>Step Size:</b> 8</li>
+    <li><b>Rep Count:</b> 2</li>
+</ul>
+
+<p>Questions:</p>
+<ol>
+    <li>Run the simulation a few times. Note that the hit rate is non-deterministic.
+     Why is this the case? Explain in terms of the cache parameters and our access
+      pattern. ("The program is accessing random indicies" is not a sufficient answer).</li>
+    <li>Which Cache parameter can you modify in order to get a constant hit rate? 
+    Record the parameter and its value (and be prepared to show your TA a few runs 
+    of the simulation). How does this parameter allow us to get a constant hit rate?</li>
+</ol>
+
+<h4>Check-off</h4>
+<ul>
+	<li>Answer the numbered questions above for each of the scenarios.</li>
+    <li>Ensure that you thoroughly understand each answer. Your TA may ask for a
+    dditional explanation.</li>
+</ul>
+
+
+<h2>Exercise 2: Loop Ordering and Matrix Multiplication</h2>
+
+<p>If you recall, matrices are 2-dimensional data structures wherein each data
+element is accessed via two indices. To multiply two matrices, we can simply
+use 3 nested loops, assuming that matrices A, B, and C are all n-by-n and
+stored in one-dimensional column-major arrays:</p>
+<pre>for (int i = 0; i &lt; n; i++)
+    for (int j = 0; j &lt; n; j++)
+        for (int k = 0; k &lt; n; k++)
+            C[i+j*n] += A[i+k*n] * B[k+j*n];
+</pre>
+<p>Matrix multiplication operations are at the heart of many linear algebra
+algorithms, and efficient matrix multiplication is critical for many
+applications within the applied sciences.</p>
+
+<p>In the above code, note that the loops are ordered i, j, k.  If we examine
+the innermost loop (k), we see that it moves through B with stride 1, A with
+stride n and C with stride 0.  To compute the matrix multiplication correctly,
+the loop order doesn't matter.  However, the order in which we choose to access
+the elements of the matrices can have a large impact on performance.  Caches
+perform better (more cache hits, fewer cache misses) when memory accesses
+exhibit spatial and temporal locality.  Optimizing a program's memory access
+patterns is essential to obtaining good performance from the memory
+hierarchy.</p>
+
+<p>Take a glance at <span class="code"><a
+href="matrixMultiply.c">matrixMultiply.c</a></span>.  You'll notice that the
+file contains multiple implementations of matrix multiply with 3 nested
+loops.</p>
+
+<p>Note that the compilation command in the Makefile uses the '-O3' flag. <i>It
+is important here that we use the '-O3' flag to turn on compiler
+optimizations</i>.Compile and run this code with the following command, and then answer the questions below:</p>
+
+<pre class="output">$ <span class="input">make ex2</span></pre>
+
+<ol type="a">
+	<li>Which ordering(s) perform best for 1000-by-1000 matrices?</li>
+	<li>Which ordering(s) perform the worst?</li> 
+	<li>How does the way we stride through the matrices with respect to the innermost loop affect
+	performance?</li>
+</ol>
+<p><b>Checkoff:</b>  Be prepared to explain your responses to the above
+questions to your TA.</p>
+
+
+<h2>Exercise 3: Cache Blocking and Matrix Transposition</h2>
+
+<p><b>Note: The term cache blocking is not referring to the same thing as the cache blocks 
+  we talked about when discussing the structure of caches.</b><p> 
+
+<h3>Matrix Transposition</h3>
+<p>Sometimes, we wish to swap the rows and columns of a matrix.  This operation
+is called a "transposition" and an efficient implementation can be quite
+helpful while  performing more complicated linear algebra operations.  The
+transpose of matrix A is often denoted as A<sup>T</sup>.</p>
+<p align=center><img src="matTnorm.png" width=490></p>
+
+<h3>Cache Blocking</h3>
+
+<p>In the above code for matrix multiplication, note that we are striding
+across the entire A and B matrices to compute a single value of C.  As such, we
+are constantly accessing new values from memory and obtain very little reuse of
+cached data!  We can improve the amount of data reuse in the caches by
+implementing a technique called cache blocking.  More formally, <b>cache
+blocking is a technique that attempts to reduce the cache miss rate by
+improving the temporal and/or spatial locality of memory accesses</b>.  In the
+case of matrix transposition we consider performing the transposition one block
+at a time.</p>
+<p align=center><img src="matTblock.png" width=490></p>
+
+<p>In the above image, we transpose each block A<sub>ij</sub> of matrix A into
+its final location in the output matrix, one block at a time.  With this
+scheme, we significantly reduce the magnitude of the working set in cache
+during the processing of any one block.  This (if implemented correctly) will
+result in a substantial improvement in performance.  For this lab, you will
+implement a cache blocking scheme for matrix transposition and analyze its
+performance.  You may also find this technique useful for Project 3.</p>
+
+<p>Your task is to implement cache blocking in the <tt>transpose_blocking()</tt> 
+function inside <span class="code"><a href="transpose.c">transpose.c</a></span>. 
+By default, the function does nothing, so the benchmark function will report an error.
+<b>You may NOT assume that the matrix width (<tt>n</tt>) is a multiple of the 
+blocksize.</b> After you have implemented cache blocking, you can 
+run your code by typing:</p>
+
+<pre class="output">$ <span class="input">make ex3</span>
+$ <span class="input">./transpose &lt;n&gt; &lt;blocksize&gt;</span></pre>
+
+<p>Where <tt>n</tt>, the width of the matrix, and <tt>blocksize</tt> are 
+parameters that you will specify. You can verify that your code is working
+by setting <tt>n</tt>=1000 and <tt>blocksize</tt>=33 Once your code is working,
+complete the following exercises and record your answers (we will ask about it during
+checkoff).</p>
+
+<h4>Part 1: Changing Array Sizes</h4>
+
+<p>Fix the <tt>blocksize</tt> to be 20, and run your code with <tt>n</tt> equal to 
+100, 1000, 2000, 5000, and 10000. At what point does cache blocked version of transpose
+become faster than the non-cache blocked version? Why does cache blocking require the
+matrix to be a certain size before it outperforms the non-cache blocked code?<p>
+
+<h4>Part 2: Changing Blocksize</h4>
+
+<p>Fix <tt>n</tt> to be 10000, and run your code with <tt>blocksize</tt> equal to 
+50, 100, 500, 1000, 5000. How does performance change as the blocksize increases?
+Why is this the case?</p>
+
+<p><b>Checkoff:</b>  Be prepared to explain your responses to the above
+questions to your TA.</p>
+
+</div>
+</body>
+</html>

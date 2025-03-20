@@ -1,0 +1,217 @@
+<html><head>
+	<title>CS61C Spring 2015 Project 1-2</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<style type="text/css">
+		table{background:#cdc;border-collapse:collapse;font-family:monospace}td{border:0.125em solid #aba;padding:0.25em}thead{background:#676;color:#fff;text-transform:uppercase}
+    td{font-size: 1.2em;}
+		span.inst{color:#d00}span.rgtr{color:#00a}span.immd{color:#a0a}span.label{color:#666}
+		div.highlight{background:#cdc;padding:0.5em}
+		span.warn{color:#f00;font-weight:bold;}
+		table.colonly{display:inline-block;vertical-align:top;}table.colonly td{border-top:0em;border-bottom:0em;padding-top:0.1em;padding-bottom:0.1em;}td.center{text-align:center}
+	</style>
+</head>
+<body>
+
+<div class="header">
+	<div class="header-text">
+		<h1>CS61C Spring 2015 Project 1-2: MIPS Linker</h1>
+		TA: Jeffrey Dong
+	</div>
+</div>
+
+<div class="content">
+	<p><b>Due Saturday, March 7, 2015 @ 11:59pm</b></p>
+
+	<h2>The Linker</h2>
+	
+	<p>In part 1 of this project, we wrote an assembler in C. Now, we will continue where we left off by implementing a linker in MIPS. The linker processes object files (which in our project are <tt>.out</tt> files) and generates an executable file. In the rest of this document, "input" will be used interchangeably with "object file", and "output" with "executable file".</p>
+
+  <p>The linker has two main tasks, combining code and relocating symbols. Code from each input file's <tt>.text</tt> segment is merged together to create an executable. This also determines the absolute address of each symbol (recall that the assembler outputs a symbol table containing the <i>relative address</i> of each symbol). Since the absolute address is known, instructions that rely on absolute addressing can have the addresses filled in.</p>
+
+  <p>The skeleton files contain many lines of code, and it can be easy to get lost in the details. Here is a overview of how the linker functions:</p>
+
+  <div class="highlight">
+    <ol>
+      <li>Create an empty (global) symbol table. This table will contain absolute addresses.</li> 
+      <li>For each input file, create a separate relocation table. This table will contain relative addresses (why?).</li>
+      <li>Open each input file. For each input, iterate through line-by-line and look for <tt>.text</tt>, <tt>.symbol</tt>, and <tt>.relocation</tt> sections.
+        <ul>
+          <li>If the <tt>.text</tt> section is found, count the number of instructions in this section and determine the number of bytes the instructions will take.</li>
+          <li>If the <tt>.symbol</tt> section is found, read each symbol and store it into the symbol table. Convert the local addresses of each symbol to an absolute address (how do you do this?).</li>
+          <li>If the <tt>.relocation</tt> section is found, read each symbol and store it into the input file's relocation table.</li>
+        </ul>
+      </li>
+      <li>Open the output file.</li>
+      <li>For each input file, find the <tt>.text</tt> section and read one instruction at a time. Check whether the instruction requires relocation. If it does, use the symbol table and the relocation table for this input file to relocate. Then, write it into the next line of the output file. If the instruction does not require relocation, write it into the output file directly.</li>
+    </ol>
+  </div>
+	
+  <p>For the sake of simplicity, we will skip many of the error checking steps that a linker would normally perform. The checks that you do need to perform are stated in the instructions.</p>
+
+	<h2>Implementation Steps</h2>
+
+  <p>We will be developing with MARS. MARS runs very slowly across SSH connections, so if you have not done so, you should download MARS onto your computer by <a href="http://courses.missouristate.edu/kenvollmar/mars/download.htm">clicking here</a>. MARS requires Java J2SE 1.5 or later installed onto
+  your computer. Also, since MARS is a Java application, its behavior should be the same regardless of the operating system you are using.</p>
+
+  <p><b>When assembling a program with MARS, make sure that the program is in the current tab.</b> When you open multiple tabs, it can be easy to forget which one you are on.</p>
+
+  <p><b>Also, make sure you go to "Settings" and turn on the "Initialize Program Counter to global 'main' if defined" option:</b></p>
+
+  <img src="pc_main.png" style="max-height:350px;"/>
+
+	<h3>Step 0: Obtaining the Files</h3>
+
+  <p><span class="warn">Before you do anything, make sure you commit and push your changes! Otherwise you risk losing your work!</span></p>
+
+  <p><b>Only one person needs to add the proj1-2 files to the repository. Communicate with your partner before doing this step.</b> Make sure you have committed and pushed your changes to project 1-1 to GitHub first. Then, create a new branch called proj1-2:</p>
+
+  <pre>
+  git branch proj1-2
+  git checkout proj1-2                # or a shortcut is: git checkout -b proj1-2</pre>
+
+  <p>Make sure you are on branch proj1-2. You can check this by typing:</p>
+
+  <pre>git branch</pre>
+
+  <p>Next, fetch the proj1-2 files from the proj1-2 branch in the proj1_starter repository and merge:</p>
+
+  <pre>
+git fetch proj1_starter
+git merge proj1_starter/proj1-2 -m "merged proj1-2 skeleton code"</pre>
+
+  <p>Finally, push the proj1-2 branch to GitHub:</p>
+
+  <pre>git push --set-upstream origin proj1-2            # or a shorcut is: git push -u origin proj1-2</pre>
+
+  <p>Log on to your GitHub account and verify that there are two branches:</p>
+
+  <img src="branches.png" height="200px" />
+
+  <p>You can now switch between the branches using the <tt>git checkout</tt> command.</p>
+
+  <h3>Step 1: String Utilities</h3>
+
+  <p>In <tt>linker-src/string.s</tt>, implement <tt>strlen()</tt>, <tt>strncpy()</tt>, and <tt>copy_of_str()</tt>. <tt>copy_of_str()</tt> should allocate memory dynamically using Syscall 9, and it is recommended that you use <tt>strlen()</tt> and <tt>strncpy()</tt> in its implementation. Do not modify the other functions in the file, but you should take a look at their descriptions, since they may come in handy later. Also, if you are stuck on a function, looking at the implementation of a related function may help you.</p>
+
+  <p>You can find test cases in <tt>linker-test/test_string.s</tt>. Note that if you have not implemented a function, the tester may crash. You can comment out test cases for functions that you have not yet implemented.</p>
+
+  <h3>Step 2: Symbol List</h3>
+
+  <p>In <tt>linker-src/symbol_list.s</tt>, complete the implmentation of SymbolList, which serves the same purpose that SymbolTable did in project 1-1. SymbolList uses a linked list to keep track of (symbol addr, symbol name) pairs. An empty SymbolList is simply a pointer to NULL. When an (addr, name) pair is added to a SymbolList, a new list node is created and added to the front of the list. If the SymbolList list node struct were to be declared in C, it would be:</p>
+
+  <pre>
+typedef struct symbollist { 
+    int addr;
+    char* name;
+    struct symbollist* next; 
+} SymbolList;</pre>
+
+  <p>If you are having trouble with <tt>addr_for_symbol()</tt>, it may be helpful to look at <tt>symbol_for_addr()</tt>, which is already defined for you. Test cases for SymbolList can be found in <tt>linker-test/test_symbol_list.s</tt>. You do NOT need to free the list, as MARS has no free syscall.</p>
+
+  <h3>Step 3: Linker Utilities</h3>
+
+  <p>Before you continue, it may be a good idea to look at slides 27 to 33 of the <a href="http://www-inst.eecs.berkeley.edu/~cs61c/sp15/lec/08/2015Sp-CS61C-L08-kavs-CALL-1up.pdf">CALL lecture</a> as a quick refresher.</p>
+
+  <p>This step requires you to make changes in <b>two</b> files, <tt>linker-src/parsetools.s</tt> and <tt>linker-src/linker_utils.s</tt>. In the first file, you will be implementing <tt>hex_to_str()</tt>, which writes a 32-bit number in hexadecimal format. Tests for this function can be found in <tt>linker-test/test_parsetools.s</tt>.</p>
+
+  <p>For the second part, you will be implementing <tt>inst_needs_relocation()</tt> and <tt>relocate_inst()</tt>. <tt>inst_needs_relocation()</tt> will be called on each instruction, and it should return 1 for any instruction that needs relocating. <tt>relocate_inst()</tt> performs the actual relocation, using the symbol table and relocation table provided. You will need to perform error-checking for <tt>relocate_inst()</tt> as described in the comments.</p>
+
+  <h3>Step 4: Completing the Linker</h3>
+
+  <p>You will need to complete the implementation of <tt>write_machine_code()</tt> in <tt>linker-src/linker.s</tt>. This function will copy the <tt>.text</tt> section of an object file (the input) to the executable (the output) while performing any relocations as neccessary. The first part of the function searches for the <tt>.text</tt> segment in the object file. Once that is found, the function will write to the executable one instruction at a time. Instructions are first converted from characters to a number, relocations are performed if neccessary, and the instruction is written in hexadecimal to the executable.</p>
+
+  <p>Instead of writing the function from scratch, we have provided 7 blanks for you to fill in (each blank consists of one or more instructions). Each blank is denoted by <tt>YOUR_INSTRUCTIONS_HERE</tt> and accompanied by a description. After you have filled in all the blanks, your linker should be ready to run!</p>
+
+  <p>Please do not give away what instructions should go inside each blank.</p>
+
+  <h2>Test Cases</h2>
+
+  <p>Test cases for each of the functions you wrote in steps 1-3 are in the <tt>linker-tests</tt> directory. The test case for each file is preceeded by the prefix <tt>test_</tt> (for example, test cases for <tt>linker-src/string.s</tt> are located in <tt>linker-tests/test_string.s</tt>). To run the tests, open the appropriate test file in MARS and press Run.</p>
+
+  <p>Each test file contains test cases for every function you need to implement in the corresponding source file (so <tt>linker-tests/test_string.s</tt> contains test cases for <tt>strlen()</tt>, <tt>strncpy()</tt>, and <tt>copy_of_str()</tt>). The test cases are run from the <tt>main()</tt> function of the test file. If you have not implemented all the functions in a given source file, you may want to comment out tests for functions you haven't implemented. Fro example, if you've implmented <tt>strlen()</tt> and <tt>strncpy()</tt> but not <tt>copy_of_str()</tt>, you should comment out the line <tt>jal test_copy_of_str</tt> before running the test.</p>
+
+	<h2>Running the Linker</h2>
+
+	<p>The linker accepts an arbitrary number of input (object) file names followed by an output file name. The input files will be combined, and the result be placed in the output file. If the output file already exists, it will be overwritten. The files will be combined in the order that they were given (eg. input file 1 goes first, then input file 2, etc).</p>
+
+  <p>When running in MARS, after you assemble your code you can enter arguments into the "Program Arguments" text field, located at the top of the text segment. <b>MARS interprets file paths as relative to the executable itself. You may need to place a copy of MARS in your proj1 directory and run that.</b></p>
+
+  <img src="program_args.png" />
+
+  <p>If you want to run from the command line, we have also give you an executable called <tt>linker</tt> You may first need to turn on the execute permission: 
+
+  <pre>chmod u+x linker</pre>
+
+  <p>Afterwards, you can pass in the input and output file names by supplying them as arguments. Note that the linker <b>requires at least one input and one output name</b>, so you need to specify two arguments at minimum.</p>
+
+  <pre>./linker &lt;input 1 name&gt; &lt;input 2 name&gt; ... &lt;input N name&gt; &lt;output name&gt;</pre>
+
+  <p>We have give some sample input-output pairs, which may be useful as a reference during step 4. The inputs are located in <tt>link-in</tt> and outputs are located in <tt>link-out</tt>. <tt>linker1.out</tt> (recall that we use <tt>.out</tt> to denote object files, which are inputs to the linker) and <tt>linker2.out</tt> are standalone test cases, but <tt>linker3A.out</tt> and <tt>linker3B.out</tt> should be linked together:</p>
+
+  <pre>
+./linker link-in/linker1.out link-out/output1
+./linker link-in/linker2.out link-out/output2
+./linker link-in/linker3A.out link-in/linker3B.out link-out/output3</pre>
+
+  <p>You can compare your output to the reference outputs in the <tt>link-out/ref</tt> directory. <tt>diff</tt> may be useful:</p>
+
+    <pre>
+diff link-out/output1 link-out/ref/output1_ref
+diff link-out/output2 link-out/ref/output2_ref
+diff link-out/output3 link-out/ref/output3_ref</pre>
+
+  <h2>Debugging Tips</h2>
+
+  <ul>
+    <li>Make sure you are assembling from the correct tab. MARS always assembles from the currently active tab.</li>
+    <li>Note that there are two tabs when running MARS at the bottom, "Mars Messages" and "Run I/O". The first shows error messages while the second displays your program's output. If your program runs succesfully, the Run I/O tab will be active, but if your program crashes, the Mars Messages tab will be shown with an error message. Parts of your program may still have been run successfully though, and you can click on the Run I/O tab. This can help you figure out what part of the program causes the crash. Note that program output from previous runs are also displayed, so it may be helpful to press the "Clear" button after assembling and before running.</li>
+    <li>If you are getting "invalid program counter value" errors, check to make sure that 1) you have checked "initialize program counter to globl main" and 2) you are following function calling conventions. Are you calling functions with <tt>jal</tt>? Are you saving <tt>$ra</tt>.</li>
+    <li>If you are getting "address out of range" errors, you are passing an invalid address to a load/store command. The best way to debug these errors is to set breakpoints around the line which causes the error, and then step through your code while observing how values in your register change.</li>
+    <li>If MARS seems to freeze, your program may be in an infinite loop. Try pausing MARS and stepping through the program. Are you forgetting a termination check? Or maybe you are forgetting to increment a variable?</li>
+    <li>After MARS assembles your code, it can be hard if you are trying to find a specific line. However, since MARS keeps comments that are on the same line as an instruction, you can tag a line of interest with an easy-to-find comment.</li>
+    <li>Similarly, it may be a good idea to label the first and last lines of each function with comments like <tt>"#Begin func_name()"</tt> and <tt>"#End func_name()"</tt>. That way, it'll be easier to figure out where you are.</li>
+    <li>It can also be helpful to insert print syscalls in the middle of your function. See the Help menu for various types of prints. Be aware that you may clobber the $a0 and $v0 registers!</li>
+  </ul>
+
+	<h2>Submission</h2>
+				
+	<p>There are <strong>two</strong> steps required to submit proj1-2. Failure to perform both steps will result in loss of credit:</p>
+
+	<ol>
+		<li><p>First, you must submit using the standard unix submit program on the instructional servers. This assumes that you followed the earlier instructions and did all of your work inside of your <tt>git</tt> repository. To submit, follow these instructions after logging into your cs61c-XX class account:</p>
+
+			<pre>
+cd ~/proj1-XX-YY/linker-src              # proj1-XX-YY = your shared git repo
+submit proj1-2</pre>
+				
+    <p><b>Note that you must be in the linker-src directory.</b> Once you type <tt>submit proj1-2</tt>, follow the prompts generated by the submission system. It will tell you when your submission has been successful and you can confirm this by looking at the output of <tt>glookup -t</tt>.</p>
+			<br />
+		</li>
+
+		<li><p>Additionally, you must submit proj1-2 to your <b>shared</b> GitHub repository:</p>
+
+			<pre>
+cd ~/proj1-XX-YY                             # Or where your shared git repo is
+git checkout proj1-2                         # IMPORTANT! Make sure you are on the correct branch!
+git add -u                           
+git commit -m "project 1-2 submission"  
+git tag "proj1-2-sub"                        # The tag MUST be "proj1-2-sub". Failure to do so will result in loss of credit.
+git push origin proj1-2-sub                  # This tells git to push the commit tagged proj1-2-sub</pre>
+		</li>
+	</ol>
+
+	<h4>Resubmitting</h4>
+
+	<p>If you need to re-submit, you can follow the same set of steps that you would if you were submitting for the first time, but you will need to use the <tt>-f</tt> flag to tag and push to GitHub:</p>
+
+	<pre>
+# Do everything as above until you get to tagging
+git tag -f "proj1-2-sub"
+git push -f origin proj1-2-sub</pre>
+
+	<p>Note that in general, force pushes should be used with caution. They will overwrite your remote repository with information from your local copy. As long as you have not damaged your local copy in any way, this will be fine.</p>
+
+</div>
+</body>
+</html>
