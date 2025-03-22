@@ -52,8 +52,8 @@ __wm.bt(750,27,25,2,"web","https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/e
 		<td width="560" height="10" valign="TOP">The binary coding of floating-point real numbers is composed of three fields. The sign <font size="2">S</font>
 			(1&nbsp;bit), the exponent <font size="2">E</font> (8&nbsp;bits) and the mantissa <font size="2">M</font>, or significand
 			(23&nbsp;bits).<br>
-			The number value is (-1)<sup>S</sup> × 2<sup>(E - 127)</sup> × (1 + <font size="2">M</font> / 8388608
-			) . However if <font size="2">E</font> = 0, the number value is (-1)<sup>S</sup> × 2<sup>(-126)</sup> ×
+			The number value is (-1)<sup>S</sup> &times; 2<sup>(E - 127)</sup> &times; (1 + <font size="2">M</font> / 8388608
+			) . However if <font size="2">E</font> = 0, the number value is (-1)<sup>S</sup> &times; 2<sup>(-126)</sup> &times;
 			( <font size="2">M</font> / 8388608 ) and if <font size="2">E</font> = 255, the value is infinite.</td>
 	</tr>
 </tbody></table>
@@ -107,9 +107,9 @@ __wm.bt(750,27,25,2,"web","https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/e
 			before the decimal point, 5 bits serve for the rounding, of whom 2 dropped.<br>
 			<b>Zero-leading-counter</b>: the ZLC output is the number of leading <font color="#0033CC">'0'</font>. If inhibited
 			outputs 1.<br>
-			<b>Shifter 2</b>: shifts to the left ( ZLC – 2 ) positions (i.e. from 2 to the right up to 23 to the left). The
+			<b>Shifter 2</b>: shifts to the left ( ZLC â€“ 2 ) positions (i.e. from 2 to the right up to 23 to the left). The
 			fist bit is dropped ( implicit <font color="red">'1'</font> ).<br>
-			<b>Adder 2</b>: subtracts ( ZLC – 1 ) from the larger of the two exponents.</td>
+			<b>Adder 2</b>: subtracts ( ZLC â€“ 1 ) from the larger of the two exponents.</td>
 	</tr>
 </tbody></table>
 <a name="addsub"></a> <applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="ProcFloat.class" width="660" height="530" align="BOTTOM" hspace="25">
@@ -182,7 +182,7 @@ __wm.bt(750,27,25,2,"web","https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/e
 			<p align="RIGHT"><a name="pred"></a><b><font size="4">Zero leading prediction</font></b>
 		</p></td>
 		<td width="560" height="10" valign="TOP">From the mantissas A and B, one can construct in constant time a number P with the same number of leading zeroes,
-			but for at most one, as the <u>difference</u> D = A – B <u>without having to wait</u> for the subtraction completion.
+			but for at most one, as the <u>difference</u> D = A â€“ B <u>without having to wait</u> for the subtraction completion.
 			When fed to a ZLC, this string predicts the number of positions required by the shifter. If the result of the shift
 			still exhibits a leading zero, then a shift of one more position is necessary to normalize the result. Otherwise
 			the shifted value is already normalized.</td>
@@ -262,8 +262,8 @@ __wm.bt(750,27,25,2,"web","https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/e
 		</p></td>
 		<td width="560" height="10" valign="TOP">The <a href="Adspec.htm#abs" target="_blank">absolute value</a> of the exponents difference is needed to control
 			Shifter 1. With four slight modifications, <a href="Additi.htm#Sklansky" target="_blank">Sklansky</a>'s adder with
-			<a href="Adspec.htm#Clate" target="_blank">a late carry-in</a> returns S = <font size="2" face="Symbol">½
-			</font>A – B <font size="2" face="Symbol">½</font>.</td>
+			<a href="Adspec.htm#Clate" target="_blank">a late carry-in</a> returns S = <font size="2" face="Symbol">Â½
+			</font>A â€“ B <font size="2" face="Symbol">Â½</font>.</td>
 	</tr>
 </tbody></table>
 <applet archive="/web/20150630054113oe_/https://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="391" align="BOTTOM">
