@@ -53,19 +53,19 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="580" height="10" valign="TOP">
 			<p>Some arithmetic algorithms can be realized with only one modified adder. For example :
 			</p><ul>
-				<li><b>if</b> A + B &lt; 2<sup>n</sup> <b>then</b> S = A + B <b>else</b> S = A + B – 2<sup>n</sup> ; // modulo
+				<li><b>if</b> A + B &lt; 2<sup>n</sup> <b>then</b> S = A + B <b>else</b> S = A + B - 2<sup>n</sup> ; // modulo
 				2<sup>n</sup> sum
-				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> <b>then</b> S = A + B <b>else</b> S = 2<sup>n</sup> – 1 ; // adder with
+				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> <b>then</b> S = A + B <b>else</b> S = 2<sup>n</sup> - 1 ; // adder with
 				saturation
-				</li><li><b>if</b> a/s <b>then</b> S = A – B <b>else</b> S = A + B ; // adder/subtractor/comparator
+				</li><li><b>if</b> a/s <b>then</b> S = A - B <b>else</b> S = A + B ; // adder/subtractor/comparator
 				</li><li><b>if</b> A <font face="Symbol">&gt;</font> B <b>then</b> S = A <b>else</b> S = B ; // maximum value
 				</li><li>S = A + B ; S' = A + B + 1 ; // two-output adder
 				</li><li>S = A + B ; S' = A + B + 1 ; S" = A + B + 2 ; // three-output adder
-				</li><li><b>if</b> A – B <font face="Symbol">³</font> 0 <b>then</b> S = A – B <b>else</b> S = B – A ; // absolute
+				</li><li><b>if</b> A - B <font face="Symbol">Â³</font> 0 <b>then</b> S = A - B <b>else</b> S = B - A ; // absolute
 				value of the difference
-				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> – 1 <b>then</b> S = A + B <b>else</b> S = A + B – 2<sup>n</sup> + 1 ; //
-				modulo 2<sup>n</sup> – 1
-				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> + 1 <b>then</b> S = A + B <b>else</b> S = A + B – 2<sup>n</sup> – 1 ; //
+				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> - 1 <b>then</b> S = A + B <b>else</b> S = A + B - 2<sup>n</sup> + 1 ; //
+				modulo 2<sup>n</sup> - 1
+				</li><li><b>if</b> A + B &lt; 2<sup>n</sup> + 1 <b>then</b> S = A + B <b>else</b> S = A + B - 2<sup>n</sup> - 1 ; //
 				modulo 2<sup>n</sup> + 1
 			</li></ul>
 			<p>The cost and the delay are similar to a fast adder's ones.
@@ -102,9 +102,9 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="140" height="10" valign="TOP">
 			<p align="RIGHT"><a name="sat"></a><b><font size="4">Addition with saturation</font></b>
 		</p></td>
-		<td width="560" height="10" valign="TOP">If the output carry c<sub>n</sub> is neglected then S = A + B – 2<sup>n</sup> whenever A + B is too large. In order
+		<td width="560" height="10" valign="TOP">If the output carry c<sub>n</sub> is neglected then S = A + B - 2<sup>n</sup> whenever A + B is too large. In order
 			to retain the continuity of the addition, the adder with saturation is sometimes preferred to the adder modulo.
-			It computes S = min( A + B , 2<sup>n</sup> – 1) .</td>
+			It computes S = min( A + B , 2<sup>n</sup> - 1) .</td>
 	</tr>
 </tbody></table>
 <applet archive="/web/20150228014939oe_/http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/english/oparth.jar" code="CarryLookAhead.class" width="800" height="380" align="BOTTOM">
@@ -154,7 +154,7 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		</p></td>
 		<td width="560" valign="TOP">Just as with the <a href="#sat" target="_blank">addition with saturation</a>, the two carries c<sub>n</sub> and
 			c<sub>n-1</sub> may be used to select the largest representable positive interger or the smallest representable
-			negative integer. S = min ( max ( A ± B , -2<sup>n-1</sup>) , 2<sup>n-1</sup>–1) .</td>
+			negative integer. S = min ( max ( A Â± B , -2<sup>n-1</sup>) , 2<sup>n-1</sup>-1) .</td>
 	</tr>
 </tbody></table>
 
@@ -163,7 +163,7 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="140" height="10" valign="TOP">
 			<p align="RIGHT"><b><font size="4">Comparison of signed integers</font></b>
 		</p></td>
-		<td width="560" height="10" valign="TOP">After a subtraction S = A – B, the sign of S indicates A <font face="Symbol">³</font> B or otherwise A &lt;
+		<td width="560" height="10" valign="TOP">After a subtraction S = A - B, the sign of S indicates A <font face="Symbol">Â³</font> B or otherwise A &lt;
 			B. A slight modification of the adder/subtractor wiring allows the output carry c<sub>n</sub> to indicate A&nbsp;&lt;&nbsp;B,
 			A&nbsp;=&nbsp;B or A&nbsp;&gt;&nbsp;B; necessary for comparisons. This indication is only valid with subtraction.</td>
 	</tr>
@@ -179,7 +179,7 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="140" height="10" valign="TOP">
 			<p align="RIGHT"><a name="max"></a><b><font size="4">The larger from A and B</font></b>
 		</p></td>
-		<td width="560" height="10" valign="TOP">In order to compare A and B, it not necessary to compute the difference A – B. Only the sign of A – B is needed,
+		<td width="560" height="10" valign="TOP">In order to compare A and B, it not necessary to compute the difference A - B. Only the sign of A - B is needed,
 			that is the carry out. This comparator is simpler (less "BK") therefore faster (less fan-out) than a
 			complete subtractor. A multiplexers row selects the max.</td>
 	</tr>
@@ -269,7 +269,7 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="140" height="10" valign="TOP">&nbsp;</td>
 		<td width="560" height="10" valign="TOP">
 			<p>Where is the third output S' = A + B + 1 ? The calculation of S' from S and S", either S' = S + 1 or S'
-			= S" – 1, only claims <a href="Flottan.htm#predic" target="_blank">one inverter and some 2-input multiplexers</a>.
+			= S" - 1, only claims <a href="Flottan.htm#predic" target="_blank">one inverter and some 2-input multiplexers</a>.
 			</p><ul>
 				<li>The least significant bit s'<sub>0</sub> is the complement of s<sub>0</sub>.
 				</li><li>For the other bits : <b>if</b> s<sub>0</sub> = 0 <b>then</b> s'<sub>i</sub> = s<sub>i</sub> <b>else</b> s'<sub>i</sub>
@@ -282,8 +282,8 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 <table border="0" cellpadding="4" cellspacing="0" width="700">
 	<tbody><tr>
 		<td width="140" height="10" valign="TOP">&nbsp;</td>
-		<td width="560" height="10" valign="TOP">In much the same way as above, a two-output adder can calculate S = A + B – 1, S' = A + B and S" = A + B +
-			1 by calculating two numbers X and Y such that X + Y = A + B + 2<sup>n</sup> – 1 with a row of HA' cells, dual
+		<td width="560" height="10" valign="TOP">In much the same way as above, a two-output adder can calculate S = A + B - 1, S' = A + B and S" = A + B +
+			1 by calculating two numbers X and Y such that X + Y = A + B + 2<sup>n</sup> - 1 with a row of HA' cells, dual
 			of the HA cell. An extra inverter deals with the 2<sup>n</sup> .</td>
 	</tr>
 </tbody></table>
@@ -299,7 +299,7 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 			<p align="RIGHT"><a name="abs"></a><b><font size="4">Absolute value of the difference</font></b>
 		</p></td>
 		<td width="560" height="10" valign="TOP">
-			<p>With four slight modifications, <a href="#Sklansky" target="_blank">Sklansky</a>'s adder with <a href="#Clate" target="_blank">a late carry-in</a> returns S = <font size="2" face="Symbol">½ </font>A – B <font size="2" face="Symbol">½</font>.
+			<p>With four slight modifications, <a href="#Sklansky" target="_blank">Sklansky</a>'s adder with <a href="#Clate" target="_blank">a late carry-in</a> returns S = <font size="2" face="Symbol">Â½ </font>A - B <font size="2" face="Symbol">Â½</font>.
 			</p><ul>
 				<li>insert a row of inverters to complement B (or A)
 				</li><li>modify the "<a href="Additi.htm#BKcell" target="_blank">BK</a>" cell giving c<sub>n</sub> to change
@@ -329,11 +329,11 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 			if A and B have the same sign, and the subtraction otherwise. In any cases, the result S sign is the sign of the
 			addend with the larger magnitude.<br>
 			<br>
-			<b>if</b> (s<sub>a</sub><font size="2" face="Symbol">Å</font> s<sub>b</sub>) <b>then</b> { M<sub>s</sub>
+			<b>if</b> (s<sub>a</sub><font size="2" face="Symbol">Ã…</font> s<sub>b</sub>) <b>then</b> { M<sub>s</sub>
 			= M<sub>a</sub> + M<sub>b</sub> , s<sub>s</sub>= s<sub>a</sub> }<br>
-			<b>else if</b> M<sub>a</sub> <font face="Symbol">³</font> M<sub>b</sub> <b>then</b> { M<sub>s</sub> = M<sub>a</sub>
-			– M<sub>b</sub> , s<sub>s</sub>= s<sub>a</sub> }<br>
-			<b>else</b> { M<sub>s</sub> = M<sub>b</sub> – M<sub>a</sub> , s<sub>s</sub>= s<sub>b</sub> }<br>
+			<b>else if</b> M<sub>a</sub> <font face="Symbol">Â³</font> M<sub>b</sub> <b>then</b> { M<sub>s</sub> = M<sub>a</sub>
+			- M<sub>b</sub> , s<sub>s</sub>= s<sub>a</sub> }<br>
+			<b>else</b> { M<sub>s</sub> = M<sub>b</sub> - M<sub>a</sub> , s<sub>s</sub>= s<sub>b</sub> }<br>
 			The adder in "Sign Magnitude" representation inherits from both the <a href="#addsub" target="_blank">"adder/subtractor"</a>
 			and the <a href="#abs" target="_blank">"absolute value of the difference"</a> operator.</td>
 	</tr>
@@ -351,10 +351,10 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 			<b>if</b> feed-back = <font color="#009900">'2'</font> <b>then</b> M<sub>s</sub> = M<sub>a</sub> + M<sub>b</sub>;
 			//identity: <font color="#009900">'P'</font> gives <font color="#0033CC">'0'</font>, <font color="red">'G'</font>
 			gives <font color="red">'1'</font> and <font color="#0033CC">'K'</font> gives <font color="#0033CC">'0'</font><br>
-			<b>if</b> feed-back = <font color="red">'1'</font> <b>then</b> M<sub>s</sub> = M<sub>a</sub> – M<sub>b</sub>;<b>
+			<b>if</b> feed-back = <font color="red">'1'</font> <b>then</b> M<sub>s</sub> = M<sub>a</sub> - M<sub>b</sub>;<b>
 			/</b>/incr: <font color="#009900">'P'</font> gives <font color="red">'1'</font>, <font color="red">'G'</font> gives
 			<font color="red">'1'</font> and <font color="#0033CC">'K'</font> gives <font color="#0033CC">'0'</font><b><br>
-			if</b> feed-back = <font color="#0033CC">'0'</font> <b>then</b> M<sub>s</sub> = M<sub>b</sub> – M<sub>a</sub>;
+			if</b> feed-back = <font color="#0033CC">'0'</font> <b>then</b> M<sub>s</sub> = M<sub>b</sub> - M<sub>a</sub>;
 			//invert: <font color="#009900">'P'</font> gives <font color="red">'1'</font>, <font color="red">'G'</font> gives
 			<font color="#0033CC">'0'</font> and <font color="#0033CC">'K'</font> gives <font color="red">'1'</font></td>
 	</tr>
@@ -363,22 +363,22 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 <table border="0" cellpadding="4" cellspacing="0" width="700">
 	<tbody><tr>
 		<td width="140" height="10" valign="TOP">
-			<p align="RIGHT"><a name="modm"></a><b><font size="4"> modulo 2</font><sup><font size="4">n</font></sup><font size="4">–
+			<p align="RIGHT"><a name="modm"></a><b><font size="4"> modulo 2</font><sup><font size="4">n</font></sup><font size="4">-
 			1 adder</font></b>
 		</p></td>
 		<td width="560" height="10" valign="TOP">
 			<p>An adder delivers spontaneously a modulo 2<sup>n</sup> sum. With a slight modification, the <a href="#Sklansky" target="_blank">Sklansky</a>'s adder with <a href="#Clate" target="_blank">a late carry</a> delivers a modulo 2<sup>n</sup>
-			– 1 sum S.</p>
+			- 1 sum S.</p>
 			<ul>
-				<li><b>if</b> A + B &lt; 2<sup>n</sup> – 1 <b>then</b> S = A + B ;
-				</li><li><b>if</b> A + B <font face="Symbol">³</font> 2<sup>n</sup> – 1 <b>then</b> S = <font size="2" face="Symbol">½
-				</font>A + B + 1 <font size="2" face="Symbol">½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font>
+				<li><b>if</b> A + B &lt; 2<sup>n</sup> - 1 <b>then</b> S = A + B ;
+				</li><li><b>if</b> A + B <font face="Symbol">Â³</font> 2<sup>n</sup> - 1 <b>then</b> S = <font size="2" face="Symbol">Â½
+				</font>A + B + 1 <font size="2" face="Symbol">Â½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font>
 			</li></ul>
-			<p>In both cases we get S = <font size="2" face="Symbol">½ </font>A + B <font size="2" face="Symbol">½</font>&nbsp;<sub>modulo
-			(2</sub><font size="2">n</font><sub>– 1)</sub>.<sub> <br>
+			<p>In both cases we get S = <font size="2" face="Symbol">Â½ </font>A + B <font size="2" face="Symbol">Â½</font>&nbsp;<sub>modulo
+			(2</sub><font size="2">n</font><sub>- 1)</sub>.<sub> <br>
 			</sub>The condition is given by the carry out c<sub>n</sub>: if c<sub>n</sub> = <font color="#0033CC">'K'</font>
-			then A&nbsp;+&nbsp;B &lt; 2<sup>n</sup> – 1, if c<sub>n</sub> = <font color="#009900">'P'</font> then A&nbsp;+&nbsp;B
-			= 2<sup>n</sup> – 1, if c<sub>n</sub> = <font color="red">'G'</font> then A&nbsp;+&nbsp;B &gt; 2<sup>n</sup> –
+			then A&nbsp;+&nbsp;B &lt; 2<sup>n</sup> - 1, if c<sub>n</sub> = <font color="#009900">'P'</font> then A&nbsp;+&nbsp;B
+			= 2<sup>n</sup> - 1, if c<sub>n</sub> = <font color="red">'G'</font> then A&nbsp;+&nbsp;B &gt; 2<sup>n</sup> -
 			1. Therefore the "feed-back" signal that controls the "+1" is <font color="#0033CC">'0' </font>if
 			c<sub>n</sub> = <font color="#0033CC">'K'</font> and is <font color="red">'1' </font>otherwise (just as before
 			for absolute value). The yellow cells are the same as in the <a href="#Clate" target="_blank">carry-late adder</a>.
@@ -400,17 +400,17 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="560" height="10" valign="TOP">
 			<ul>
 				<li><b>if</b> A + B &lt; 2<sup>n</sup> + 1 <b>then</b> S = A + B ;
-				</li><li><b>if</b> A + B <font face="Symbol">³</font> 2<sup>n</sup> + 1 <b>then</b> S = <font size="2" face="Symbol">½
-				</font>A + B – 1 <font size="2" face="Symbol">½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font>
+				</li><li><b>if</b> A + B <font face="Symbol">Â³</font> 2<sup>n</sup> + 1 <b>then</b> S = <font size="2" face="Symbol">Â½
+				</font>A + B - 1 <font size="2" face="Symbol">Â½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font>
 			</li></ul>
-			<p>The previous adder is used with two inputs X and Y such that X + Y = A + B + 2<sup>n</sup> – 1 + c<sub>0</sub>.
+			<p>The previous adder is used with two inputs X and Y such that X + Y = A + B + 2<sup>n</sup> - 1 + c<sub>0</sub>.
 			A row of "HA' " cells carries on this addition propagation-free. The input<sub> </sub>carry c<sub>0</sub>
 			= <font color="#0033CC">'0'.</font>
 			</p><ul>
-				<li><b>if</b> X + Y &lt; 2<sup>n+1</sup> <b>then</b> S =<font size="2" face="Symbol">½ </font>X + Y + 1
-				<font size="2" face="Symbol">½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font><sub> </sub>;
-				</li><li><b>if</b> X + Y <font face="Symbol">³</font> 2<sup>n+1 </sup><b>then</b> S = <font size="2" face="Symbol">½
-				</font>X + Y<font size="2" face="Symbol"> ½</font>&nbsp;<sub>modulo 2</sub><font size="2">n ;</font>
+				<li><b>if</b> X + Y &lt; 2<sup>n+1</sup> <b>then</b> S =<font size="2" face="Symbol">Â½ </font>X + Y + 1
+				<font size="2" face="Symbol">Â½</font>&nbsp;<sub>modulo 2</sub><font size="2">n</font><sub> </sub>;
+				</li><li><b>if</b> X + Y <font face="Symbol">Â³</font> 2<sup>n+1 </sup><b>then</b> S = <font size="2" face="Symbol">Â½
+				</font>X + Y<font size="2" face="Symbol"> Â½</font>&nbsp;<sub>modulo 2</sub><font size="2">n ;</font>
 			</li></ul>
 			<p>The horizontal "feed-back" signal that controls the "+1" is the "nand" of x<sub>n</sub>
 			and (c<sub>n</sub> = <font color="red">'G' </font>). The result bit s<sub>n</sub> is the "and" of x<sub>n</sub>
@@ -430,10 +430,10 @@ __wm.bt(750,27,25,2,"web","http://users-tima.imag.fr/cis/guyot/Cours/Oparithm/en
 		<td width="560" height="10" valign="TOP">The value range for A and B is from 0 to 2<sup>n</sup>. The inputs bits a<sub>n</sub> and b<sub>n</sub> are missing
 			in the above adder. These two bits indicate whether A = 2<sup>n</sup> and B = 2<sup>n</sup> respectively.<br>
 			<b>if</b> A = 2<sup>n</sup> and B = 2<sup>n</sup> <b>then</b> ( A + B ) modulo 2<sup>n</sup> + 1 = 2<sup>n</sup>
-			– 1.<br>
-			<b>if</b> A = 2<sup>n</sup> and B &lt; 2<sup>n</sup> <b>then</b> A is rewritten ( 2<sup>n</sup> – 1 ) + 1, all
+			- 1.<br>
+			<b>if</b> A = 2<sup>n</sup> and B &lt; 2<sup>n</sup> <b>then</b> A is rewritten ( 2<sup>n</sup> - 1 ) + 1, all
 			the a<sub>i</sub> input bits are set to <font color="red">'1' </font>as well as the input carry c<sub>0</sub>.<br>
-			<b>if</b> A &lt; 2<sup>n</sup> and B = 2<sup>n</sup> <b>then</b> B is rewritten ( 2<sup>n</sup> – 1 ) + 1 thanks
+			<b>if</b> A &lt; 2<sup>n</sup> and B = 2<sup>n</sup> <b>then</b> B is rewritten ( 2<sup>n</sup> - 1 ) + 1 thanks
 			to the input carry c<sub>0</sub>.</td>
 	</tr>
 </tbody></table>
